@@ -1387,3 +1387,428 @@ img { max-width: 100%; }
 @media (max-width: 575px) {
   .newsletter-card { padding: 30px; }
 }
+
+/* =========================================================
+   XI Jornada — Upcoming event components
+   ========================================================= */
+
+/* Lema card (hero) */
+.lema-card {
+  margin-top: 22px;
+  padding: 18px 20px;
+  background: linear-gradient(135deg, var(--accent-50), #fff);
+  border: 1px solid rgba(243, 112, 33, 0.25);
+  border-radius: var(--radius);
+  position: relative;
+}
+.lema-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
+  color: var(--accent-600);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.lema-label i { font-size: 1rem; }
+.lema-card p {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.02rem;
+  line-height: 1.5;
+}
+.lema-card strong { font-family: var(--ff-display); }
+.lema-flag {
+  font-size: 1.15rem;
+  margin-left: 4px;
+  vertical-align: -2px;
+}
+
+/* Event card (right side of hero) — mirrors .ended-card but with accent */
+.event-card {
+  background: #fff;
+  border: 1px solid rgba(15, 76, 129, 0.1);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-lg);
+  position: relative;
+}
+.event-card::before {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: var(--radius-lg);
+  padding: 2px;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude;
+  pointer-events: none;
+  opacity: 0.35;
+}
+.event-card-head { margin-bottom: 18px; }
+.event-status {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 6px;
+}
+.event-status-icon {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-600));
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  flex-shrink: 0;
+  box-shadow: 0 12px 22px -10px rgba(243, 112, 33, 0.6);
+}
+.event-status h3 {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0;
+  font-size: 1.2rem;
+}
+.event-status p {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+}
+.event-card hr { margin: 16px 0; opacity: 0.18; }
+
+/* Requisitos cards */
+.req-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  height: 100%;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+  position: relative;
+}
+.req-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(15, 76, 129, 0.22);
+  box-shadow: var(--shadow);
+}
+.req-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary-50), #fff);
+  border: 1px solid rgba(15, 76, 129, 0.12);
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  margin-bottom: 14px;
+}
+.req-card h4 {
+  font-family: var(--ff-display);
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 12px;
+}
+.req-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+.req-card ul li {
+  position: relative;
+  padding-left: 20px;
+  font-size: 0.92rem;
+  color: var(--ink-2);
+}
+.req-card ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-50);
+}
+
+/* Schedule cards (cronograma) */
+.schedule-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  transition: transform .25s, box-shadow .25s;
+}
+.schedule-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow);
+}
+.schedule-step {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  font-family: var(--ff-display);
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: rgba(15, 76, 129, 0.08);
+  line-height: 1;
+}
+.schedule-card h5 {
+  font-family: var(--ff-display);
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.schedule-card h5 i { color: var(--primary); }
+.schedule-date {
+  margin: 0 0 8px;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--accent-600);
+}
+.schedule-desc {
+  margin: 0;
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.schedule-card-hl {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-600) 100%);
+  border-color: transparent;
+  color: #fff;
+}
+.schedule-card-hl .schedule-step { color: rgba(255, 255, 255, 0.15); }
+.schedule-card-hl h5,
+.schedule-card-hl h5 i { color: #fff; }
+.schedule-card-hl .schedule-date { color: #ffd5b8; }
+.schedule-card-hl .schedule-desc { color: rgba(255, 255, 255, 0.82); }
+
+/* Fees card */
+.fees-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  height: 100%;
+  box-shadow: var(--shadow-sm);
+}
+.fees-title {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  color: var(--ink);
+  margin: 0 0 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.2rem;
+}
+.fees-title i { color: var(--accent); }
+.fees-sub {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 0 0 22px;
+}
+.fees-table {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.fees-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 8px;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  font-size: 0.95rem;
+  color: var(--ink-2);
+}
+.fees-row:last-child { border-bottom: none; }
+.fees-row i { color: var(--primary); margin-right: 6px; }
+.fees-row-head {
+  background: var(--primary-50);
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+.fees-row-head i { display: none; }
+.fees-amount {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  color: var(--ink);
+  font-size: 0.98rem;
+}
+.fees-amount-alt { color: var(--accent-600); }
+.fees-foot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+/* Bank card */
+.bank-card {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-600) 100%);
+  color: #fff;
+  border-radius: var(--radius-lg);
+  padding: 30px;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+.bank-card::before {
+  content: "";
+  position: absolute;
+  top: -120px; right: -120px;
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(243, 112, 33, 0.28), transparent 70%);
+  pointer-events: none;
+}
+.bank-card .hbui-badge-outline-soft {
+  background: rgba(255, 255, 255, 0.14);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.22);
+}
+.bank-title {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  margin: 0 0 18px;
+  font-size: 1.2rem;
+  position: relative;
+  z-index: 1;
+}
+.bank-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 22px;
+  display: grid;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+.bank-list li {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 10px;
+}
+.bank-key {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: rgba(255, 255, 255, 0.65);
+  font-weight: 600;
+}
+.bank-val {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  color: #fff;
+  font-size: 0.98rem;
+  word-break: break-word;
+}
+.bank-iban { letter-spacing: 0.5px; font-variant-numeric: tabular-nums; }
+.bank-card .btn-cta {
+  position: relative;
+  z-index: 1;
+}
+.bank-foot {
+  display: block;
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.78);
+  position: relative;
+  z-index: 1;
+}
+.bank-foot i { color: #6ee7b7; margin-right: 4px; }
+
+/* Contact cards */
+.contact-card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 24px;
+  height: 100%;
+  text-align: left;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+}
+.contact-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(15, 76, 129, 0.22);
+  box-shadow: var(--shadow);
+}
+.contact-icon {
+  width: 46px;
+  height: 46px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-600));
+  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 14px;
+  box-shadow: 0 8px 18px -10px rgba(15, 76, 129, 0.5);
+}
+.contact-card h6 {
+  font-family: var(--ff-display);
+  font-weight: 800;
+  color: var(--ink);
+  font-size: 0.95rem;
+  margin: 0 0 8px;
+}
+.contact-card p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.contact-card a { color: var(--primary); font-weight: 600; }
+.contact-card a:hover { color: var(--accent); }
+
+/* Responsive tweaks */
+@media (max-width: 575px) {
+  .fees-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+  .fees-row-head { display: none; }
+  .fees-amount::before {
+    content: "Participação: ";
+    color: var(--muted);
+    font-weight: 500;
+    font-family: var(--ff-sans);
+    font-size: 0.82rem;
+  }
+  .fees-amount-alt::before { content: "Mini-Curso: "; }
+  .fees-card, .bank-card { padding: 24px; }
+  .lema-card { padding: 16px; }
+}
+
