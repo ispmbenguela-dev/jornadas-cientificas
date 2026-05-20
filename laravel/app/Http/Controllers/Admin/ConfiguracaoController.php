@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Configuracao;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
 
 class ConfiguracaoController extends Controller
@@ -16,6 +18,8 @@ class ConfiguracaoController extends Controller
         'simbolo' => 'simbolo_path',
         'banner'  => 'banner_path',
     ];
+
+    private const PASTA = 'branding';
 
     public function index(): View
     {
@@ -43,12 +47,30 @@ class ConfiguracaoController extends Controller
 
             if ($request->hasFile($field)) {
                 $this->deleteCurrent($key);
-                $path = $request->file($field)->store('branding', 'public');
+                $path = $this->storeWithOriginalName($request->file($field));
                 Configuracao::set($key, $path, 'image');
             }
         }
 
         return back()->with('success', 'Configurações actualizadas.');
+    }
+
+    private function storeWithOriginalName(UploadedFile $file): string
+    {
+        $disk = Storage::disk('public');
+
+        $originalBase = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $extension    = strtolower($file->getClientOriginalExtension() ?: $file->extension());
+        $base         = Str::slug($originalBase) ?: 'imagem';
+
+        $filename = "{$base}.{$extension}";
+        $i = 2;
+        while ($disk->exists(self::PASTA . "/{$filename}")) {
+            $filename = "{$base}-{$i}.{$extension}";
+            $i++;
+        }
+
+        return $file->storeAs(self::PASTA, $filename, 'public');
     }
 
     private function deleteCurrent(string $key): void

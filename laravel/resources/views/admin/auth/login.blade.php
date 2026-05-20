@@ -11,6 +11,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}" />
+    @if (!empty($branding['simbolo']))
+        <link rel="icon" type="image/png" href="{{ $branding['simbolo'] }}" />
+    @endif
 </head>
 <body class="login-body">
     <div class="login-shell">
