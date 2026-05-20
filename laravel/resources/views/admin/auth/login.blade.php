@@ -24,7 +24,7 @@
             </a>
 
             <h1>Entrar</h1>
-            <p class="text-muted">Acesso reservado à Comissão Científica.</p>
+            <p class="text-muted">Acesso reservado à Comissão Científica. Credenciais autenticadas via <strong>SIGAM</strong>.</p>
 
             @if ($errors->any())
                 <div class="alert alert-danger">

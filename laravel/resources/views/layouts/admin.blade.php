@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('css/admin.css') }}" />
+    @stack('head')
 </head>
 <body class="admin-body">
 
@@ -33,6 +34,9 @@
             </a>
             <a href="{{ route('admin.submissoes.index') }}" class="{{ request()->routeIs('admin.submissoes.*') ? 'active' : '' }}">
                 <i class="bi bi-journal-text"></i> Submissões
+            </a>
+            <a href="{{ route('admin.configuracoes.index') }}" class="{{ request()->routeIs('admin.configuracoes.*') ? 'active' : '' }}">
+                <i class="bi bi-sliders"></i> Configurações
             </a>
             <a href="{{ route('home') }}" target="_blank">
                 <i class="bi bi-box-arrow-up-right"></i> Ver site

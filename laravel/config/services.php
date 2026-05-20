@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'sigam' => [
+        'verify_url' => env('SIGAM_VERIFY_URL', 'https://sigam.ispm.online/api/verify-user'),
+        'timeout'    => (int) env('SIGAM_TIMEOUT', 25),
+        'ca_bundle'  => env('SIGAM_CA_BUNDLE', storage_path('certs/cacert.pem')),
+    ],
+
 ];

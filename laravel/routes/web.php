@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\ConfiguracaoController as AdminConfiguracaoController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InscricaoController as AdminInscricaoController;
 use App\Http\Controllers\Admin\SubmissaoController as AdminSubmissaoController;
@@ -41,6 +42,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('inscricoes/{inscricao}', [AdminInscricaoController::class, 'show'])->name('inscricoes.show');
         Route::put('inscricoes/{inscricao}', [AdminInscricaoController::class, 'update'])->name('inscricoes.update');
         Route::delete('inscricoes/{inscricao}', [AdminInscricaoController::class, 'destroy'])->name('inscricoes.destroy');
+
+        Route::get('configuracoes', [AdminConfiguracaoController::class, 'index'])->name('configuracoes.index');
+        Route::post('configuracoes', [AdminConfiguracaoController::class, 'update'])->name('configuracoes.update');
 
         Route::get('submissoes', [AdminSubmissaoController::class, 'index'])->name('submissoes.index');
         Route::get('submissoes/{submissao}', [AdminSubmissaoController::class, 'show'])->name('submissoes.show');

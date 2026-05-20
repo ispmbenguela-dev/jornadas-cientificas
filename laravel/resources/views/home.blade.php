@@ -3,6 +3,12 @@
 @section('title', 'XI Jornada Científico-Metodológica Geral — ISPM')
 
 @section('content')
+    @if (!empty($branding['banner']))
+        <div class="hero-banner-image">
+            <img src="{{ $branding['banner'] }}" alt="XI Jornada Científico-Metodológica — ISPM · 11 e 12 de Junho de 2026" />
+        </div>
+    @endif
+
     <header id="evento" class="landing-hero">
         <div class="hero-bg" aria-hidden="true"></div>
         <div class="hero-grid" aria-hidden="true"></div>

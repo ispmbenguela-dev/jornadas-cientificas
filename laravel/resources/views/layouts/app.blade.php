@@ -13,6 +13,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
     <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
+    @if (!empty($branding['simbolo']))
+        <link rel="icon" type="image/png" href="{{ $branding['simbolo'] }}" />
+    @endif
     @stack('head')
 </head>
 <body class="@yield('body_class', 'landing-body')">
@@ -20,11 +23,15 @@
     <nav id="mainNav" class="navbar navbar-expand-lg sticky-top main-nav">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="{{ route('home') }}">
-                <span class="brand-mark">XI</span>
-                <span class="brand-text">
-                    Jornada Científico-Metodológica
-                    <small>ISPM · 2026</small>
-                </span>
+                @if (!empty($branding['logo']))
+                    <img src="{{ $branding['logo'] }}" alt="XI Jornada · ISPM" class="brand-logo" />
+                @else
+                    <span class="brand-mark">XI</span>
+                    <span class="brand-text">
+                        Jornada Científico-Metodológica
+                        <small>ISPM · 2026</small>
+                    </span>
+                @endif
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
                 <span class="navbar-toggler-icon"></span>
@@ -62,11 +69,15 @@
             <div class="row g-4">
                 <div class="col-lg-5">
                     <div class="footer-brand">
-                        <span class="brand-mark">XI</span>
-                        <div>
-                            <strong>Jornada Científico-Metodológica</strong>
-                            <small>ISPM · 2026</small>
-                        </div>
+                        @if (!empty($branding['logo']))
+                            <img src="{{ $branding['logo'] }}" alt="XI Jornada · ISPM" class="footer-logo" />
+                        @else
+                            <span class="brand-mark">XI</span>
+                            <div>
+                                <strong>Jornada Científico-Metodológica</strong>
+                                <small>ISPM · 2026</small>
+                            </div>
+                        @endif
                     </div>
                     <p class="mt-3 footer-text">
                         Instituto Superior Politécnico Maravilha — ISPM. Investigação,
