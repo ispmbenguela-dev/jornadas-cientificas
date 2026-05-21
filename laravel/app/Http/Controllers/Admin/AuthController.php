@@ -16,6 +16,8 @@ use Illuminate\View\View;
 
 class AuthController extends Controller
 {
+    private const BLOCKED_ROLES = ['student'];
+
     public function showLogin(): View
     {
         return view('admin.auth.login');
@@ -61,6 +63,12 @@ class AuthController extends Controller
             return back()->withErrors(['email' => $message])->onlyInput('email');
         }
 
+        if ($this->hasBlockedRole($data)) {
+            return back()->withErrors([
+                'email' => 'O acesso ao painel não está disponível para utilizadores com perfil de estudante.',
+            ])->onlyInput('email');
+        }
+
         $user = $this->resolveLocalUser($credentials['email'], $data);
 
         Auth::login($user, $request->boolean('remember'));
@@ -76,6 +84,27 @@ class AuthController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('admin.login');
+    }
+
+    private function hasBlockedRole(array $data): bool
+    {
+        $roles = $data['user']['roles']
+            ?? $data['data']['roles']
+            ?? $data['roles']
+            ?? [];
+
+        if (! is_array($roles)) {
+            return false;
+        }
+
+        foreach ($roles as $role) {
+            $name = is_array($role) ? ($role['name'] ?? null) : null;
+            if (is_string($name) && in_array(strtolower($name), self::BLOCKED_ROLES, true)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private function resolveLocalUser(string $email, array $data): User
