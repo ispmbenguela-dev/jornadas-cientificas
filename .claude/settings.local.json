@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(cp \"c:/Users/Fábio Kapa/Desktop/..DEV/ISPM/jornada-cientifica/index.html\" \"c:/Users/Fábio Kapa/Desktop/..DEV/ISPM/jornada-cientifica/programa.html\")"
+      "Bash(cp \"c:/Users/Fábio Kapa/Desktop/..DEV/ISPM/jornada-cientifica/index.html\" \"c:/Users/Fábio Kapa/Desktop/..DEV/ISPM/jornada-cientifica/programa.html\")",
+      "Bash(composer --version)",
+      "Bash(composer require *)",
+      "Bash(php artisan *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Fábio Kapa\\Desktop\\..DEV\\ISPM\\jornada-cientifica"

@@ -23,6 +23,12 @@
                 @endforeach
             </select>
             <button class="btn btn-cta btn-sm"><i class="bi bi-funnel"></i> Filtrar</button>
+            <button type="submit" formaction="{{ route('admin.inscricoes.export') }}" class="btn btn-outline-success btn-sm">
+                <i class="bi bi-file-earmark-spreadsheet"></i> Exportar CSV
+            </button>
+            <button type="submit" formaction="{{ route('admin.inscricoes.export_pdf') }}" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
+            </button>
         </form>
 
         <div class="table-responsive mt-3">

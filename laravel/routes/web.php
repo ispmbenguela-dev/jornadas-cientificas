@@ -39,6 +39,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
         Route::get('inscricoes', [AdminInscricaoController::class, 'index'])->name('inscricoes.index');
+        Route::get('inscricoes/export', [AdminInscricaoController::class, 'export'])->name('inscricoes.export');
+        Route::get('inscricoes/export-pdf', [AdminInscricaoController::class, 'exportPdf'])->name('inscricoes.export_pdf');
         Route::get('inscricoes/{inscricao}', [AdminInscricaoController::class, 'show'])->name('inscricoes.show');
         Route::put('inscricoes/{inscricao}', [AdminInscricaoController::class, 'update'])->name('inscricoes.update');
         Route::delete('inscricoes/{inscricao}', [AdminInscricaoController::class, 'destroy'])->name('inscricoes.destroy');
@@ -47,6 +49,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('configuracoes', [AdminConfiguracaoController::class, 'update'])->name('configuracoes.update');
 
         Route::get('submissoes', [AdminSubmissaoController::class, 'index'])->name('submissoes.index');
+        Route::get('submissoes/export', [AdminSubmissaoController::class, 'export'])->name('submissoes.export');
+        Route::get('submissoes/export-pdf', [AdminSubmissaoController::class, 'exportPdf'])->name('submissoes.export_pdf');
         Route::get('submissoes/{submissao}', [AdminSubmissaoController::class, 'show'])->name('submissoes.show');
         Route::put('submissoes/{submissao}', [AdminSubmissaoController::class, 'update'])->name('submissoes.update');
         Route::delete('submissoes/{submissao}', [AdminSubmissaoController::class, 'destroy'])->name('submissoes.destroy');
