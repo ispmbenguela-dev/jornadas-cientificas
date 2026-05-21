@@ -19,11 +19,15 @@
     <div class="login-shell">
         <div class="login-card">
             <a href="{{ route('home') }}" class="login-brand">
-                <span class="brand-mark">XI</span>
-                <div>
-                    <strong>Painel Admin</strong>
-                    <small>XI Jornada · ISPM</small>
-                </div>
+                @if (!empty($branding['logo']))
+                    <img src="{{ $branding['logo'] }}" alt="XI Jornada · ISPM" class="login-logo" />
+                @else
+                    <span class="brand-mark">XI</span>
+                    <div>
+                        <strong>Painel Admin</strong>
+                        <small>XI Jornada · ISPM</small>
+                    </div>
+                @endif
             </a>
 
             <h1>Entrar</h1>

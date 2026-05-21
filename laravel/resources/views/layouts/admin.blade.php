@@ -21,11 +21,15 @@
 
     <aside class="admin-sidebar">
         <a href="{{ route('admin.dashboard') }}" class="admin-brand">
-            <span class="brand-mark">XI</span>
-            <div>
-                <strong>Painel Admin</strong>
-                <small>ISPM · 2026</small>
-            </div>
+            @if (!empty($branding['logo']))
+                <img src="{{ $branding['logo'] }}" alt="XI Jornada · ISPM" class="admin-logo" />
+            @else
+                <span class="brand-mark">XI</span>
+                <div>
+                    <strong>Painel Admin</strong>
+                    <small>ISPM · 2026</small>
+                </div>
+            @endif
         </a>
 
         <nav class="admin-nav">
