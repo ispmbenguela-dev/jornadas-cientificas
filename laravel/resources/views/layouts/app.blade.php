@@ -41,6 +41,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#evento">Evento</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#requisitos">Requisitos</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#cronograma">Cronograma</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#programa">Programa</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('submissao.create') }}">Submeter Trabalho</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#contactos">Contactos</a></li>
                     <li class="nav-item ms-lg-2">
@@ -95,6 +96,7 @@
                         <li><a href="{{ route('home') }}">Evento</a></li>
                         <li><a href="{{ route('home') }}#requisitos">Requisitos</a></li>
                         <li><a href="{{ route('home') }}#cronograma">Cronograma</a></li>
+                        <li><a href="{{ route('home') }}#programa">Programa</a></li>
                         <li><a href="{{ route('inscricao.create') }}">Inscrição</a></li>
                         <li><a href="{{ route('submissao.create') }}">Submeter Trabalho</a></li>
                         <li><a href="{{ route('programa') }}">Arquivo III edição</a></li>
