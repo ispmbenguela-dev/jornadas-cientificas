@@ -58,6 +58,99 @@
 }
 .price-preview.is-set strong { color: var(--accent-600); }
 
+/* Mini-curso multi-select (checkbox cards) */
+.mc-list { margin-top: 6px; }
+.mc-day { margin-bottom: 18px; }
+.mc-day:last-child { margin-bottom: 0; }
+.mc-day-title {
+  font-family: var(--ff-display);
+  font-weight: 700;
+  color: var(--primary);
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  margin: 0 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.mc-day-title i { color: var(--accent); }
+
+.mc-option {
+  display: block;
+  cursor: pointer;
+  position: relative;
+  height: 100%;
+}
+.mc-option input[type="checkbox"] {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+  z-index: 2;
+  cursor: pointer;
+}
+.mc-option-content {
+  display: block;
+  background: #fff;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  padding: 14px 16px 14px 42px;
+  height: 100%;
+  transition: all .2s ease;
+  box-shadow: 0 1px 3px rgba(15, 76, 129, 0.04);
+}
+.mc-option:hover .mc-option-content {
+  border-color: rgba(15, 76, 129, 0.3);
+  box-shadow: 0 4px 12px rgba(15, 76, 129, 0.08);
+  transform: translateY(-1px);
+}
+.mc-option.is-checked .mc-option-content {
+  border-color: var(--accent);
+  background: linear-gradient(135deg, var(--accent-50), #fff);
+  box-shadow: 0 4px 14px rgba(243, 112, 33, 0.15);
+}
+.mc-option-head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.mc-option-title {
+  display: block;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  color: var(--ink);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  margin-bottom: 8px;
+}
+.mc-option-meta {
+  display: grid;
+  gap: 4px;
+  border-top: 1px solid rgba(15, 76, 129, 0.1);
+  padding-top: 8px;
+  font-size: 0.82rem;
+  color: var(--ink-2);
+}
+.mc-option-meta span { display: flex; align-items: flex-start; gap: 6px; }
+.mc-option-meta i { color: var(--accent); margin-top: 2px; flex-shrink: 0; }
+
+.mc-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--primary-50);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  color: var(--ink-2);
+}
+.mc-summary i { color: var(--primary); }
+.mc-summary strong { color: var(--accent-600); font-family: var(--ff-display); }
+
 /* Success card */
 .success-card {
   background: #fff;

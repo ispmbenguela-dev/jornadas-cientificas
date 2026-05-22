@@ -18,6 +18,16 @@
                     <dt>Instituição</dt><dd>{{ $inscricao->instituicao ?: '—' }}</dd>
                     <dt>Categoria</dt><dd>{{ $inscricao->categoria_label }}</dd>
                     <dt>Modalidade</dt><dd>{{ $inscricao->modalidade_label }}</dd>
+                    @if ($inscricao->mini_cursos_count > 0)
+                        <dt>Mini-Cursos ({{ $inscricao->mini_cursos_count }})</dt>
+                        <dd>
+                            <ul class="mb-0 ps-3">
+                                @foreach ($inscricao->mini_cursos_list as $linha)
+                                    <li>{{ $linha }}</li>
+                                @endforeach
+                            </ul>
+                        </dd>
+                    @endif
                     <dt>Valor</dt><dd>{{ $inscricao->valor_formatado }}</dd>
                     <dt>Criada</dt><dd>{{ $inscricao->created_at->format('d/m/Y H:i') }}</dd>
                 </dl>

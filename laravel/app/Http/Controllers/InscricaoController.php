@@ -16,22 +16,35 @@ class InscricaoController extends Controller
             'categorias'  => Inscricao::CATEGORIAS,
             'modalidades' => Inscricao::MODALIDADES,
             'precos'      => Inscricao::TABELA_PRECOS,
+            'miniCursos'  => Inscricao::MINI_CURSOS,
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
-            'nome'         => ['required', 'string', 'max:160'],
-            'email'        => ['required', 'email', 'max:160'],
-            'telefone'     => ['required', 'string', 'max:40'],
-            'instituicao'  => ['nullable', 'string', 'max:160'],
-            'categoria'    => ['required', 'in:docente,estudante,publico'],
-            'modalidade'   => ['required', 'in:participacao,mini_curso'],
-            'comprovativo' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
+            'nome'           => ['required', 'string', 'max:160'],
+            'email'          => ['required', 'email', 'max:160'],
+            'telefone'       => ['required', 'string', 'max:40'],
+            'instituicao'    => ['nullable', 'string', 'max:160'],
+            'categoria'      => ['required', 'in:docente,estudante,publico'],
+            'modalidade'     => ['required', 'in:participacao,mini_curso'],
+            'mini_cursos'    => ['nullable', 'array', 'required_if:modalidade,mini_curso'],
+            'mini_cursos.*'  => ['string', 'in:' . implode(',', array_keys(Inscricao::MINI_CURSOS))],
+            'comprovativo'   => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
+        ], [
+            'mini_cursos.required_if' => 'Seleccione pelo menos um mini-curso.',
         ]);
 
-        $data['valor_kz'] = Inscricao::calcularValor($data['categoria'], $data['modalidade']);
+        if ($data['modalidade'] !== 'mini_curso') {
+            $data['mini_cursos'] = null;
+            $quantidade = 1;
+        } else {
+            $data['mini_cursos'] = array_values(array_unique($data['mini_cursos'] ?? []));
+            $quantidade = count($data['mini_cursos']);
+        }
+
+        $data['valor_kz'] = Inscricao::calcularValor($data['categoria'], $data['modalidade'], $quantidade);
 
         if ($request->hasFile('comprovativo')) {
             $data['comprovativo_path'] = $request->file('comprovativo')

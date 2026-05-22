@@ -68,6 +68,57 @@
                             </select>
                         </div>
 
+                        <div class="col-12 d-none" id="inscMiniCursoWrapper">
+                            <label class="form-label d-flex justify-content-between align-items-center flex-wrap gap-2">
+                                <span>Escolha os mini-cursos pretendidos *</span>
+                                <small class="text-muted">
+                                    <i class="bi bi-info-circle"></i>
+                                    Pode escolher mais do que um — o valor é multiplicado.
+                                </small>
+                            </label>
+
+                            @php($selecionados = (array) old('mini_cursos', []))
+                            @php($miniCursosPorDia = collect($miniCursos)->groupBy('dia'))
+
+                            <div class="mc-list">
+                                @foreach ($miniCursosPorDia as $dia => $items)
+                                    <div class="mc-day">
+                                        <h6 class="mc-day-title"><i class="bi bi-calendar2-day"></i> {{ $dia }}</h6>
+                                        <div class="row g-3">
+                                            @foreach ($items as $key => $mc)
+                                                <div class="col-md-6">
+                                                    <label class="mc-option">
+                                                        <input type="checkbox"
+                                                               name="mini_cursos[]"
+                                                               value="{{ $key }}"
+                                                               class="mc-option-check"
+                                                               @checked(in_array($key, $selecionados, true))>
+                                                        <span class="mc-option-content">
+                                                            <span class="mc-option-head">
+                                                                <span class="hbui-badge hbui-badge-default">{{ $mc['hora'] }}</span>
+                                                                <span class="hbui-badge hbui-badge-room">{{ $mc['local'] }}</span>
+                                                                <span class="hbui-badge hbui-badge-outline-soft">{{ $mc['tema'] }}</span>
+                                                            </span>
+                                                            <span class="mc-option-title">{{ $mc['titulo'] }}</span>
+                                                            <span class="mc-option-meta">
+                                                                <span><i class="bi bi-mic-fill"></i> {{ $mc['prelector'] }}</span>
+                                                                <span><i class="bi bi-person-fill"></i> Mod.: {{ $mc['moderador'] }}</span>
+                                                            </span>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                            <div class="mc-summary mt-2">
+                                <i class="bi bi-check2-square"></i>
+                                <span><strong id="mcCount">0</strong> mini-curso(s) seleccionado(s).</span>
+                            </div>
+                        </div>
+
                         <div class="col-12">
                             <div class="price-preview" id="inscPriceBox">
                                 <i class="bi bi-cash-coin"></i>
@@ -111,25 +162,70 @@
 
 @push('scripts')
 <script>
-    const precos = @json($precos);
-    const cat = document.getElementById('inscCategoria');
-    const mod = document.getElementById('inscModalidade');
-    const out = document.getElementById('inscPriceValue');
-    const box = document.getElementById('inscPriceBox');
+    const precos    = @json($precos);
+    const cat       = document.getElementById('inscCategoria');
+    const mod       = document.getElementById('inscModalidade');
+    const out       = document.getElementById('inscPriceValue');
+    const box       = document.getElementById('inscPriceBox');
+    const mcWrap    = document.getElementById('inscMiniCursoWrapper');
+    const mcChecks  = () => Array.from(document.querySelectorAll('.mc-option-check'));
+    const mcCountEl = document.getElementById('mcCount');
     const fmt = (n) => new Intl.NumberFormat('pt-PT', { minimumFractionDigits: 2 }).format(n) + ' Kz';
-    function refresh() {
+
+    function selectedCount() {
+        return mcChecks().filter(c => c.checked).length;
+    }
+
+    function refreshPrice() {
         const c = cat.value, m = mod.value;
-        if (c && m && precos[c] && precos[c][m] !== undefined) {
-            out.textContent = fmt(precos[c][m]);
+        if (!c || !m || !precos[c] || precos[c][m] === undefined) {
+            out.textContent = '—';
+            box.classList.remove('is-set');
+            return;
+        }
+        let total = precos[c][m];
+        if (m === 'mini_curso') {
+            const n = selectedCount();
+            total = n > 0 ? total * n : 0;
+        }
+        if (total > 0) {
+            out.textContent = fmt(total);
             box.classList.add('is-set');
         } else {
             out.textContent = '—';
             box.classList.remove('is-set');
         }
     }
-    cat.addEventListener('change', refresh);
-    mod.addEventListener('change', refresh);
-    refresh();
+
+    function refreshCount() {
+        const n = selectedCount();
+        mcCountEl.textContent = n;
+        mcChecks().forEach(c => {
+            c.closest('.mc-option').classList.toggle('is-checked', c.checked);
+        });
+    }
+
+    function toggleMiniCurso() {
+        const isMiniCurso = mod.value === 'mini_curso';
+        mcWrap.classList.toggle('d-none', !isMiniCurso);
+        if (!isMiniCurso) {
+            mcChecks().forEach(c => { c.checked = false; });
+            refreshCount();
+        }
+    }
+
+    cat.addEventListener('change', refreshPrice);
+    mod.addEventListener('change', () => { toggleMiniCurso(); refreshPrice(); });
+    document.addEventListener('change', (e) => {
+        if (e.target.classList.contains('mc-option-check')) {
+            refreshCount();
+            refreshPrice();
+        }
+    });
+
+    refreshCount();
+    refreshPrice();
+    toggleMiniCurso();
 </script>
 @endpush
 @endsection

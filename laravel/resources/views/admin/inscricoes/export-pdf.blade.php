@@ -61,7 +61,17 @@
                 </td>
                 <td>{{ $i->instituicao ?: '—' }}</td>
                 <td>{{ $i->categoria_label }}</td>
-                <td>{{ $i->modalidade_label }}</td>
+                <td>
+                    {{ $i->modalidade_label }}
+                    @if ($i->mini_cursos_count > 0)
+                        <div class="small">
+                            <strong>{{ $i->mini_cursos_count }} mini-curso(s):</strong>
+                            @foreach ($i->mini_cursos_list as $linha)
+                                <div>• {{ $linha }}</div>
+                            @endforeach
+                        </div>
+                    @endif
+                </td>
                 <td class="num">{{ number_format($i->valor_kz, 0, ',', '.') }}</td>
                 <td><span class="badge badge-{{ $i->estado }}">{{ ucfirst($i->estado) }}</span></td>
                 <td>{{ optional($i->created_at)->format('d/m/Y H:i') }}</td>

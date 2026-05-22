@@ -20,6 +20,18 @@
                     <ul class="success-list">
                         <li><span>Categoria</span><strong>{{ $inscricao->categoria_label }}</strong></li>
                         <li><span>Modalidade</span><strong>{{ $inscricao->modalidade_label }}</strong></li>
+                        @if ($inscricao->mini_cursos_count > 0)
+                            <li>
+                                <span>Mini-Cursos ({{ $inscricao->mini_cursos_count }})</span>
+                                <strong>
+                                    <ul class="mb-0 ps-3">
+                                        @foreach ($inscricao->mini_cursos_list as $linha)
+                                            <li>{{ $linha }}</li>
+                                        @endforeach
+                                    </ul>
+                                </strong>
+                            </li>
+                        @endif
                         <li><span>Valor</span><strong>{{ $inscricao->valor_formatado }}</strong></li>
                         <li><span>Estado</span><strong>{{ ucfirst($inscricao->estado) }}</strong></li>
                     </ul>

@@ -55,7 +55,17 @@
                             <small class="d-block text-muted">{{ $i->email }} · {{ $i->telefone }}</small>
                         </td>
                         <td>{{ $i->categoria_label }}</td>
-                        <td>{{ $i->modalidade_label }}</td>
+                        <td>
+                            {{ $i->modalidade_label }}
+                            @if ($i->mini_cursos_count > 0)
+                                <small class="d-block text-muted">
+                                    <strong>{{ $i->mini_cursos_count }} mini-curso(s):</strong>
+                                    @foreach ($i->mini_cursos_list as $linha)
+                                        <span class="d-block">• {{ $linha }}</span>
+                                    @endforeach
+                                </small>
+                            @endif
+                        </td>
                         <td>{{ $i->valor_formatado }}</td>
                         <td>@include('admin._estado_badge', ['estado' => $i->estado])</td>
                         <td>
