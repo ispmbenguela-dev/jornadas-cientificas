@@ -74,7 +74,7 @@
                                 <div class="sigam-head">
                                     <i class="bi bi-shield-check"></i>
                                     <div>
-                                        <strong>Verificação de Docente ISPM</strong>
+                                        <strong>Verificação de Docente do ISPM</strong>
                                         <small class="d-block text-muted">
                                             Docentes do ISPM têm direito a <strong>um mini-curso gratuito</strong>.
                                             Informe o e-mail institucional para confirmar.
@@ -93,7 +93,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <button type="button" class="btn btn-cta w-100" id="btnVerifySigam">
-                                            <i class="bi bi-search"></i> Verificar SIGAM
+                                            <i class="bi bi-search"></i> Verificar
                                         </button>
                                     </div>
                                 </div>

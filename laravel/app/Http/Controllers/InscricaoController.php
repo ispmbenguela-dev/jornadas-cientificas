@@ -40,7 +40,7 @@ class InscricaoController extends Controller
             return response()->json([
                 'ok'      => false,
                 'reason'  => 'sigam_unreachable',
-                'message' => 'Não foi possível contactar o SIGAM. Tente novamente em alguns segundos.',
+                'message' => 'Não foi possível contactar. Tente novamente em alguns segundos.',
             ], 503);
         }
 
@@ -48,7 +48,7 @@ class InscricaoController extends Controller
             return response()->json([
                 'ok'      => false,
                 'reason'  => 'sigam_error',
-                'message' => 'SIGAM retornou erro ' . $response->status() . '. Verifique o e-mail e tente novamente.',
+                'message' => 'Retornou erro ' . $response->status() . '. Verifique o e-mail e tente novamente.',
             ], 502);
         }
 
@@ -74,7 +74,7 @@ class InscricaoController extends Controller
             'raw'        => $payload,
             'message'    => $isDocente
                 ? 'Docente verificado. Tem direito a um mini-curso gratuito.'
-                : ($exists ? 'Utilizador encontrado, mas não é docente.' : 'E-mail não encontrado no SIGAM.'),
+                : ($exists ? 'Utilizador encontrado, mas não é docente.' : 'E-mail não encontrado no Sistema.'),
         ]);
     }
 
@@ -97,7 +97,7 @@ class InscricaoController extends Controller
 
         $data = $request->validate($rules, [
             'mini_cursos.required_if'         => 'Seleccione pelo menos um mini-curso.',
-            'email_institucional.required'    => 'Informe o e-mail institucional para verificação SIGAM.',
+            'email_institucional.required'    => 'Informe o e-mail institucional para verificação no sistema.',
         ]);
 
         $isDocenteIspm = false;
@@ -152,7 +152,7 @@ class InscricaoController extends Controller
                  . ' Kz) não coincide com o valor calculado (' . number_format($inscricao->valor_kz, 0, ',', '.')
                  . ' Kz). A Comissão Científica irá conferir.';
         } elseif ($isDocenteContexto && !$isDocenteIspm) {
-            $msg .= ' A verificação SIGAM não confirmou docente — a Comissão pode pedir comprovativo de vínculo.';
+            $msg .= ' A verificação no sistema não confirmou docente — a Comissão pode pedir comprovativo de vínculo.';
         }
 
         return redirect()
