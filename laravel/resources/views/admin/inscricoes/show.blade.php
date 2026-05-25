@@ -17,6 +17,18 @@
                 <dl class="def-list">
                     <dt>Instituição</dt><dd>{{ $inscricao->instituicao ?: '—' }}</dd>
                     <dt>Categoria</dt><dd>{{ $inscricao->categoria_label }}</dd>
+                    @if ($inscricao->is_docente_ispm)
+                        <dt>Docente ISPM</dt>
+                        <dd>
+                            <span class="badge bg-success"><i class="bi bi-shield-check"></i> Verificado SIGAM</span>
+                            @if ($inscricao->email_institucional)
+                                <small class="d-block text-muted mt-1">{{ $inscricao->email_institucional }}</small>
+                            @endif
+                            @if (!empty($inscricao->verificacao_sigam['user']['name']))
+                                <small class="d-block text-muted">{{ $inscricao->verificacao_sigam['user']['name'] }}</small>
+                            @endif
+                        </dd>
+                    @endif
                     <dt>Modalidade</dt><dd>{{ $inscricao->modalidade_label }}</dd>
                     @if ($inscricao->mini_cursos_count > 0)
                         <dt>Mini-Cursos ({{ $inscricao->mini_cursos_count }})</dt>
@@ -28,7 +40,22 @@
                             </ul>
                         </dd>
                     @endif
-                    <dt>Valor</dt><dd>{{ $inscricao->valor_formatado }}</dd>
+                    <dt>Valor calculado</dt><dd>{{ $inscricao->valor_formatado }}</dd>
+                    @if ($inscricao->valor_pago_informado !== null)
+                        <dt>Valor declarado</dt>
+                        <dd>{{ number_format($inscricao->valor_pago_informado, 2, ',', '.') }} Kz</dd>
+                        <dt>Referência</dt><dd>{{ $inscricao->referencia_pagamento ?: '—' }}</dd>
+                        <dt>Validação</dt>
+                        <dd>
+                            @if ($inscricao->validacao_pagamento === 'ok')
+                                <span class="badge bg-success"><i class="bi bi-check2-circle"></i> {{ $inscricao->validacao_pagamento_label }}</span>
+                            @elseif ($inscricao->validacao_pagamento === 'divergente')
+                                <span class="badge bg-warning text-dark"><i class="bi bi-exclamation-triangle"></i> {{ $inscricao->validacao_pagamento_label }}</span>
+                            @else
+                                <span class="badge bg-secondary">{{ $inscricao->validacao_pagamento_label }}</span>
+                            @endif
+                        </dd>
+                    @endif
                     <dt>Criada</dt><dd>{{ $inscricao->created_at->format('d/m/Y H:i') }}</dd>
                 </dl>
 

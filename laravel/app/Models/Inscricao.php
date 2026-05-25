@@ -11,19 +11,40 @@ class Inscricao extends Model
     protected $fillable = [
         'nome',
         'email',
+        'email_institucional',
+        'is_docente_ispm',
+        'verificacao_sigam',
         'telefone',
         'instituicao',
         'categoria',
         'modalidade',
         'mini_cursos',
         'valor_kz',
+        'valor_pago_informado',
+        'referencia_pagamento',
+        'validacao_pagamento',
         'comprovativo_path',
         'estado',
         'observacoes',
     ];
 
     protected $casts = [
-        'mini_cursos' => 'array',
+        'mini_cursos'       => 'array',
+        'verificacao_sigam' => 'array',
+        'is_docente_ispm'   => 'boolean',
+    ];
+
+    public const VALIDACAO_LABELS = [
+        'nao_aplicavel' => 'N/A',
+        'pendente'      => 'Pendente',
+        'ok'            => 'Valor confere',
+        'divergente'    => 'Divergente',
+    ];
+
+    public const INSTITUICAO_ISPM_ALIASES = [
+        'ispm',
+        'instituto superior politécnico maravilha',
+        'instituto superior politecnico maravilha',
     ];
 
     public const CATEGORIAS = [
@@ -109,13 +130,31 @@ class Inscricao extends Model
         ],
     ];
 
-    public static function calcularValor(string $categoria, string $modalidade, int $quantidade = 1): int
+    public static function calcularValor(string $categoria, string $modalidade, int $quantidade = 1, bool $isDocenteIspm = false): int
     {
         $base = self::TABELA_PRECOS[$categoria][$modalidade] ?? 0;
-        if ($modalidade === 'mini_curso') {
-            return $base * max(1, $quantidade);
+        if ($modalidade !== 'mini_curso') {
+            return $base;
         }
-        return $base;
+        $qtd = max(1, $quantidade);
+        if ($isDocenteIspm) {
+            return $base * max(0, $qtd - 1);
+        }
+        return $base * $qtd;
+    }
+
+    public static function isInstituicaoIspm(?string $instituicao): bool
+    {
+        if (!$instituicao) {
+            return false;
+        }
+        $normalizado = mb_strtolower(trim($instituicao));
+        return in_array($normalizado, self::INSTITUICAO_ISPM_ALIASES, true);
+    }
+
+    public function getValidacaoPagamentoLabelAttribute(): string
+    {
+        return self::VALIDACAO_LABELS[$this->validacao_pagamento] ?? $this->validacao_pagamento;
     }
 
     public function getCategoriaLabelAttribute(): string

@@ -19,6 +19,12 @@
 
                     <ul class="success-list">
                         <li><span>Categoria</span><strong>{{ $inscricao->categoria_label }}</strong></li>
+                        @if ($inscricao->is_docente_ispm)
+                            <li>
+                                <span>Verificação SIGAM</span>
+                                <strong class="text-success"><i class="bi bi-shield-check"></i> Docente ISPM verificado</strong>
+                            </li>
+                        @endif
                         <li><span>Modalidade</span><strong>{{ $inscricao->modalidade_label }}</strong></li>
                         @if ($inscricao->mini_cursos_count > 0)
                             <li>
@@ -32,7 +38,20 @@
                                 </strong>
                             </li>
                         @endif
-                        <li><span>Valor</span><strong>{{ $inscricao->valor_formatado }}</strong></li>
+                        <li><span>Valor a pagar</span><strong>{{ $inscricao->valor_formatado }}</strong></li>
+                        @if ($inscricao->valor_pago_informado !== null)
+                            <li>
+                                <span>Valor declarado</span>
+                                <strong>{{ number_format($inscricao->valor_pago_informado, 2, ',', '.') }} Kz</strong>
+                            </li>
+                            <li><span>Referência</span><strong>{{ $inscricao->referencia_pagamento }}</strong></li>
+                            <li>
+                                <span>Validação</span>
+                                <strong class="{{ $inscricao->validacao_pagamento === 'ok' ? 'text-success' : 'text-warning' }}">
+                                    {{ $inscricao->validacao_pagamento_label }}
+                                </strong>
+                            </li>
+                        @endif
                         <li><span>Estado</span><strong>{{ ucfirst($inscricao->estado) }}</strong></li>
                     </ul>
 

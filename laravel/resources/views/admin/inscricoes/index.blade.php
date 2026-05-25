@@ -66,7 +66,14 @@
                                 </small>
                             @endif
                         </td>
-                        <td>{{ $i->valor_formatado }}</td>
+                        <td>
+                            {{ $i->valor_formatado }}
+                            @if ($i->is_docente_ispm)
+                                <small class="d-block text-success" title="Docente ISPM verificado SIGAM">
+                                    <i class="bi bi-shield-check"></i> Doc. ISPM
+                                </small>
+                            @endif
+                        </td>
                         <td>@include('admin._estado_badge', ['estado' => $i->estado])</td>
                         <td>
                             @if ($i->comprovativo_path)
@@ -75,6 +82,11 @@
                                 </a>
                             @else
                                 <span class="text-muted small">—</span>
+                            @endif
+                            @if ($i->validacao_pagamento === 'ok')
+                                <span class="badge bg-success" title="Valor declarado confere"><i class="bi bi-check2"></i></span>
+                            @elseif ($i->validacao_pagamento === 'divergente')
+                                <span class="badge bg-warning text-dark" title="Valor declarado diverge do total"><i class="bi bi-exclamation-triangle"></i></span>
                             @endif
                         </td>
                         <td><small>{{ $i->created_at->format('d/m/Y H:i') }}</small></td>

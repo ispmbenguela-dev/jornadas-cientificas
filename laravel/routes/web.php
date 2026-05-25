@@ -18,6 +18,7 @@ Route::get('/programa', [HomeController::class, 'programa'])->name('programa');
 
 Route::get('/inscricao', [InscricaoController::class, 'create'])->name('inscricao.create');
 Route::post('/inscricao', [InscricaoController::class, 'store'])->name('inscricao.store');
+Route::post('/inscricao/verificar-docente', [InscricaoController::class, 'verificarDocente'])->name('inscricao.verificar_docente');
 Route::get('/inscricao/sucesso/{inscricao}', [InscricaoController::class, 'sucesso'])->name('inscricao.sucesso');
 
 Route::get('/submissao', [SubmissaoController::class, 'create'])->name('submissao.create');
