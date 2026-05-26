@@ -12,13 +12,15 @@ class DashboardController extends Controller
     public function index(): View
     {
         $stats = [
-            'inscricoes_total'      => Inscricao::count(),
-            'inscricoes_pendentes'  => Inscricao::where('estado', 'pendente')->count(),
+            'inscricoes_total'       => Inscricao::count(),
+            'inscricoes_pendentes'   => Inscricao::where('estado', 'pendente')->count(),
             'inscricoes_confirmadas' => Inscricao::where('estado', 'confirmada')->count(),
-            'submissoes_total'      => Submissao::count(),
-            'submissoes_pendentes'  => Submissao::where('estado', 'pendente')->count(),
-            'submissoes_admitidas'  => Submissao::where('estado', 'admitida')->count(),
-            'receita_kz'            => Inscricao::where('estado', 'confirmada')->sum('valor_kz'),
+            'submissoes_total'       => Submissao::count(),
+            'submissoes_pendentes'   => Submissao::where('estado', 'pendente')->count(),
+            'submissoes_admitidas'   => Submissao::where('estado', 'admitida')->count(),
+            'receita_kz'             => (int) Inscricao::where('estado', 'confirmada')->sum('valor_kz'),
+            'receita_pendente_kz'    => (int) Inscricao::where('estado', 'pendente')->sum('valor_kz'),
+            'receita_total_kz'       => (int) Inscricao::whereIn('estado', ['pendente', 'confirmada'])->sum('valor_kz'),
         ];
 
         return view('admin.dashboard', [

@@ -38,6 +38,11 @@
                 <div>
                     <span>Receita confirmada</span>
                     <strong>{{ number_format($stats['receita_kz'], 0, ',', '.') }} Kz</strong>
+                    @if ($stats['receita_pendente_kz'] > 0)
+                        <small class="d-block text-muted">
+                            + {{ number_format($stats['receita_pendente_kz'], 0, ',', '.') }} Kz pendente
+                        </small>
+                    @endif
                 </div>
             </div>
         </div>
