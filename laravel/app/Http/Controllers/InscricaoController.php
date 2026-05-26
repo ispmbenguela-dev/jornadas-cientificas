@@ -12,7 +12,8 @@ use Illuminate\View\View;
 
 class InscricaoController extends Controller
 {
-    private const SIGAM_VERIFY_URL = 'https://sigam.ispm.online/api/verify-user';
+    private const SIGAM_VERIFY_URL = 'https://sigam.ispm.online/api/verify-role';
+    private const SIGAM_DOCENTE_ROLE = 'teacher';
 
     public function create(): View
     {
@@ -31,50 +32,30 @@ class InscricaoController extends Controller
             'email' => ['required', 'email', 'max:160'],
         ]);
 
-        try {
-            $response = Http::timeout(8)
-                ->acceptJson()
-                ->get(self::SIGAM_VERIFY_URL, ['email' => $data['email']]);
-        } catch (\Throwable $e) {
-            Log::warning('SIGAM verify failed', ['email' => $data['email'], 'error' => $e->getMessage()]);
+        $resultado = $this->consultarSigam($data['email']);
+
+        if (!($resultado['ok'] ?? false)) {
+            $debug = config('app.debug');
             return response()->json([
                 'ok'      => false,
-                'reason'  => 'sigam_unreachable',
-                'message' => 'Não foi possível contactar. Tente novamente em alguns segundos.',
-            ], 503);
+                'reason'  => $resultado['reason'] ?? 'sigam_unreachable',
+                'message' => $resultado['message'] ?? 'Não foi possível contactar o SIGAM.',
+                'debug'   => $debug ? ($resultado['debug'] ?? null) : null,
+            ], $resultado['status'] ?? 503);
         }
 
-        if (!$response->ok()) {
-            return response()->json([
-                'ok'      => false,
-                'reason'  => 'sigam_error',
-                'message' => 'Retornou erro ' . $response->status() . '. Verifique o e-mail e tente novamente.',
-            ], 502);
-        }
-
-        $payload = $response->json();
-        $exists  = (bool) ($payload['exists'] ?? false);
-        $profile = $payload['profile'] ?? null;
-        $roles   = collect($payload['roles'] ?? [])->pluck('name')->map(fn($n) => strtolower((string) $n))->all();
-
-        $isDocente = $exists && (
-            $profile === 'docente'
-            || in_array('teacher', $roles, true)
-            || in_array('professor', $roles, true)
-            || in_array('docente', $roles, true)
-        );
+        $isDocente = (bool) ($resultado['is_docente'] ?? false);
+        $exists    = (bool) ($resultado['exists'] ?? false);
 
         return response()->json([
             'ok'         => true,
             'exists'     => $exists,
             'is_docente' => $isDocente,
-            'profile'    => $profile,
-            'roles'      => $roles,
-            'user'       => $payload['user'] ?? null,
-            'raw'        => $payload,
+            'roles'      => $resultado['roles'] ?? [],
+            'user'       => $resultado['user'] ?? null,
             'message'    => $isDocente
                 ? 'Docente verificado. Tem direito a um mini-curso gratuito.'
-                : ($exists ? 'Utilizador encontrado, mas não é docente.' : 'E-mail não encontrado no Sistema.'),
+                : ($exists ? 'Utilizador encontrado, mas não tem o papel de docente.' : 'E-mail não encontrado no SIGAM.'),
         ]);
     }
 
@@ -167,38 +148,93 @@ class InscricaoController extends Controller
 
     private function consultarSigam(string $email): array
     {
-        try {
-            $response = Http::timeout(8)
-                ->acceptJson()
-                ->get(self::SIGAM_VERIFY_URL, ['email' => $email]);
+        $verifySsl  = filter_var(env('SIGAM_VERIFY_SSL', true), FILTER_VALIDATE_BOOLEAN);
+        $tentativas = $verifySsl ? [true, false] : [false];
+        $ultimoErro = null;
+        $debug      = [];
 
-            if (!$response->ok()) {
-                return ['ok' => false, 'reason' => 'sigam_error', 'status' => $response->status()];
+        foreach ($tentativas as $verify) {
+            try {
+                $client = Http::timeout(15)
+                    ->connectTimeout(8)
+                    ->acceptJson()
+                    ->asJson()
+                    ->withHeaders(['User-Agent' => 'JornadasISPM/1.0 (+laravel)']);
+
+                if (!$verify) {
+                    $client = $client->withoutVerifying();
+                }
+
+                $response = $client->post(self::SIGAM_VERIFY_URL, [
+                    'email' => $email,
+                    'role'  => self::SIGAM_DOCENTE_ROLE,
+                ]);
+
+                if (!$response->ok()) {
+                    return [
+                        'ok'      => false,
+                        'reason'  => 'sigam_error',
+                        'status'  => 502,
+                        'message' => 'O SIGAM respondeu com erro ' . $response->status() . '.',
+                        'debug'   => ['http_status' => $response->status(), 'body' => mb_substr((string) $response->body(), 0, 400)],
+                    ];
+                }
+
+                $payload = $response->json();
+                if (!is_array($payload)) {
+                    return [
+                        'ok'      => false,
+                        'reason'  => 'sigam_invalid_json',
+                        'status'  => 502,
+                        'message' => 'O SIGAM devolveu uma resposta inválida.',
+                        'debug'   => ['body' => mb_substr((string) $response->body(), 0, 400)],
+                    ];
+                }
+
+                $exists    = (bool) ($payload['exists'] ?? false);
+                $verified  = (bool) ($payload['verified'] ?? false);
+                $isDocente = $exists && $verified;
+                $roles     = collect($payload['user_roles'] ?? [])
+                    ->pluck('name')
+                    ->map(fn($n) => strtolower((string) $n))
+                    ->all();
+
+                return [
+                    'ok'              => true,
+                    'exists'          => $exists,
+                    'is_docente'      => $isDocente,
+                    'role_solicitado' => self::SIGAM_DOCENTE_ROLE,
+                    'roles'           => $roles,
+                    'user'            => $payload['user'] ?? null,
+                    'raw'             => $payload,
+                    'verified_at'     => now()->toIso8601String(),
+                    'ssl_verify_used' => $verify,
+                ];
+            } catch (\Throwable $e) {
+                $ultimoErro = $e;
+                $debug['attempts'][] = [
+                    'verify_ssl' => $verify,
+                    'class'      => get_class($e),
+                    'message'    => $e->getMessage(),
+                ];
+                Log::warning('SIGAM verify-role attempt failed', [
+                    'email'      => $email,
+                    'verify_ssl' => $verify,
+                    'error'      => $e->getMessage(),
+                ]);
             }
-
-            $payload = $response->json();
-            $profile = $payload['profile'] ?? null;
-            $roles   = collect($payload['roles'] ?? [])->pluck('name')->map(fn($n) => strtolower((string) $n))->all();
-            $isDocente = (bool) ($payload['exists'] ?? false) && (
-                $profile === 'docente'
-                || in_array('teacher', $roles, true)
-                || in_array('professor', $roles, true)
-                || in_array('docente', $roles, true)
-            );
-
-            return [
-                'ok'         => true,
-                'exists'     => (bool) ($payload['exists'] ?? false),
-                'is_docente' => $isDocente,
-                'profile'    => $profile,
-                'roles'      => $roles,
-                'user'       => $payload['user'] ?? null,
-                'raw'        => $payload,
-                'verified_at' => now()->toIso8601String(),
-            ];
-        } catch (\Throwable $e) {
-            Log::warning('SIGAM verify failed (store)', ['email' => $email, 'error' => $e->getMessage()]);
-            return ['ok' => false, 'reason' => 'sigam_unreachable', 'error' => $e->getMessage()];
         }
+
+        $sslHint = $ultimoErro && str_contains(strtolower($ultimoErro->getMessage()), 'ssl')
+            ? ' (parece ser SSL/CA — defina SIGAM_VERIFY_SSL=false no .env e tente de novo)'
+            : '';
+
+        return [
+            'ok'      => false,
+            'reason'  => 'sigam_unreachable',
+            'status'  => 503,
+            'message' => 'Não foi possível contactar o SIGAM.' . $sslHint,
+            'debug'   => $debug,
+        ];
     }
 }

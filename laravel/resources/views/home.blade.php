@@ -50,7 +50,7 @@
                             <span class="lema-flag" aria-label="Angola">🇦🇴</span>
                         </p>
                     </div>
-
+                    <br>
                     <div class="hero-actions">
                         <a href="{{ route('inscricao.create') }}" class="btn btn-cta btn-lg">
                             <i class="bi bi-pencil-square"></i> Fazer Inscrição
