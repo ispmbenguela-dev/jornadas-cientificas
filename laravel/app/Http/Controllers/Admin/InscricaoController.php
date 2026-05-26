@@ -62,8 +62,10 @@ class InscricaoController extends Controller
 
             fputcsv($out, [
                 'ID', 'Data', 'Nome', 'Email', 'Telefone', 'Instituição',
-                'Categoria', 'Modalidade', 'Valor (Kz)', 'Estado',
-                'Comprovativo (URL)', 'Observações',
+                'Categoria', 'Docente ISPM', 'Email institucional',
+                'Modalidade', 'Mini-cursos', '# Mini-cursos',
+                'Valor calculado (Kz)', 'Valor declarado (Kz)', 'Referência', 'Validação',
+                'Estado', 'Comprovativo (URL)', 'Observações',
             ], ';');
 
             $this->filtered($request)->chunk(500, function ($linha) use ($out) {
@@ -76,8 +78,15 @@ class InscricaoController extends Controller
                         $i->telefone,
                         $i->instituicao,
                         $i->categoria_label,
+                        $i->is_docente_ispm ? 'Sim' : 'Não',
+                        $i->email_institucional,
                         $i->modalidade_label,
+                        implode(' | ', $i->mini_cursos_list),
+                        $i->mini_cursos_count,
                         $i->valor_kz,
+                        $i->valor_pago_informado,
+                        $i->referencia_pagamento,
+                        $i->validacao_pagamento_label,
                         ucfirst($i->estado),
                         $i->comprovativo_path ? asset('storage/' . $i->comprovativo_path) : '',
                         $i->observacoes,

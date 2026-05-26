@@ -18,6 +18,10 @@
         .badge-pendente   { background: #fef3c7; color: #92400e; }
         .badge-confirmada { background: #d1fae5; color: #065f46; }
         .badge-rejeitada  { background: #fee2e2; color: #991b1b; }
+        .badge-docente    { background: #dbeafe; color: #1e3a8a; }
+        .badge-ok         { background: #d1fae5; color: #065f46; }
+        .badge-divergente { background: #fef3c7; color: #92400e; }
+        .badge-na         { background: #f3f4f6; color: #6b7280; }
         .totais { margin-top: 12px; font-size: 10px; }
         .totais td { border: none; padding: 2px 6px; }
         .footer { position: fixed; bottom: 6px; left: 0; right: 0; text-align: center; font-size: 8px; color: #9ca3af; }
@@ -45,8 +49,9 @@
                 <th>Nome / Contacto</th>
                 <th>Instituição</th>
                 <th>Categoria</th>
-                <th>Modalidade</th>
+                <th>Modalidade / Mini-cursos</th>
                 <th class="num">Valor (Kz)</th>
+                <th>Pagamento</th>
                 <th>Estado</th>
                 <th>Data</th>
             </tr>
@@ -60,7 +65,15 @@
                     <div class="small">{{ $i->email }} · {{ $i->telefone }}</div>
                 </td>
                 <td>{{ $i->instituicao ?: '—' }}</td>
-                <td>{{ $i->categoria_label }}</td>
+                <td>
+                    {{ $i->categoria_label }}
+                    @if ($i->is_docente_ispm)
+                        <div><span class="badge badge-docente">Docente ISPM ✓</span></div>
+                        @if ($i->email_institucional)
+                            <div class="small">{{ $i->email_institucional }}</div>
+                        @endif
+                    @endif
+                </td>
                 <td>
                     {{ $i->modalidade_label }}
                     @if ($i->mini_cursos_count > 0)
@@ -72,23 +85,55 @@
                         </div>
                     @endif
                 </td>
-                <td class="num">{{ number_format($i->valor_kz, 0, ',', '.') }}</td>
+                <td class="num">
+                    <strong>{{ number_format($i->valor_kz, 0, ',', '.') }}</strong>
+                    @if ($i->valor_pago_informado !== null)
+                        <div class="small">decl.: {{ number_format($i->valor_pago_informado, 0, ',', '.') }}</div>
+                    @endif
+                </td>
+                <td>
+                    @if ($i->validacao_pagamento === 'ok')
+                        <span class="badge badge-ok">{{ $i->validacao_pagamento_label }}</span>
+                    @elseif ($i->validacao_pagamento === 'divergente')
+                        <span class="badge badge-divergente">{{ $i->validacao_pagamento_label }}</span>
+                    @else
+                        <span class="badge badge-na">{{ $i->validacao_pagamento_label }}</span>
+                    @endif
+                    @if ($i->referencia_pagamento)
+                        <div class="small">{{ $i->referencia_pagamento }}</div>
+                    @endif
+                </td>
                 <td><span class="badge badge-{{ $i->estado }}">{{ ucfirst($i->estado) }}</span></td>
                 <td>{{ optional($i->created_at)->format('d/m/Y H:i') }}</td>
             </tr>
         @empty
-            <tr><td colspan="8" style="text-align:center; color:#6b7280; padding:16px;">Sem inscrições para os filtros seleccionados.</td></tr>
+            <tr><td colspan="9" style="text-align:center; color:#6b7280; padding:16px;">Sem inscrições para os filtros seleccionados.</td></tr>
         @endforelse
         </tbody>
     </table>
 
     @if ($inscricoes->isNotEmpty())
+        @php
+            $totalDocentesIspm = $inscricoes->where('is_docente_ispm', true)->count();
+            $totalDivergentes  = $inscricoes->where('validacao_pagamento', 'divergente')->count();
+            $totalMiniCursos   = $inscricoes->sum('mini_cursos_count');
+        @endphp
         <table class="totais">
             <tr>
                 <td><strong>Total de registos:</strong></td>
                 <td>{{ $inscricoes->count() }}</td>
+                <td><strong>Docentes ISPM:</strong></td>
+                <td>{{ $totalDocentesIspm }}</td>
+                <td><strong>Mini-cursos selecionados:</strong></td>
+                <td>{{ $totalMiniCursos }}</td>
+            </tr>
+            <tr>
                 <td><strong>Receita confirmada:</strong></td>
                 <td class="num">{{ number_format($totalValor, 0, ',', '.') }} Kz</td>
+                <td><strong>Pagamentos divergentes:</strong></td>
+                <td>{{ $totalDivergentes }}</td>
+                <td></td>
+                <td></td>
             </tr>
         </table>
     @endif

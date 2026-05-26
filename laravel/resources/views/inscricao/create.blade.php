@@ -337,10 +337,11 @@
             }
         } else if (m === 'participacao') {
             if (isSinglePickBonus()) {
+                total = 0; // docente ISPM = participação + 1 mini-curso totalmente gratuitos
                 const n = selectedCount();
                 label = n === 0
-                    ? 'Taxa de participação — escolha 1 mini-curso gratuito (bónus docente ISPM).'
-                    : 'Taxa de participação + 1 mini-curso gratuito (bónus docente ISPM).';
+                    ? 'Escolha 1 mini-curso gratuito (bónus docente ISPM).'
+                    : 'Participação + 1 mini-curso · totalmente gratuito (docente ISPM).';
             } else {
                 label = 'Taxa de participação.';
             }
@@ -348,13 +349,15 @@
 
         lastTotal = total;
         priceLabel.textContent = label;
+        const isFreeDocente = total === 0 && isDocenteIspm && (
+            (m === 'mini_curso' && selectedCount() === 1) ||
+            (m === 'participacao')
+        );
         if (total > 0) {
             out.textContent = fmt(total);
             box.classList.add('is-set');
         } else {
-            out.textContent = total === 0 && m === 'mini_curso' && isDocenteIspm && selectedCount() === 1
-                ? 'Gratuito'
-                : '—';
+            out.textContent = isFreeDocente ? 'Gratuito' : '—';
             box.classList.remove('is-set');
         }
         togglePayWrapper();

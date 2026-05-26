@@ -133,12 +133,16 @@ class Inscricao extends Model
     public static function calcularValor(string $categoria, string $modalidade, int $quantidade = 1, bool $isDocenteIspm = false): int
     {
         $base = self::TABELA_PRECOS[$categoria][$modalidade] ?? 0;
-        if ($modalidade !== 'mini_curso') {
-            return $base;
+
+        if ($modalidade === 'participacao') {
+            // Docente ISPM verificado: participação totalmente gratuita (inclui 1 mini-curso bónus).
+            return $isDocenteIspm ? 0 : $base;
         }
+
+        // modalidade = mini_curso
         $qtd = max(1, $quantidade);
         if ($isDocenteIspm) {
-            return $base * max(0, $qtd - 1);
+            return $base * max(0, $qtd - 1); // 1.º grátis
         }
         return $base * $qtd;
     }
