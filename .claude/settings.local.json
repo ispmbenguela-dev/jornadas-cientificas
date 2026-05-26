@@ -4,7 +4,14 @@
       "Bash(cp \"c:/Users/Fábio Kapa/Desktop/..DEV/ISPM/jornada-cientifica/index.html\" \"c:/Users/Fábio Kapa/Desktop/..DEV/ISPM/jornada-cientifica/programa.html\")",
       "Bash(composer --version)",
       "Bash(composer require *)",
-      "Bash(php artisan *)"
+      "Bash(php artisan *)",
+      "Bash(node -e \"const fs=require\\('fs'\\);const html=fs.readFileSync\\('c:/Users/FSL/Desktop/DEV ISPM/jornadas-cientificas/index.html','utf8'\\);console.log\\('Length:',html.length,'Sections:',\\(html.match\\(/<section/g\\)||[]\\).length,'programa:',html.includes\\('id=\\\\\"programa\\\\\"'\\)\\);\")",
+      "PowerShell($ProgressPreference = 'SilentlyContinue'; try { $r = Invoke-WebRequest -Uri \"https://sigam.ispm.online/api/verify-user?email=d.matombe@ispm.ao\" -TimeoutSec 10 -ErrorAction Stop; \"HTTP $\\($r.StatusCode\\)\"; $r.Content } catch { \"ERROR: $\\($_.Exception.Message\\)\" })",
+      "PowerShell($ProgressPreference = 'SilentlyContinue'; [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; try { $r = Invoke-WebRequest -Uri \"https://sigam.ispm.online/api/verify-user?email=d.matombe@ispm.ao\" -TimeoutSec 15 -UseBasicParsing -ErrorAction Stop; \"HTTP $\\($r.StatusCode\\)\"; $r.Content } catch { \"ERROR: $\\($_.Exception.Message\\)\"; if \\($_.Exception.InnerException\\) { \"INNER: $\\($_.Exception.InnerException.Message\\)\" } })",
+      "PowerShell(curl.exe -v \"https://sigam.ispm.online/api/verify-user?email=d.matombe@ispm.ao\" --max-time 15 2>&1)",
+      "PowerShell(curl.exe -s -k \"https://sigam.ispm.online/api/verify-user?email=d.matombe@ispm.ao\" --max-time 15 -H \"Accept: application/json\" 2>&1)",
+      "PowerShell(curl.exe -s -k -X POST \"https://sigam.ispm.online/api/verify-user\" -H \"Content-Type: application/json\" -H \"Accept: application/json\" -d '{\\\\\"email\\\\\":\\\\\"d.matombe@ispm.ao\\\\\",\\\\\"password\\\\\":\\\\\"\\\\\"}' --max-time 15 2>&1)",
+      "PowerShell(curl.exe -s -k -X POST \"https://sigam.ispm.online/api/verify-role\" -H \"Content-Type: application/json\" -H \"Accept: application/json\" -d '{\\\\\"email\\\\\":\\\\\"d.matombe@ispm.ao\\\\\",\\\\\"role\\\\\":\\\\\"student\\\\\"}' --max-time 15 2>&1)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Fábio Kapa\\Desktop\\..DEV\\ISPM\\jornada-cientifica"

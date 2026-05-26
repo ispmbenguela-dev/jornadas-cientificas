@@ -103,7 +103,7 @@
 
                         <div class="col-12 d-none" id="inscMiniCursoWrapper">
                             <label class="form-label d-flex justify-content-between align-items-center flex-wrap gap-2">
-                                <span>Escolha os mini-cursos pretendidos *</span>
+                                <span id="mcLabelText">Escolha os mini-cursos pretendidos *</span>
                                 <small class="text-muted" id="mcHint">
                                     <i class="bi bi-info-circle"></i>
                                     Pode escolher mais do que um — o valor é multiplicado.
@@ -248,6 +248,8 @@
     const mcChecks        = () => Array.from(document.querySelectorAll('.mc-option-check'));
     const mcCountEl       = document.getElementById('mcCount');
     const mcFreeNote      = document.getElementById('mcFreeNote');
+    const mcHint          = document.getElementById('mcHint');
+    const mcLabelText     = document.getElementById('mcLabelText');
 
     const payWrap         = document.getElementById('inscPayWrapper');
     const valorPagoEl     = document.getElementById('inscValorPago');
@@ -282,8 +284,28 @@
         refreshPrice();
     }
 
+    // single-pick: docente ISPM em modo Participação → escolhe 1 mini-curso gratuito (bónus)
+    function isSinglePickBonus() {
+        return isDocenteIspm && mod.value === 'participacao';
+    }
+
+    function shouldShowMcWrapper() {
+        return mod.value === 'mini_curso' || isSinglePickBonus();
+    }
+
     function refreshFreeNote() {
+        // nota "1.º gratuito" só faz sentido no modo mini_curso multi-pick
         mcFreeNote.classList.toggle('d-none', !isDocenteIspm || mod.value !== 'mini_curso');
+    }
+
+    function refreshMcLabels() {
+        if (isSinglePickBonus()) {
+            mcLabelText.textContent = 'Escolha 1 mini-curso gratuito *';
+            mcHint.innerHTML = '<i class="bi bi-gift"></i> Bónus docente ISPM — apenas 1 mini-curso.';
+        } else {
+            mcLabelText.textContent = 'Escolha os mini-cursos pretendidos *';
+            mcHint.innerHTML = '<i class="bi bi-info-circle"></i> Pode escolher mais do que um — o valor é multiplicado.';
+        }
     }
 
     function refreshPrice() {
@@ -313,8 +335,15 @@
                 total = total * n;
                 label = `${n} mini-curso(s) seleccionado(s).`;
             }
-        } else {
-            label = 'Taxa de participação.';
+        } else if (m === 'participacao') {
+            if (isSinglePickBonus()) {
+                const n = selectedCount();
+                label = n === 0
+                    ? 'Taxa de participação — escolha 1 mini-curso gratuito (bónus docente ISPM).'
+                    : 'Taxa de participação + 1 mini-curso gratuito (bónus docente ISPM).';
+            } else {
+                label = 'Taxa de participação.';
+            }
         }
 
         lastTotal = total;
@@ -371,13 +400,27 @@
         });
     }
 
+    // Em single-pick, só permite 1 selecção (desmarca outras)
+    function enforceSinglePick(triggered) {
+        if (!isSinglePickBonus()) return;
+        mcChecks().forEach(c => {
+            if (c !== triggered && c.checked) c.checked = false;
+        });
+    }
+
     function toggleMiniCurso() {
-        const isMiniCurso = mod.value === 'mini_curso';
-        mcWrap.classList.toggle('d-none', !isMiniCurso);
-        if (!isMiniCurso) {
+        const show = shouldShowMcWrapper();
+        mcWrap.classList.toggle('d-none', !show);
+        if (!show) {
             mcChecks().forEach(c => { c.checked = false; });
             refreshCount();
+        } else if (isSinglePickBonus()) {
+            // garante no máximo 1 ao entrar no modo
+            const checked = mcChecks().filter(c => c.checked);
+            checked.slice(1).forEach(c => { c.checked = false; });
+            refreshCount();
         }
+        refreshMcLabels();
         refreshFreeNote();
     }
 
@@ -414,7 +457,7 @@
             renderSigamMessage('warn', 'Falha de rede ao contactar o SIGAM.');
         } finally {
             btnVerify.disabled = false;
-            refreshFreeNote();
+            toggleMiniCurso();
             refreshPrice();
         }
     }
@@ -428,15 +471,21 @@
         sigamResult.innerHTML = `<i class="bi bi-${icon}"></i> <span>${html}</span>`;
     }
 
-    cat.addEventListener('change', () => { refreshSigamWrapper(); refreshPrice(); });
+    cat.addEventListener('change', () => { refreshSigamWrapper(); toggleMiniCurso(); refreshPrice(); });
     mod.addEventListener('change', () => { toggleMiniCurso(); refreshPrice(); });
-    inst.addEventListener('input', refreshSigamWrapper);
+    inst.addEventListener('input', () => { refreshSigamWrapper(); toggleMiniCurso(); refreshPrice(); });
     btnVerify.addEventListener('click', verifySigam);
-    emailInst.addEventListener('input', () => { isDocenteIspm = false; sigamResult.classList.add('d-none'); refreshFreeNote(); refreshPrice(); });
+    emailInst.addEventListener('input', () => {
+        isDocenteIspm = false;
+        sigamResult.classList.add('d-none');
+        toggleMiniCurso();
+        refreshPrice();
+    });
     valorPagoEl.addEventListener('input', runPayCheck);
 
     document.addEventListener('change', (e) => {
         if (e.target.classList.contains('mc-option-check')) {
+            enforceSinglePick(e.target);
             refreshCount();
             refreshPrice();
         }

@@ -89,12 +89,24 @@ class InscricaoController extends Controller
             $isDocenteIspm = (bool) ($verificacaoPayload['is_docente'] ?? false);
         }
 
-        if ($data['modalidade'] !== 'mini_curso') {
+        $miniCursosEnviados = array_values(array_unique($data['mini_cursos'] ?? []));
+
+        if ($data['modalidade'] === 'mini_curso') {
+            $data['mini_cursos'] = $miniCursosEnviados;
+            $quantidade = count($miniCursosEnviados);
+        } elseif ($data['modalidade'] === 'participacao' && $isDocenteIspm) {
+            // Docente ISPM em modo Participação tem direito a 1 mini-curso gratuito.
+            // Exigimos exactamente 1; se enviar mais, limitamos.
+            if (count($miniCursosEnviados) === 0) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'mini_cursos' => ['Como docente ISPM, escolha 1 mini-curso gratuito.'],
+                ]);
+            }
+            $data['mini_cursos'] = [reset($miniCursosEnviados)];
+            $quantidade = 0; // mini-curso bónus → não contribui para o valor
+        } else {
             $data['mini_cursos'] = null;
             $quantidade = 0;
-        } else {
-            $data['mini_cursos'] = array_values(array_unique($data['mini_cursos'] ?? []));
-            $quantidade = count($data['mini_cursos']);
         }
 
         $data['is_docente_ispm']   = $isDocenteIspm;
