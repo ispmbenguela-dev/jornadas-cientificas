@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\InscricaoEstadoAlterado;
 use App\Models\Inscricao;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\View\View;
 
@@ -34,9 +37,28 @@ class InscricaoController extends Controller
             'observacoes' => ['nullable', 'string', 'max:1000'],
         ]);
 
+        $estadoAnterior = $inscricao->estado;
         $inscricao->update($data);
 
-        return back()->with('success', 'Inscrição actualizada.');
+        $msg = 'Inscrição actualizada.';
+        if ($estadoAnterior !== $inscricao->estado) {
+            try {
+                Mail::to($inscricao->email)
+                    ->send(new InscricaoEstadoAlterado($inscricao, $estadoAnterior));
+                $msg .= ' E-mail de notificação enviado para ' . $inscricao->email . '.';
+            } catch (\Throwable $e) {
+                Log::warning('Falha ao enviar e-mail de mudança de estado', [
+                    'inscricao_id'    => $inscricao->id,
+                    'estado_anterior' => $estadoAnterior,
+                    'estado_novo'     => $inscricao->estado,
+                    'email'           => $inscricao->email,
+                    'error'           => $e->getMessage(),
+                ]);
+                $msg .= ' (falhou o envio do e-mail — ver log)';
+            }
+        }
+
+        return back()->with('success', $msg);
     }
 
     public function destroy(Inscricao $inscricao): RedirectResponse
