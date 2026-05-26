@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\InscricaoConfirmada;
 use App\Models\Inscricao;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class InscricaoController extends Controller
@@ -139,7 +141,17 @@ class InscricaoController extends Controller
 
         $inscricao = Inscricao::create($data);
 
-        $msg = 'Inscrição registada com sucesso.';
+        try {
+            Mail::to($inscricao->email)->send(new InscricaoConfirmada($inscricao));
+        } catch (\Throwable $e) {
+            Log::warning('Falha ao enviar e-mail de confirmação de inscrição', [
+                'inscricao_id' => $inscricao->id,
+                'email'        => $inscricao->email,
+                'error'        => $e->getMessage(),
+            ]);
+        }
+
+        $msg = 'Inscrição registada com sucesso. Enviámos um e-mail de confirmação para ' . $inscricao->email . '.';
         if ($inscricao->validacao_pagamento === 'divergente') {
             $msg .= ' Atenção: o valor declarado (' . number_format($inscricao->valor_pago_informado, 0, ',', '.')
                  . ' Kz) não coincide com o valor calculado (' . number_format($inscricao->valor_kz, 0, ',', '.')
