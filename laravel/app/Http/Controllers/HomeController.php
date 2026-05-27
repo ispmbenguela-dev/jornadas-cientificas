@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Submissao;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 
@@ -9,7 +10,10 @@ class HomeController extends Controller
 {
     public function index(): View
     {
-        return view('home');
+        return view('home', [
+            'submissaoPrazo' => Submissao::prazoFinal(),
+            'submissaoAberta' => Submissao::aberta(),
+        ]);
     }
 
     public function programa(): Response

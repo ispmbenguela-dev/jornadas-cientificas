@@ -2,11 +2,30 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Submissao extends Model
 {
+    public const PRAZO_PADRAO = '2026-05-28';
+
+    public static function prazoFinal(): Carbon
+    {
+        $data = Configuracao::get('submissao_prazo', self::PRAZO_PADRAO);
+        try {
+            return Carbon::parse($data)->endOfDay();
+        } catch (\Throwable $e) {
+            return Carbon::parse(self::PRAZO_PADRAO)->endOfDay();
+        }
+    }
+
+    public static function aberta(): bool
+    {
+        return now()->lte(self::prazoFinal());
+    }
+
+
     protected $table = 'submissoes';
 
     protected $fillable = [

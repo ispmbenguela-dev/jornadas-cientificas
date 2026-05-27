@@ -11,13 +11,25 @@ class SubmissaoController extends Controller
 {
     public function create(): View
     {
+        if (!Submissao::aberta()) {
+            return view('submissao.encerrada', [
+                'prazoFinal' => Submissao::prazoFinal(),
+            ]);
+        }
+
         return view('submissao.create', [
-            'areas' => Submissao::AREAS,
+            'areas'      => Submissao::AREAS,
+            'prazoFinal' => Submissao::prazoFinal(),
         ]);
     }
 
     public function store(Request $request): RedirectResponse
     {
+        if (!Submissao::aberta()) {
+            return redirect()->route('submissao.create')
+                ->with('error', 'As submissões já encerraram.');
+        }
+
         $data = $request->validate([
             'titulo'          => ['required', 'string', 'max:255'],
             'autor_principal' => ['required', 'string', 'max:160'],

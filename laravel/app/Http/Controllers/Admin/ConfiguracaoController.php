@@ -30,12 +30,14 @@ class ConfiguracaoController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $request->validate([
-            'logo'    => ['nullable', 'image', 'mimes:png,jpg,jpeg,svg,webp', 'max:2048'],
-            'simbolo' => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:1024'],
-            'banner'  => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
+            'logo'             => ['nullable', 'image', 'mimes:png,jpg,jpeg,svg,webp', 'max:2048'],
+            'simbolo'          => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:1024'],
+            'banner'           => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
+            'submissao_prazo'  => ['nullable', 'date'],
         ], [
-            'image' => 'O ficheiro deve ser uma imagem válida.',
-            'max'   => 'A imagem excede o tamanho máximo permitido.',
+            'image'           => 'O ficheiro deve ser uma imagem válida.',
+            'max'             => 'A imagem excede o tamanho máximo permitido.',
+            'date'            => 'A data não é válida.',
         ]);
 
         foreach (self::CAMPOS as $field => $key) {
@@ -50,6 +52,10 @@ class ConfiguracaoController extends Controller
                 $path = $this->storeWithOriginalName($request->file($field));
                 Configuracao::set($key, $path, 'image');
             }
+        }
+
+        if ($request->filled('submissao_prazo')) {
+            Configuracao::set('submissao_prazo', $request->input('submissao_prazo'), 'date');
         }
 
         return back()->with('success', 'Configurações actualizadas.');

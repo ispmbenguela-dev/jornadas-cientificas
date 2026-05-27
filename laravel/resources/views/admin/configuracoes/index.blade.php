@@ -64,6 +64,51 @@
             @endforeach
         </div>
 
+        <h4 class="mt-5 mb-3"><i class="bi bi-calendar2-event"></i> Prazos e datas</h4>
+
+        <div class="row g-3">
+            <div class="col-lg-6">
+                @php
+                    $prazoAtual = $configs['submissao_prazo'] ?? null;
+                    $prazoValor = $prazoAtual?->valor ?? \App\Models\Submissao::PRAZO_PADRAO;
+                    $prazoCarbon = \Carbon\Carbon::parse($prazoValor)->endOfDay();
+                    $aberta = now()->lte($prazoCarbon);
+                @endphp
+                <div class="panel">
+                    <h4 class="branding-title">
+                        <i class="bi bi-file-earmark-arrow-up"></i> Submissão de trabalhos
+                    </h4>
+                    <p class="branding-hint">
+                        Data limite (inclusive) para receber novas submissões de artigos científicos.
+                        Após esta data o formulário é automaticamente substituído por uma página de
+                        "submissões encerradas".
+                    </p>
+
+                    <label class="form-label small">Data limite</label>
+                    <input type="date" name="submissao_prazo"
+                           value="{{ $prazoValor }}"
+                           class="form-control" />
+
+                    <div class="mt-2 small">
+                        @if ($aberta)
+                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Aberto</span>
+                            <span class="text-muted">
+                                · termina em
+                                <strong>{{ $prazoCarbon->translatedFormat('d \d\e F \d\e Y') }}</strong>
+                                ({{ (int) now()->diffInDays($prazoCarbon, false) }} dia(s))
+                            </span>
+                        @else
+                            <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Encerrado</span>
+                            <span class="text-muted">
+                                · encerrou em
+                                <strong>{{ $prazoCarbon->translatedFormat('d \d\e F \d\e Y') }}</strong>
+                            </span>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="mt-4 d-flex gap-2">
             <button type="submit" class="btn btn-cta">
                 <i class="bi bi-save"></i> Guardar configurações

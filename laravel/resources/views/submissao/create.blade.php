@@ -13,6 +13,21 @@
                 A Comissão Científica avaliará e publicará a lista dos trabalhos
                 admitidos entre 18 e 24 de Maio de 2026.
             </p>
+            @isset($prazoFinal)
+                @php($faltam = (int) now()->diffInDays($prazoFinal, false))
+                <div class="d-inline-flex align-items-center gap-2 mt-2 px-3 py-2"
+                     style="background: {{ $faltam <= 2 ? '#fef3c7' : '#dbeafe' }}; color: {{ $faltam <= 2 ? '#92400e' : '#1e3a8a' }}; border-radius: 999px; font-size: 0.92rem; font-weight: 600;">
+                    <i class="bi bi-{{ $faltam <= 2 ? 'exclamation-triangle-fill' : 'clock-history' }}"></i>
+                    <span>
+                        Data limite: <strong>{{ $prazoFinal->translatedFormat('d \d\e F \d\e Y') }}</strong>
+                        @if ($faltam > 0)
+                            · faltam {{ $faltam }} dia(s)
+                        @elseif ($faltam === 0)
+                            · termina hoje
+                        @endif
+                    </span>
+                </div>
+            @endisset
         </div>
 
         <div class="row justify-content-center">

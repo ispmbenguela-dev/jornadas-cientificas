@@ -96,7 +96,13 @@
                             </li>
                             <li>
                                 <span class="ended-key">Submissão</span>
-                                <span class="ended-val">04 — 30 Mai 2026</span>
+                                <span class="ended-val">
+                                    @if ($submissaoAberta)
+                                        até {{ $submissaoPrazo->translatedFormat('d \d\e M Y') }}
+                                    @else
+                                        encerrada
+                                    @endif
+                                </span>
                             </li>
                         </ul>
 
@@ -200,7 +206,13 @@
                     <div class="schedule-card">
                         <span class="schedule-step">01</span>
                         <h5><i class="bi bi-file-earmark-plus"></i> Entrega de resumos</h5>
-                        <p class="schedule-date">04 — 30 de Maio · 2026</p>
+                        <p class="schedule-date">
+                            @if ($submissaoAberta)
+                                Até {{ $submissaoPrazo->translatedFormat('d \d\e F · Y') }}
+                            @else
+                                Encerrado em {{ $submissaoPrazo->translatedFormat('d \d\e F · Y') }}
+                            @endif
+                        </p>
                         <p class="schedule-desc">Submissão de resumos e resultados de investigações científicas.</p>
                     </div>
                 </div>
