@@ -158,6 +158,23 @@ class Inscricao extends Model
         return in_array($normalizado, self::INSTITUICAO_ISPM_ALIASES, true);
     }
 
+    /**
+     * Verifica se um docente ISPM já usou o seu benefício gratuito
+     * (inscrição anterior com `is_docente_ispm = true`, não rejeitada).
+     */
+    public static function jaUsouBeneficioIspm(string $emailInstitucional, ?int $excluirId = null): bool
+    {
+        $query = self::where('email_institucional', $emailInstitucional)
+            ->where('is_docente_ispm', true)
+            ->whereIn('estado', ['pendente', 'confirmada']);
+
+        if ($excluirId !== null) {
+            $query->where('id', '!=', $excluirId);
+        }
+
+        return $query->exists();
+    }
+
     public function getValidacaoPagamentoLabelAttribute(): string
     {
         return self::VALIDACAO_LABELS[$this->validacao_pagamento] ?? $this->validacao_pagamento;

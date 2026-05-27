@@ -46,18 +46,33 @@ class InscricaoController extends Controller
             ], $resultado['status'] ?? 503);
         }
 
-        $isDocente = (bool) ($resultado['is_docente'] ?? false);
-        $exists    = (bool) ($resultado['exists'] ?? false);
+        $isDocente   = (bool) ($resultado['is_docente'] ?? false);
+        $exists      = (bool) ($resultado['exists'] ?? false);
+        $beneficioUsado = false;
+
+        if ($isDocente && Inscricao::jaUsouBeneficioIspm($data['email'])) {
+            $beneficioUsado = true;
+            $isDocente      = false; // remove o benefício gratuito
+        }
+
+        if ($beneficioUsado) {
+            $message = 'Docente confirmado, mas o benefício gratuito já foi usado numa inscrição anterior. Esta inscrição será cobrada como participante normal.';
+        } elseif ($isDocente) {
+            $message = 'Docente verificado. Tem direito a um mini-curso gratuito.';
+        } elseif ($exists) {
+            $message = 'Utilizador encontrado, mas não tem o papel de docente.';
+        } else {
+            $message = 'E-mail não encontrado no SIGAM.';
+        }
 
         return response()->json([
-            'ok'         => true,
-            'exists'     => $exists,
-            'is_docente' => $isDocente,
-            'roles'      => $resultado['roles'] ?? [],
-            'user'       => $resultado['user'] ?? null,
-            'message'    => $isDocente
-                ? 'Docente verificado. Tem direito a um mini-curso gratuito.'
-                : ($exists ? 'Utilizador encontrado, mas não tem o papel de docente.' : 'E-mail não encontrado no SIGAM.'),
+            'ok'              => true,
+            'exists'          => $exists,
+            'is_docente'      => $isDocente,
+            'beneficio_usado' => $beneficioUsado,
+            'roles'           => $resultado['roles'] ?? [],
+            'user'            => $resultado['user'] ?? null,
+            'message'         => $message,
         ]);
     }
 
@@ -85,10 +100,20 @@ class InscricaoController extends Controller
 
         $isDocenteIspm = false;
         $verificacaoPayload = null;
+        $beneficioUsado = false;
 
         if ($isDocenteContexto && !empty($data['email_institucional'])) {
             $verificacaoPayload = $this->consultarSigam($data['email_institucional']);
             $isDocenteIspm = (bool) ($verificacaoPayload['is_docente'] ?? false);
+
+            // Cada docente ISPM só pode usar o benefício gratuito uma vez.
+            if ($isDocenteIspm && Inscricao::jaUsouBeneficioIspm($data['email_institucional'])) {
+                $isDocenteIspm  = false;
+                $beneficioUsado = true;
+                if (is_array($verificacaoPayload)) {
+                    $verificacaoPayload['beneficio_usado'] = true;
+                }
+            }
         }
 
         $miniCursosEnviados = array_values(array_unique($data['mini_cursos'] ?? []));
@@ -156,6 +181,8 @@ class InscricaoController extends Controller
             $msg .= ' Atenção: o valor declarado (' . number_format($inscricao->valor_pago_informado, 0, ',', '.')
                  . ' Kz) não coincide com o valor calculado (' . number_format($inscricao->valor_kz, 0, ',', '.')
                  . ' Kz). A Comissão Científica irá conferir.';
+        } elseif ($beneficioUsado) {
+            $msg .= ' Nota: o benefício de docente ISPM já tinha sido usado numa inscrição anterior — esta foi cobrada como participação normal.';
         } elseif ($isDocenteContexto && !$isDocenteIspm) {
             $msg .= ' A verificação no sistema não confirmou docente — a Comissão pode pedir comprovativo de vínculo.';
         }

@@ -320,6 +320,95 @@ class InscricaoFormTest extends TestCase
     // VALIDAÇÃO de pagamento (valor declarado divergente)
     // =========================================================
 
+    public function test_docente_ispm_segunda_vez_perde_beneficio(): void
+    {
+        $this->fakeSigam(isDocente: true);
+
+        // 1.ª inscrição — usa o benefício (gratuita)
+        $payload1 = $this->basePayload([
+            'email'               => 'primeiro@example.com',
+            'categoria'           => 'docente',
+            'modalidade'          => 'participacao',
+            'instituicao'         => 'ISPM',
+            'email_institucional' => 'docente@ispm.ao',
+            'mini_cursos'         => ['dia1_14h_ia_generativa'],
+        ]);
+        $this->post(route('inscricao.store'), $payload1)->assertRedirect();
+
+        $i1 = Inscricao::where('email', 'primeiro@example.com')->first();
+        $this->assertTrue($i1->is_docente_ispm);
+        $this->assertEquals(0, $i1->valor_kz);
+
+        // 2.ª inscrição com o MESMO email institucional — perde o benefício
+        $payload2 = $this->withFakeComprovativoIfNeeded(
+            $this->basePayload([
+                'email'               => 'segundo@example.com',
+                'categoria'           => 'docente',
+                'modalidade'          => 'mini_curso',
+                'instituicao'         => 'ISPM',
+                'email_institucional' => 'docente@ispm.ao', // mesmo
+                'mini_cursos'         => ['dia1_11h_ia_inclusao'],
+            ]),
+            5000 // sem benefício, paga 5.000 Kz
+        );
+        $this->post(route('inscricao.store'), $payload2)->assertRedirect();
+
+        $i2 = Inscricao::where('email', 'segundo@example.com')->first();
+        $this->assertFalse($i2->is_docente_ispm); // benefício removido
+        $this->assertEquals(5000, $i2->valor_kz);
+    }
+
+    public function test_endpoint_verificar_docente_devolve_beneficio_usado(): void
+    {
+        $this->fakeSigam(isDocente: true);
+
+        // Cria inscrição prévia que já consumiu o benefício
+        Inscricao::create([
+            'nome' => 'Anterior', 'email' => 'a@x.com', 'telefone' => '900',
+            'email_institucional' => 'doc@ispm.ao', 'is_docente_ispm' => true,
+            'categoria' => 'docente', 'modalidade' => 'participacao',
+            'mini_cursos' => ['dia1_14h_ia_generativa'],
+            'valor_kz' => 0, 'estado' => 'confirmada',
+        ]);
+
+        $response = $this->post(route('inscricao.verificar_docente'), [
+            'email' => 'doc@ispm.ao',
+        ]);
+
+        $response->assertOk();
+        $json = $response->json();
+        $this->assertTrue($json['ok']);
+        $this->assertTrue($json['beneficio_usado']);
+        $this->assertFalse($json['is_docente']);
+    }
+
+    public function test_inscricao_rejeitada_nao_consome_beneficio(): void
+    {
+        $this->fakeSigam(isDocente: true);
+
+        // Inscrição prévia REJEITADA — não deve contar
+        Inscricao::create([
+            'nome' => 'Rej', 'email' => 'r@x.com', 'telefone' => '900',
+            'email_institucional' => 'doc@ispm.ao', 'is_docente_ispm' => true,
+            'categoria' => 'docente', 'modalidade' => 'participacao',
+            'mini_cursos' => ['dia1_14h_ia_generativa'],
+            'valor_kz' => 0, 'estado' => 'rejeitada',
+        ]);
+
+        $payload = $this->basePayload([
+            'categoria'           => 'docente',
+            'modalidade'          => 'participacao',
+            'instituicao'         => 'ISPM',
+            'email_institucional' => 'doc@ispm.ao',
+            'mini_cursos'         => ['dia1_11h_ia_inclusao'],
+        ]);
+        $this->post(route('inscricao.store'), $payload)->assertRedirect();
+
+        $i = Inscricao::where('email', 'joao@example.com')->first();
+        $this->assertTrue($i->is_docente_ispm);
+        $this->assertEquals(0, $i->valor_kz);
+    }
+
     public function test_pagamento_divergente_marca_validacao_divergente(): void
     {
         $payload = $this->withFakeComprovativoIfNeeded(
@@ -335,6 +424,17 @@ class InscricaoFormTest extends TestCase
 
         $i = Inscricao::firstWhere('email', 'joao@example.com');
         $this->assertEquals('divergente', $i->validacao_pagamento);
+    }
+
+    public function test_pagina_inscricao_renderiza_checkboxes_com_chaves_certas(): void
+    {
+        $response = $this->get(route('inscricao.create'));
+        $response->assertOk();
+        // Garante que os checkboxes têm os keys correctos do MINI_CURSOS, não índices numéricos
+        foreach (array_keys(\App\Models\Inscricao::MINI_CURSOS) as $key) {
+            $response->assertSee('value="' . $key . '"', false);
+        }
+        $response->assertDontSee('name="mini_cursos[]" value="0"', false);
     }
 
     public function test_email_enviado_em_todas_inscricoes(): void

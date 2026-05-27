@@ -55,15 +55,6 @@
                         <li><span>Estado</span><strong>{{ ucfirst($inscricao->estado) }}</strong></li>
                     </ul>
 
-                    @unless ($inscricao->comprovativo_path)
-                        <div class="alert alert-warning">
-                            <i class="bi bi-info-circle-fill"></i>
-                            Ainda não enviou o comprovativo. Envie por e-mail para
-                            <strong>vp.cientifica@ispmaravilha.com</strong> indicando
-                            o número de inscrição <strong>#{{ $inscricao->id }}</strong>.
-                        </div>
-                    @endunless
-
                     <div class="d-flex gap-2 flex-wrap mt-3">
                         <a href="{{ route('home') }}" class="btn btn-cta"><i class="bi bi-house"></i> Voltar ao início</a>
                         <a href="{{ route('submissao.create') }}" class="btn btn-ghost"><i class="bi bi-file-earmark-plus"></i> Submeter trabalho</a>

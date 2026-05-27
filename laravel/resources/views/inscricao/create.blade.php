@@ -111,7 +111,7 @@
                             </label>
 
                             @php($selecionados = (array) old('mini_cursos', []))
-                            @php($miniCursosPorDia = collect($miniCursos)->groupBy('dia'))
+                            @php($miniCursosPorDia = collect($miniCursos)->groupBy('dia', preserveKeys: true))
 
                             <div class="mc-list">
                                 @foreach ($miniCursosPorDia as $dia => $items)
@@ -446,6 +446,11 @@
             if (!res.ok || !json.ok) {
                 isDocenteIspm = false;
                 renderSigamMessage('warn', json.message || 'Não foi possível verificar.');
+            } else if (json.beneficio_usado) {
+                isDocenteIspm = false;
+                const u = json.user || {};
+                renderSigamMessage('warn',
+                    `Docente confirmado: <strong>${u.name || '—'}</strong> (${u.email || email}), mas o benefício gratuito já foi usado numa inscrição anterior. Esta inscrição será cobrada como participante normal.`);
             } else if (json.is_docente) {
                 isDocenteIspm = true;
                 const u = json.user || {};
