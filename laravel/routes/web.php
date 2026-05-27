@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\CertificadoController as AdminCertificadoController;
 use App\Http\Controllers\Admin\ConfiguracaoController as AdminConfiguracaoController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\InscricaoController as AdminInscricaoController;
 use App\Http\Controllers\Admin\SubmissaoController as AdminSubmissaoController;
+use App\Http\Controllers\CertificadoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InscricaoController;
 use App\Http\Controllers\SubmissaoController;
@@ -24,6 +26,9 @@ Route::get('/inscricao/sucesso/{inscricao}', [InscricaoController::class, 'suces
 Route::get('/submissao', [SubmissaoController::class, 'create'])->name('submissao.create');
 Route::post('/submissao', [SubmissaoController::class, 'store'])->name('submissao.store');
 Route::get('/submissao/sucesso/{submissao}', [SubmissaoController::class, 'sucesso'])->name('submissao.sucesso');
+
+Route::get('/certificado/{codigo}', [CertificadoController::class, 'verify'])->name('certificado.verify');
+Route::get('/certificado/{codigo}/download', [CertificadoController::class, 'download'])->name('certificado.download');
 
 /*
 | Admin
@@ -48,6 +53,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('configuracoes', [AdminConfiguracaoController::class, 'index'])->name('configuracoes.index');
         Route::post('configuracoes', [AdminConfiguracaoController::class, 'update'])->name('configuracoes.update');
+
+        Route::get('certificados', [AdminCertificadoController::class, 'index'])->name('certificados.index');
+        Route::get('certificados/create', [AdminCertificadoController::class, 'create'])->name('certificados.create');
+        Route::post('certificados', [AdminCertificadoController::class, 'store'])->name('certificados.store');
+        Route::post('certificados/gerar-lote', [AdminCertificadoController::class, 'gerarLote'])->name('certificados.gerar_lote');
+        Route::post('certificados/gerar-prelectores', [AdminCertificadoController::class, 'gerarPrelectores'])->name('certificados.gerar_prelectores');
+        Route::post('certificados/enviar-todos', [AdminCertificadoController::class, 'enviarTodos'])->name('certificados.enviar_todos');
+        Route::get('certificados/{certificado}', [AdminCertificadoController::class, 'show'])->name('certificados.show');
+        Route::get('certificados/{certificado}/preview', [AdminCertificadoController::class, 'preview'])->name('certificados.preview');
+        Route::get('certificados/{certificado}/download', [AdminCertificadoController::class, 'download'])->name('certificados.download');
+        Route::post('certificados/{certificado}/enviar', [AdminCertificadoController::class, 'enviar'])->name('certificados.enviar');
+        Route::delete('certificados/{certificado}', [AdminCertificadoController::class, 'destroy'])->name('certificados.destroy');
 
         Route::get('submissoes', [AdminSubmissaoController::class, 'index'])->name('submissoes.index');
         Route::get('submissoes/export', [AdminSubmissaoController::class, 'export'])->name('submissoes.export');

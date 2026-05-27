@@ -42,6 +42,9 @@
             <a href="{{ route('admin.submissoes.index') }}" class="{{ request()->routeIs('admin.submissoes.*') ? 'active' : '' }}">
                 <i class="bi bi-journal-text"></i> Submissões
             </a>
+            <a href="{{ route('admin.certificados.index') }}" class="{{ request()->routeIs('admin.certificados.*') ? 'active' : '' }}">
+                <i class="bi bi-patch-check"></i> Certificados
+            </a>
             <a href="{{ route('admin.configuracoes.index') }}" class="{{ request()->routeIs('admin.configuracoes.*') ? 'active' : '' }}">
                 <i class="bi bi-sliders"></i> Configurações
             </a>

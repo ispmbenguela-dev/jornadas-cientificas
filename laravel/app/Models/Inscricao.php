@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Inscricao extends Model
 {
@@ -192,5 +194,15 @@ class Inscricao extends Model
     public function getValorFormatadoAttribute(): string
     {
         return number_format($this->valor_kz, 2, ',', '.') . ' Kz';
+    }
+
+    public function certificados(): HasMany
+    {
+        return $this->hasMany(Certificado::class);
+    }
+
+    public function certificadoParticipante(): HasOne
+    {
+        return $this->hasOne(Certificado::class)->where('tipo', 'participante');
     }
 }

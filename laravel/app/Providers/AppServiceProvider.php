@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Configuracao;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -16,6 +17,7 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        Carbon::setLocale('pt');
         View::share('branding', $this->loadBranding());
     }
 

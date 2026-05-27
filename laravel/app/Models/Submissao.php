@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Submissao extends Model
 {
@@ -42,5 +43,10 @@ class Submissao extends Model
     public function getEstadoLabelAttribute(): string
     {
         return self::ESTADOS[$this->estado] ?? $this->estado;
+    }
+
+    public function certificadoPrelector(): HasOne
+    {
+        return $this->hasOne(Certificado::class)->where('tipo', 'prelector_comunicacao');
     }
 }
