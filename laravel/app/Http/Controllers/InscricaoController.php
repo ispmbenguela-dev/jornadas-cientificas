@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\InscricaoConfirmada;
+use App\Models\Edicao;
 use App\Models\Inscricao;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -19,11 +20,15 @@ class InscricaoController extends Controller
 
     public function create(): View
     {
+        $edicao = Edicao::query()->where('status', 'actual')->first();
+        $taxas = $edicao?->taxas ?? Inscricao::TABELA_PRECOS;
+
         return view('inscricao.create', [
+            'edicao'               => $edicao,
             'categorias'           => Inscricao::CATEGORIAS,
             'modalidades'          => Inscricao::MODALIDADES,
-            'precos'               => Inscricao::TABELA_PRECOS,
-            'miniCursos'           => Inscricao::MINI_CURSOS,
+            'precos'               => $taxas,
+            'miniCursos'           => Inscricao::miniCursosDisponiveis($edicao),
             'instituicoesIspm'     => Inscricao::INSTITUICAO_ISPM_ALIASES,
         ]);
     }
@@ -78,6 +83,9 @@ class InscricaoController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
+        $edicao = Edicao::query()->where('status', 'actual')->first();
+        $miniCursosCatalogo = Inscricao::miniCursosDisponiveis($edicao);
+
         $instituicaoIspm = Inscricao::isInstituicaoIspm($request->input('instituicao'));
         $isDocenteContexto = $request->input('categoria') === 'docente' && $instituicaoIspm;
 
@@ -89,7 +97,7 @@ class InscricaoController extends Controller
             'categoria'             => ['required', 'in:docente,estudante,publico'],
             'modalidade'            => ['required', 'in:participacao,mini_curso'],
             'mini_cursos'           => ['nullable', 'array', 'required_if:modalidade,mini_curso'],
-            'mini_cursos.*'         => ['string', 'in:' . implode(',', array_keys(Inscricao::MINI_CURSOS))],
+            'mini_cursos.*'         => ['string', 'in:' . implode(',', array_keys($miniCursosCatalogo))],
             'email_institucional'   => [$isDocenteContexto ? 'required' : 'nullable', 'email', 'max:160'],
         ];
 
@@ -136,9 +144,10 @@ class InscricaoController extends Controller
             $quantidade = 0;
         }
 
+        $data['edicao_id']         = $edicao?->id;
         $data['is_docente_ispm']   = $isDocenteIspm;
         $data['verificacao_sigam'] = $verificacaoPayload;
-        $data['valor_kz']          = Inscricao::calcularValor($data['categoria'], $data['modalidade'], $quantidade, $isDocenteIspm);
+        $data['valor_kz']          = Inscricao::calcularValor($data['categoria'], $data['modalidade'], $quantidade, $isDocenteIspm, $edicao);
 
         if ($data['valor_kz'] > 0) {
             $pago = $request->validate([

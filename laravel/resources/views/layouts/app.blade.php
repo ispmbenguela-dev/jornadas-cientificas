@@ -43,6 +43,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#cronograma">Cronograma</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#programa">Programa</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('submissao.create') }}">Submeter Trabalho</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('edicoes.index') }}">Edições</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#contactos">Contactos</a></li>
                     <li class="nav-item ms-lg-2">
                         <a class="btn btn-cta" href="{{ route('inscricao.create') }}">

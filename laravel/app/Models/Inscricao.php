@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
@@ -11,6 +12,7 @@ class Inscricao extends Model
     protected $table = 'inscricoes';
 
     protected $fillable = [
+        'edicao_id',
         'nome',
         'email',
         'email_institucional',
@@ -132,21 +134,46 @@ class Inscricao extends Model
         ],
     ];
 
-    public static function calcularValor(string $categoria, string $modalidade, int $quantidade = 1, bool $isDocenteIspm = false): int
+    public static function calcularValor(string $categoria, string $modalidade, int $quantidade = 1, bool $isDocenteIspm = false, ?Edicao $edicao = null): int
     {
-        $base = self::TABELA_PRECOS[$categoria][$modalidade] ?? 0;
+        if ($edicao) {
+            return $edicao->calcularValor($categoria, $modalidade, $quantidade, $isDocenteIspm);
+        }
 
+        $base = self::TABELA_PRECOS[$categoria][$modalidade] ?? 0;
         if ($modalidade === 'participacao') {
-            // Docente ISPM verificado: participação totalmente gratuita (inclui 1 mini-curso bónus).
             return $isDocenteIspm ? 0 : $base;
         }
-
-        // modalidade = mini_curso
         $qtd = max(1, $quantidade);
         if ($isDocenteIspm) {
-            return $base * max(0, $qtd - 1); // 1.º grátis
+            return $base * max(0, $qtd - 1);
         }
         return $base * $qtd;
+    }
+
+    /**
+     * Mini-cursos disponíveis na edição actual (DB) com fallback para a constante.
+     */
+    public static function miniCursosDisponiveis(?Edicao $edicao = null): array
+    {
+        $edicao ??= Edicao::query()->where('status', 'actual')->first();
+        if (!$edicao) {
+            return self::MINI_CURSOS;
+        }
+        $rows = $edicao->miniCursos()->where('activo', true)->get();
+        if ($rows->isEmpty()) {
+            return self::MINI_CURSOS;
+        }
+        $out = [];
+        foreach ($rows as $r) {
+            $out[$r->chave] = $r->toCardArray();
+        }
+        return $out;
+    }
+
+    public function edicao(): BelongsTo
+    {
+        return $this->belongsTo(Edicao::class);
     }
 
     public static function isInstituicaoIspm(?string $instituicao): bool
@@ -193,10 +220,13 @@ class Inscricao extends Model
     public function getMiniCursosListAttribute(): array
     {
         $chaves = is_array($this->mini_cursos) ? $this->mini_cursos : [];
+        $catalogo = self::miniCursosDisponiveis($this->edicao);
+        // Inclui também MINI_CURSOS para retro-compatibilidade
+        $catalogo = array_replace(self::MINI_CURSOS, $catalogo);
         $out = [];
         foreach ($chaves as $k) {
-            if (isset(self::MINI_CURSOS[$k])) {
-                $mc = self::MINI_CURSOS[$k];
+            if (isset($catalogo[$k])) {
+                $mc = $catalogo[$k];
                 $out[] = $mc['hora'] . ' · ' . $mc['local'] . ' — ' . $mc['titulo'];
             }
         }

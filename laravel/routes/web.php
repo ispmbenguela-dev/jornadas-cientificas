@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\CertificadoController as AdminCertificadoController;
 use App\Http\Controllers\Admin\ConfiguracaoController as AdminConfiguracaoController;
 use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Admin\EdicaoController as AdminEdicaoController;
 use App\Http\Controllers\Admin\InscricaoController as AdminInscricaoController;
 use App\Http\Controllers\Admin\SubmissaoController as AdminSubmissaoController;
 use App\Http\Controllers\CertificadoController;
@@ -17,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/programa', [HomeController::class, 'programa'])->name('programa');
+Route::get('/edicoes', [HomeController::class, 'edicoes'])->name('edicoes.index');
+Route::get('/edicoes/{slug}', [HomeController::class, 'edicao'])->name('edicoes.show');
 
 Route::get('/inscricao', [InscricaoController::class, 'create'])->name('inscricao.create');
 Route::post('/inscricao', [InscricaoController::class, 'store'])->name('inscricao.store');
@@ -43,6 +46,18 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
 
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('edicoes', [AdminEdicaoController::class, 'index'])->name('edicoes.index');
+        Route::get('edicoes/create', [AdminEdicaoController::class, 'create'])->name('edicoes.create');
+        Route::post('edicoes', [AdminEdicaoController::class, 'store'])->name('edicoes.store');
+        Route::get('edicoes/{edicao}', [AdminEdicaoController::class, 'show'])->name('edicoes.show');
+        Route::get('edicoes/{edicao}/edit', [AdminEdicaoController::class, 'edit'])->name('edicoes.edit');
+        Route::put('edicoes/{edicao}', [AdminEdicaoController::class, 'update'])->name('edicoes.update');
+        Route::delete('edicoes/{edicao}', [AdminEdicaoController::class, 'destroy'])->name('edicoes.destroy');
+        Route::post('edicoes/{edicao}/activar', [AdminEdicaoController::class, 'activar'])->name('edicoes.activar');
+        Route::post('edicoes/{edicao}/mini-cursos', [AdminEdicaoController::class, 'miniCursoStore'])->name('edicoes.mini_curso.store');
+        Route::put('edicoes/{edicao}/mini-cursos/{miniCurso}', [AdminEdicaoController::class, 'miniCursoUpdate'])->name('edicoes.mini_curso.update');
+        Route::delete('edicoes/{edicao}/mini-cursos/{miniCurso}', [AdminEdicaoController::class, 'miniCursoDestroy'])->name('edicoes.mini_curso.destroy');
 
         Route::get('inscricoes', [AdminInscricaoController::class, 'index'])->name('inscricoes.index');
         Route::get('inscricoes/export', [AdminInscricaoController::class, 'export'])->name('inscricoes.export');

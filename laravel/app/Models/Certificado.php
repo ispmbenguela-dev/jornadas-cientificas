@@ -12,6 +12,7 @@ class Certificado extends Model
 
     protected $fillable = [
         'codigo',
+        'edicao_id',
         'inscricao_id',
         'submissao_id',
         'tipo',
@@ -70,6 +71,11 @@ class Certificado extends Model
         return $this->belongsTo(Submissao::class);
     }
 
+    public function edicao(): BelongsTo
+    {
+        return $this->belongsTo(Edicao::class);
+    }
+
     public function getTipoLabelAttribute(): string
     {
         return self::TIPOS[$this->tipo] ?? $this->tipo;
@@ -115,29 +121,31 @@ class Certificado extends Model
      */
     public function getCorpoTextoAttribute(): string
     {
-        $evento = 'XI Jornada Científico-Metodológica Geral';
+        $edicao = $this->edicao ?? Edicao::query()->where('status', 'actual')->first();
+        $evento = $edicao?->nome ?? 'XI Jornada Científico-Metodológica Geral';
         $instituicao = 'Instituto Superior Politécnico Maravilha';
-        $dataExtenso = $this->data_evento?->translatedFormat('d \d\e F \d\e Y') ?? '12 de Junho de 2026';
+        $datas = $edicao ? $edicao->data_extenso : 'nos dias 11 e 12 de Junho de 2026';
+        $lema = $edicao?->lema ?? 'O Ensino Superior e os desafios do Desenvolvimento Económico e Social de Angola';
 
         return match ($this->tipo) {
             'prelector_mini_curso' => 'participou no mini-curso como prelector, com o tema: "'
                 . ($this->tema ?: '—') . '", na '
                 . $evento . ', promovida pelo ' . $instituicao
-                . ', nos dias 11 e 12 de Junho de 2026, com o Lema: "O Ensino Superior e os desafios do Desenvolvimento Económico e Social de Angola".',
+                . ', ' . $datas . ', com o Lema: "' . $lema . '".',
             'prelector_comunicacao' => 'ministrou com êxito, a comunicação livre, com o tema: "'
                 . ($this->tema ?: '—') . '", na '
                 . $evento . ' promovida pelo ' . $instituicao
-                . ', nos dias 11 e 12 de Junho de 2026, com o Lema: "O Ensino Superior e os desafios do Desenvolvimento Económico e Social de Angola".',
+                . ', ' . $datas . ', com o Lema: "' . $lema . '".',
             'moderador' => 'desempenhou a função de moderador'
                 . ($this->tema ? ' do painel "' . $this->tema . '"' : '')
                 . ', na ' . $evento . ' promovida pelo ' . $instituicao
-                . ', nos dias 11 e 12 de Junho de 2026.',
+                . ', ' . $datas . '.',
             'organizador' => 'integrou a comissão organizadora'
                 . ($this->papel_extra ? ' como ' . $this->papel_extra : '')
                 . ' da ' . $evento . ' promovida pelo ' . $instituicao
-                . ', nos dias 11 e 12 de Junho de 2026.',
+                . ', ' . $datas . '.',
             default => 'participou na ' . $evento . ', promovida pelo '
-                . $instituicao . ', nos dias 11 e 12 de Junho de 2026, com o Lema: "O Ensino Superior e os desafios do Desenvolvimento Económico e Social de Angola".',
+                . $instituicao . ', ' . $datas . ', com o Lema: "' . $lema . '".',
         };
     }
 }

@@ -4,6 +4,23 @@
 @section('page_title', 'Dashboard')
 
 @section('content')
+    @if ($edicoes->count() > 1)
+        <form method="GET" class="panel d-flex align-items-center gap-2 mb-3 py-2">
+            <label class="m-0"><strong><i class="bi bi-calendar-event"></i> Edição:</strong></label>
+            <select name="edicao_id" class="form-select form-select-sm" style="max-width: 360px" onchange="this.form.submit()">
+                @foreach ($edicoes as $e)
+                    <option value="{{ $e->id }}" @selected(optional($edicaoFiltro)->id === $e->id)>
+                        {{ $e->numero_romano }} · {{ $e->nome_curto ?? $e->nome }}
+                        ({{ \App\Models\Edicao::STATUS[$e->status] ?? $e->status }})
+                    </option>
+                @endforeach
+            </select>
+            @if ($edicaoFiltro)
+                <span class="text-muted small">A mostrar dados de <strong>{{ $edicaoFiltro->nome_curto }}</strong></span>
+            @endif
+        </form>
+    @endif
+
     <div class="row g-3 mb-4">
         <div class="col-sm-6 col-xl-3">
             <div class="kpi-card kpi-primary">

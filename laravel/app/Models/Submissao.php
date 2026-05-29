@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Submissao extends Model
@@ -12,6 +13,12 @@ class Submissao extends Model
 
     public static function prazoFinal(): Carbon
     {
+        // 1. Edição actual tem prazo próprio
+        $edicao = Edicao::query()->where('status', 'actual')->first();
+        if ($edicao && $edicao->submissao_fim) {
+            return $edicao->submissao_fim->endOfDay();
+        }
+        // 2. Fallback: configuração global
         $data = Configuracao::get('submissao_prazo', self::PRAZO_PADRAO);
         try {
             return Carbon::parse($data)->endOfDay();
@@ -25,10 +32,16 @@ class Submissao extends Model
         return now()->lte(self::prazoFinal());
     }
 
+    public function edicao(): BelongsTo
+    {
+        return $this->belongsTo(Edicao::class);
+    }
+
 
     protected $table = 'submissoes';
 
     protected $fillable = [
+        'edicao_id',
         'titulo',
         'autor_principal',
         'coautores',

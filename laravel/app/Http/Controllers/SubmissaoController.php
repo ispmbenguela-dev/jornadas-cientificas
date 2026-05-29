@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Edicao;
 use App\Models\Submissao;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -45,6 +46,7 @@ class SubmissaoController extends Controller
         $file = $request->file('ficheiro');
         $data['ficheiro_original'] = $file->getClientOriginalName();
         $data['ficheiro_path']     = $file->store('submissoes', 'public');
+        $data['edicao_id']         = optional(Edicao::query()->where('status', 'actual')->first())->id;
 
         $submissao = Submissao::create($data);
 
