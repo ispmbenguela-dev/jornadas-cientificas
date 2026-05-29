@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\SubmissaoRecebida;
 use App\Models\Edicao;
 use App\Models\Submissao;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class SubmissaoController extends Controller
@@ -49,6 +52,16 @@ class SubmissaoController extends Controller
         $data['edicao_id']         = optional(Edicao::query()->where('status', 'actual')->first())->id;
 
         $submissao = Submissao::create($data);
+
+        try {
+            Mail::to($submissao->email)->send(new SubmissaoRecebida($submissao));
+        } catch (\Throwable $e) {
+            Log::warning('Falha ao enviar e-mail de confirmação de submissão', [
+                'submissao_id' => $submissao->id,
+                'email'        => $submissao->email,
+                'error'        => $e->getMessage(),
+            ]);
+        }
 
         return redirect()
             ->route('submissao.sucesso', $submissao)

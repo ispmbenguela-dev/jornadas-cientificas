@@ -40,22 +40,22 @@ class InscricaoController extends Controller
         $estadoAnterior = $inscricao->estado;
         $inscricao->update($data);
 
+        // Envia sempre a notificação do estado actual ao guardar — mesmo que o
+        // estado não tenha mudado (ex.: inscrição que nasce 'pendente').
         $msg = 'Inscrição actualizada.';
-        if ($estadoAnterior !== $inscricao->estado) {
-            try {
-                Mail::to($inscricao->email)
-                    ->send(new InscricaoEstadoAlterado($inscricao, $estadoAnterior));
-                $msg .= ' E-mail de notificação enviado para ' . $inscricao->email . '.';
-            } catch (\Throwable $e) {
-                Log::warning('Falha ao enviar e-mail de mudança de estado', [
-                    'inscricao_id'    => $inscricao->id,
-                    'estado_anterior' => $estadoAnterior,
-                    'estado_novo'     => $inscricao->estado,
-                    'email'           => $inscricao->email,
-                    'error'           => $e->getMessage(),
-                ]);
-                $msg .= ' (falhou o envio do e-mail — ver log)';
-            }
+        try {
+            Mail::to($inscricao->email)
+                ->send(new InscricaoEstadoAlterado($inscricao, $estadoAnterior));
+            $msg .= ' E-mail de notificação enviado para ' . $inscricao->email . '.';
+        } catch (\Throwable $e) {
+            Log::warning('Falha ao enviar e-mail de mudança de estado', [
+                'inscricao_id'    => $inscricao->id,
+                'estado_anterior' => $estadoAnterior,
+                'estado_novo'     => $inscricao->estado,
+                'email'           => $inscricao->email,
+                'error'           => $e->getMessage(),
+            ]);
+            $msg .= ' (falhou o envio do e-mail — ver log)';
         }
 
         return back()->with('success', $msg);

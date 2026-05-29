@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\SubmissaoEstadoAlterado;
 use App\Models\Submissao;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Illuminate\View\View;
 
@@ -33,9 +36,28 @@ class SubmissaoController extends Controller
             'parecer' => ['nullable', 'string', 'max:2000'],
         ]);
 
+        $estadoAnterior = $submissao->estado;
         $submissao->update($data);
 
-        return back()->with('success', 'Submissão actualizada.');
+        $msg = 'Submissão actualizada.';
+        if ($estadoAnterior !== $submissao->estado && $submissao->email) {
+            try {
+                Mail::to($submissao->email)
+                    ->send(new SubmissaoEstadoAlterado($submissao, $estadoAnterior));
+                $msg .= ' E-mail de notificação enviado para ' . $submissao->email . '.';
+            } catch (\Throwable $e) {
+                Log::warning('Falha ao enviar e-mail de mudança de estado da submissão', [
+                    'submissao_id'    => $submissao->id,
+                    'estado_anterior' => $estadoAnterior,
+                    'estado_novo'     => $submissao->estado,
+                    'email'           => $submissao->email,
+                    'error'           => $e->getMessage(),
+                ]);
+                $msg .= ' (falhou o envio do e-mail — ver log)';
+            }
+        }
+
+        return back()->with('success', $msg);
     }
 
     public function destroy(Submissao $submissao): RedirectResponse
