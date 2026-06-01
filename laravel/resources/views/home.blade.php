@@ -228,7 +228,7 @@
                     <div class="schedule-card">
                         <span class="schedule-step">03</span>
                         <h5><i class="bi bi-megaphone"></i> Trabalhos admitidos</h5>
-                        <p class="schedule-date">18 — 24 de Maio · 2026</p>
+                        <p class="schedule-date">18 — 30 de Maio · 2026</p>
                         <p class="schedule-desc">Publicação da lista dos trabalhos admitidos para apresentação.</p>
                     </div>
                 </div>
@@ -940,7 +940,7 @@
                         <p>
                             <a href="tel:+244946081244">+244 946 081 244</a><br />
                             <a href="tel:+244955879021">+244 955 879 021</a><br />
-                            <a href="mailto:ispm.direccao@hotmail.com">ispm.direccao@hotmail.com</a>
+                            <a href="mailto:ispm.direccao@hotmail.com">presidencia@ispmaravilha.com</a>
                         </p>
                     </div>
                 </div>
@@ -949,7 +949,7 @@
                         <div class="contact-icon"><i class="bi bi-geo-alt"></i></div>
                         <h6>Localização</h6>
                         <p>
-                            Av. Aires de Almeida Santos<br />
+                            Av. Aires de Almeida Santos, Nº 58<br />
                             <a href="https://www.ispmaravilha.com" target="_blank" rel="noopener">
                                 www.ispmaravilha.com
                             </a>

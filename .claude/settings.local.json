@@ -11,7 +11,11 @@
       "PowerShell(curl.exe -v \"https://sigam.ispm.online/api/verify-user?email=d.matombe@ispm.ao\" --max-time 15 2>&1)",
       "PowerShell(curl.exe -s -k \"https://sigam.ispm.online/api/verify-user?email=d.matombe@ispm.ao\" --max-time 15 -H \"Accept: application/json\" 2>&1)",
       "PowerShell(curl.exe -s -k -X POST \"https://sigam.ispm.online/api/verify-user\" -H \"Content-Type: application/json\" -H \"Accept: application/json\" -d '{\\\\\"email\\\\\":\\\\\"d.matombe@ispm.ao\\\\\",\\\\\"password\\\\\":\\\\\"\\\\\"}' --max-time 15 2>&1)",
-      "PowerShell(curl.exe -s -k -X POST \"https://sigam.ispm.online/api/verify-role\" -H \"Content-Type: application/json\" -H \"Accept: application/json\" -d '{\\\\\"email\\\\\":\\\\\"d.matombe@ispm.ao\\\\\",\\\\\"role\\\\\":\\\\\"student\\\\\"}' --max-time 15 2>&1)"
+      "PowerShell(curl.exe -s -k -X POST \"https://sigam.ispm.online/api/verify-role\" -H \"Content-Type: application/json\" -H \"Accept: application/json\" -d '{\\\\\"email\\\\\":\\\\\"d.matombe@ispm.ao\\\\\",\\\\\"role\\\\\":\\\\\"student\\\\\"}' --max-time 15 2>&1)",
+      "Bash(php -l app/Mail/SubmissaoEstadoAlterado.php)",
+      "Bash(php -l app/Http/Controllers/Admin/SubmissaoController.php)",
+      "Bash(php -l app/Mail/SubmissaoRecebida.php)",
+      "Bash(php -l app/Http/Controllers/SubmissaoController.php)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Fábio Kapa\\Desktop\\..DEV\\ISPM\\jornada-cientifica"
