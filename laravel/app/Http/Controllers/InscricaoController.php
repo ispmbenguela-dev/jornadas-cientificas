@@ -94,7 +94,7 @@ class InscricaoController extends Controller
             'email'                 => ['required', 'email', 'max:160'],
             'telefone'              => ['required', 'string', 'max:40'],
             'instituicao'           => ['nullable', 'string', 'max:160'],
-            'categoria'             => ['required', 'in:docente,estudante,publico'],
+            'categoria'             => ['required', 'in:' . implode(',', array_keys(Inscricao::CATEGORIAS))],
             'modalidade'            => ['required', 'in:participacao,mini_curso'],
             'mini_cursos'           => ['nullable', 'array', 'required_if:modalidade,mini_curso'],
             'mini_cursos.*'         => ['string', 'in:' . implode(',', array_keys($miniCursosCatalogo))],
