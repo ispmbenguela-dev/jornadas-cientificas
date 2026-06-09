@@ -201,6 +201,8 @@ class EdicaoController extends Controller
             'cor_secundaria'             => ['nullable', 'string', 'max:9'],
             'banner'                     => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
             'mostrar_no_arquivo'         => ['nullable', 'boolean'],
+        ];
+
         foreach (array_keys(Inscricao::CATEGORIAS) as $cat) {
             $rules["taxa_{$cat}_part"] = ['nullable', 'integer', 'min:0'];
             $rules["taxa_{$cat}_mini"] = ['nullable', 'integer', 'min:0'];
