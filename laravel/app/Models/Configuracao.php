@@ -17,6 +17,7 @@ class Configuracao extends Model
         'submissao_prazo'         => ['tipo' => 'date',    'descricao' => 'Data limite (inclusiva) para submissão de trabalhos científicos.'],
         'inscricao_prazo'         => ['tipo' => 'date',    'descricao' => 'Data limite (inclusiva) para receber novas inscrições.'],
         'inscricao_forcar_fechado'=> ['tipo' => 'boolean', 'descricao' => 'Quando activo, fecha as inscrições imediatamente independentemente das datas.'],
+        'avaliacao_aberta'        => ['tipo' => 'boolean', 'descricao' => 'Quando activo, o formulário de avaliação fica acessível ao público.'],
     ];
 
     public static function get(string $chave, $default = null)

@@ -170,6 +170,53 @@
             </div>
         </div>
 
+            {{-- Avaliações --}}
+            <div class="col-lg-6 mt-3">
+                @php
+                    $avaliacaoAberta = ($configs['avaliacao_aberta']->valor ?? '0') === '1';
+                @endphp
+                <div class="panel">
+                    <h4 class="branding-title">
+                        <i class="bi bi-star-half"></i> Avaliações da Jornada
+                    </h4>
+                    <p class="branding-hint">
+                        Controla se o formulário de avaliação de satisfação está acessível ao público.
+                        Quando activo, os participantes podem aceder a <strong>/avaliacao</strong>
+                        e submeter as suas respostas.
+                    </p>
+
+                    <div class="mb-3">
+                        @if ($avaliacaoAberta)
+                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Aberta ao público</span>
+                        @else
+                            <span class="badge bg-secondary"><i class="bi bi-x-circle"></i> Encerrada</span>
+                        @endif
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input type="hidden" name="avaliacao_aberta" value="0">
+                        <input type="checkbox" class="form-check-input" role="switch"
+                               name="avaliacao_aberta" value="1"
+                               id="avaliacao_aberta"
+                               @checked($avaliacaoAberta)>
+                        <label class="form-check-label" for="avaliacao_aberta">
+                            Activar formulário de avaliação
+                        </label>
+                    </div>
+                    <div class="text-muted" style="font-size:.82rem; margin-left:2.2rem">
+                        Desactive após o período de recolha de respostas.
+                    </div>
+
+                    <div class="mt-3">
+                        <a href="{{ route('admin.avaliacoes.qrcode') }}" target="_blank"
+                           class="btn btn-sm btn-outline-primary">
+                            <i class="bi bi-qr-code"></i> Ver / imprimir QR Code
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="mt-4 d-flex gap-2">
             <button type="submit" class="btn btn-cta">
                 <i class="bi bi-save"></i> Guardar configurações

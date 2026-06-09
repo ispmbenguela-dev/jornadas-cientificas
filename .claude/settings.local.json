@@ -15,7 +15,10 @@
       "Bash(php -l app/Mail/SubmissaoEstadoAlterado.php)",
       "Bash(php -l app/Http/Controllers/Admin/SubmissaoController.php)",
       "Bash(php -l app/Mail/SubmissaoRecebida.php)",
-      "Bash(php -l app/Http/Controllers/SubmissaoController.php)"
+      "Bash(php -l app/Http/Controllers/SubmissaoController.php)",
+      "Bash(mkdir -p \"c:\\\\Users\\\\FSL\\\\Desktop\\\\DEV ISPM\\\\jornadas-cientificas\\\\laravel\\\\resources\\\\views\\\\avaliacao\")",
+      "Bash(mkdir -p \"c:\\\\Users\\\\FSL\\\\Desktop\\\\DEV ISPM\\\\jornadas-cientificas\\\\laravel\\\\resources\\\\views\\\\admin\\\\avaliacoes\")",
+      "Bash(php -r \"echo filesize\\('storage/logs/laravel.log'\\);\")"
     ],
     "additionalDirectories": [
       "c:\\Users\\Fábio Kapa\\Desktop\\..DEV\\ISPM\\jornada-cientifica"

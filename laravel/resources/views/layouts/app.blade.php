@@ -45,6 +45,7 @@
                     <li class="nav-item"><a class="nav-link" href="{{ route('submissao.create') }}">Submeter Trabalho</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('edicoes.index') }}">Edições</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ route('home') }}#contactos">Contactos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ route('avaliacao.create') }}"><i class="bi bi-star-half"></i> Avaliação</a></li>
                     <li class="nav-item ms-lg-2">
                         <a class="btn btn-cta" href="{{ route('inscricao.create') }}">
                             <i class="bi bi-pencil-square"></i> Inscrever
@@ -100,6 +101,7 @@
                         <li><a href="{{ route('home') }}#programa">Programa</a></li>
                         <li><a href="{{ route('inscricao.create') }}">Inscrição</a></li>
                         <li><a href="{{ route('submissao.create') }}">Submeter Trabalho</a></li>
+                        <li><a href="{{ route('avaliacao.create') }}">Avaliação da Jornada</a></li>
                         <li><a href="{{ route('programa') }}">Arquivo III edição</a></li>
                     </ul>
                 </div>

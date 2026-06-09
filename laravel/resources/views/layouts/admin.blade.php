@@ -51,6 +51,9 @@
             <a href="{{ route('admin.certificados.index') }}" class="{{ request()->routeIs('admin.certificados.*') ? 'active' : '' }}">
                 <i class="bi bi-patch-check"></i> Certificados
             </a>
+            <a href="{{ route('admin.avaliacoes.index') }}" class="{{ request()->routeIs('admin.avaliacoes.*') ? 'active' : '' }}">
+                <i class="bi bi-star-half"></i> Avaliações
+            </a>
             <a href="{{ route('admin.configuracoes.index') }}" class="{{ request()->routeIs('admin.configuracoes.*') ? 'active' : '' }}">
                 <i class="bi bi-sliders"></i> Configurações
             </a>

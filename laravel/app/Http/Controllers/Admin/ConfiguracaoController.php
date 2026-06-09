@@ -36,6 +36,7 @@ class ConfiguracaoController extends Controller
             'submissao_prazo'          => ['nullable', 'date'],
             'inscricao_prazo'          => ['nullable', 'date'],
             'inscricao_forcar_fechado' => ['nullable', 'boolean'],
+            'avaliacao_aberta'         => ['nullable', 'boolean'],
         ], [
             'image' => 'O ficheiro deve ser uma imagem válida.',
             'max'   => 'A imagem excede o tamanho máximo permitido.',
@@ -67,6 +68,12 @@ class ConfiguracaoController extends Controller
         Configuracao::set(
             'inscricao_forcar_fechado',
             $request->boolean('inscricao_forcar_fechado') ? '1' : '0',
+            'boolean'
+        );
+
+        Configuracao::set(
+            'avaliacao_aberta',
+            $request->boolean('avaliacao_aberta') ? '1' : '0',
             'boolean'
         );
 

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
+use App\Http\Controllers\Admin\AvaliacaoController as AdminAvaliacaoController;
 use App\Http\Controllers\Admin\CertificadoController as AdminCertificadoController;
 use App\Http\Controllers\Admin\ConfiguracaoController as AdminConfiguracaoController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\Admin\EdicaoController as AdminEdicaoController;
 use App\Http\Controllers\Admin\InscricaoController as AdminInscricaoController;
 use App\Http\Controllers\Admin\McoController as AdminMcoController;
 use App\Http\Controllers\Admin\SubmissaoController as AdminSubmissaoController;
+use App\Http\Controllers\AvaliacaoController;
 use App\Http\Controllers\CertificadoController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InscricaoController;
@@ -30,6 +32,10 @@ Route::get('/inscricao/sucesso/{inscricao}', [InscricaoController::class, 'suces
 Route::get('/submissao', [SubmissaoController::class, 'create'])->name('submissao.create');
 Route::post('/submissao', [SubmissaoController::class, 'store'])->name('submissao.store');
 Route::get('/submissao/sucesso/{submissao}', [SubmissaoController::class, 'sucesso'])->name('submissao.sucesso');
+
+Route::get('/avaliacao', [AvaliacaoController::class, 'create'])->name('avaliacao.create');
+Route::post('/avaliacao', [AvaliacaoController::class, 'store'])->name('avaliacao.store');
+Route::get('/avaliacao/sucesso/{avaliacao}', [AvaliacaoController::class, 'sucesso'])->name('avaliacao.sucesso');
 
 Route::get('/certificado/{codigo}', [CertificadoController::class, 'verify'])->name('certificado.verify');
 Route::get('/certificado/{codigo}/download', [CertificadoController::class, 'download'])->name('certificado.download');
@@ -91,6 +97,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('certificados/{certificado}/download', [AdminCertificadoController::class, 'download'])->name('certificados.download');
         Route::post('certificados/{certificado}/enviar', [AdminCertificadoController::class, 'enviar'])->name('certificados.enviar');
         Route::delete('certificados/{certificado}', [AdminCertificadoController::class, 'destroy'])->name('certificados.destroy');
+
+        Route::get('avaliacoes', [AdminAvaliacaoController::class, 'index'])->name('avaliacoes.index');
+        Route::get('avaliacoes/qrcode', [AdminAvaliacaoController::class, 'qrcodePage'])->name('avaliacoes.qrcode');
+        Route::get('avaliacoes/qrcode-img', [AdminAvaliacaoController::class, 'qrcode'])->name('avaliacoes.qrcode_img');
+        Route::get('avaliacoes/{avaliacao}', [AdminAvaliacaoController::class, 'show'])->name('avaliacoes.show');
+        Route::delete('avaliacoes/{avaliacao}', [AdminAvaliacaoController::class, 'destroy'])->name('avaliacoes.destroy');
 
         Route::get('submissoes', [AdminSubmissaoController::class, 'index'])->name('submissoes.index');
         Route::get('submissoes/export', [AdminSubmissaoController::class, 'export'])->name('submissoes.export');

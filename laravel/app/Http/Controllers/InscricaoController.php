@@ -267,15 +267,16 @@ class InscricaoController extends Controller
         if (Configuracao::get('inscricao_forcar_fechado') === '1') {
             return false;
         }
-        // Usa as datas da edição se existirem, senão cai na data global de configuração
+        // Prazo global definido nas Configurações tem precedência sobre a data da edição
+        $prazoConfig = Configuracao::get('inscricao_prazo');
+        if ($prazoConfig) {
+            return now()->lte(\Carbon\Carbon::parse($prazoConfig)->endOfDay());
+        }
+        // Sem prazo global, usa as datas definidas na própria edição
         if ($edicao && ($edicao->inscricao_fim || $edicao->inscricao_inicio)) {
             return $edicao->inscricaoAberta();
         }
-        $prazo = Configuracao::get('inscricao_prazo');
-        if (!$prazo) {
-            return false;
-        }
-        return now()->lte(\Carbon\Carbon::parse($prazo)->endOfDay());
+        return false;
     }
 
     private function consultarSigam(string $email): array
