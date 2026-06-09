@@ -864,7 +864,16 @@
                                 <span class="fees-amount">10.000,00 Kz</span>
                                 <span class="fees-amount fees-amount-alt">5.000,00 Kz</span>
                             </div>
+                            <div class="fees-row">
+                                <span><i class="bi bi-person-badge"></i> Pessoal Técnico Admin.</span>
+                                <span class="fees-amount">2.000,00 Kz</span>
+                                <span class="fees-amount fees-amount-alt">3.000,00 Kz</span>
+                            </div>
                         </div>
+
+                        <small class="fees-foot d-block mt-2">
+                            <i class="bi bi-info-circle"></i> Pessoal Técnico Administrativo (PTA) deve apresentar o passe de funcionário no acto da inscrição.
+                        </small>
 
                         <a href="{{ route('inscricao.create') }}" class="btn btn-cta mt-3">
                             <i class="bi bi-pencil-square"></i> Iniciar inscrição
