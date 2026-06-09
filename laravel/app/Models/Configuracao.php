@@ -11,10 +11,12 @@ class Configuracao extends Model
     protected $fillable = ['chave', 'valor', 'tipo', 'descricao'];
 
     public const KEYS = [
-        'logo_path'        => ['tipo' => 'image', 'descricao' => 'Logo principal — apresentado na navbar e rodapé.'],
-        'simbolo_path'     => ['tipo' => 'image', 'descricao' => 'Símbolo (mosaico de 4 ícones) — usado como favicon.'],
-        'banner_path'      => ['tipo' => 'image', 'descricao' => 'Banner principal — apresentado no topo da página inicial.'],
-        'submissao_prazo'  => ['tipo' => 'date',  'descricao' => 'Data limite (inclusiva) para submissão de trabalhos científicos.'],
+        'logo_path'               => ['tipo' => 'image',   'descricao' => 'Logo principal — apresentado na navbar e rodapé.'],
+        'simbolo_path'            => ['tipo' => 'image',   'descricao' => 'Símbolo (mosaico de 4 ícones) — usado como favicon.'],
+        'banner_path'             => ['tipo' => 'image',   'descricao' => 'Banner principal — apresentado no topo da página inicial.'],
+        'submissao_prazo'         => ['tipo' => 'date',    'descricao' => 'Data limite (inclusiva) para submissão de trabalhos científicos.'],
+        'inscricao_prazo'         => ['tipo' => 'date',    'descricao' => 'Data limite (inclusiva) para receber novas inscrições.'],
+        'inscricao_forcar_fechado'=> ['tipo' => 'boolean', 'descricao' => 'Quando activo, fecha as inscrições imediatamente independentemente das datas.'],
     ];
 
     public static function get(string $chave, $default = null)

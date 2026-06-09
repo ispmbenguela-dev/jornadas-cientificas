@@ -5,6 +5,7 @@
 
 @section('topbar_actions')
     <a href="{{ route('admin.submissoes.index') }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Voltar</a>
+    <a href="{{ route('admin.submissoes.edit', $submissao) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i> Editar</a>
 @endsection
 
 @section('content')

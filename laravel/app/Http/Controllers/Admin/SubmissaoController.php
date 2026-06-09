@@ -29,8 +29,35 @@ class SubmissaoController extends Controller
         return view('admin.submissoes.show', compact('submissao'));
     }
 
+    public function edit(Submissao $submissao): View
+    {
+        return view('admin.submissoes.edit', [
+            'submissao' => $submissao,
+            'areas'     => Submissao::AREAS,
+            'estados'   => Submissao::ESTADOS,
+        ]);
+    }
+
     public function update(Request $request, Submissao $submissao): RedirectResponse
     {
+        if ($request->boolean('_full_edit')) {
+            $data = $request->validate([
+                'titulo'         => ['required', 'string', 'max:500'],
+                'autor_principal'=> ['required', 'string', 'max:200'],
+                'coautores'      => ['nullable', 'string', 'max:500'],
+                'email'          => ['required', 'email', 'max:160'],
+                'telefone'       => ['nullable', 'string', 'max:40'],
+                'instituicao'    => ['nullable', 'string', 'max:200'],
+                'area_tematica'  => ['nullable', 'string', 'max:200'],
+                'resumo'         => ['nullable', 'string', 'max:4000'],
+                'estado'         => ['required', 'in:pendente,admitida,rejeitada'],
+                'parecer'        => ['nullable', 'string', 'max:2000'],
+            ]);
+            $submissao->update($data);
+            return redirect()->route('admin.submissoes.show', $submissao)
+                ->with('success', 'Submissão actualizada.');
+        }
+
         $data = $request->validate([
             'estado'  => ['required', 'in:pendente,admitida,rejeitada'],
             'parecer' => ['nullable', 'string', 'max:2000'],

@@ -67,12 +67,73 @@
         <h4 class="mt-5 mb-3"><i class="bi bi-calendar2-event"></i> Prazos e datas</h4>
 
         <div class="row g-3">
+            {{-- Inscrições --}}
+            <div class="col-lg-6">
+                @php
+                    $forcarFechado     = ($configs['inscricao_forcar_fechado']->valor ?? '0') === '1';
+                    $inscricaoPrazoVal = ($configs['inscricao_prazo']->valor ?? null);
+                    $inscricaoCarbon   = $inscricaoPrazoVal ? \Carbon\Carbon::parse($inscricaoPrazoVal)->endOfDay() : null;
+                    $inscricaoAberta   = !$forcarFechado && $inscricaoCarbon && now()->lte($inscricaoCarbon);
+                @endphp
+                <div class="panel">
+                    <h4 class="branding-title">
+                        <i class="bi bi-person-plus"></i> Inscrições
+                    </h4>
+                    <p class="branding-hint">
+                        Data limite (inclusive) para receber novas inscrições.
+                        Após esta data o formulário é automaticamente substituído por uma página de
+                        "inscrições encerradas".
+                    </p>
+
+                    <label class="form-label small">Data limite</label>
+                    <input type="date" name="inscricao_prazo"
+                           value="{{ $inscricaoPrazoVal }}"
+                           class="form-control" />
+
+                    <div class="mt-2 mb-3 small">
+                        @if ($forcarFechado)
+                            <span class="badge bg-danger"><i class="bi bi-lock"></i> Encerradas (forçado)</span>
+                        @elseif ($inscricaoAberta)
+                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Abertas</span>
+                            <span class="text-muted">
+                                · terminam em
+                                <strong>{{ $inscricaoCarbon->translatedFormat('d \d\e F \d\e Y') }}</strong>
+                                ({{ (int) now()->diffInDays($inscricaoCarbon, false) }} dia(s))
+                            </span>
+                        @elseif ($inscricaoCarbon)
+                            <span class="badge bg-danger"><i class="bi bi-x-circle"></i> Encerradas</span>
+                            <span class="text-muted">
+                                · encerrou em
+                                <strong>{{ $inscricaoCarbon->translatedFormat('d \d\e F \d\e Y') }}</strong>
+                            </span>
+                        @else
+                            <span class="badge bg-secondary"><i class="bi bi-dash-circle"></i> Sem data definida</span>
+                        @endif
+                    </div>
+
+                    <div class="form-check form-switch">
+                        <input type="hidden" name="inscricao_forcar_fechado" value="0">
+                        <input type="checkbox" class="form-check-input" role="switch"
+                               name="inscricao_forcar_fechado" value="1"
+                               id="inscricao_forcar_fechado"
+                               @checked($forcarFechado)>
+                        <label class="form-check-label" for="inscricao_forcar_fechado">
+                            Forçar encerramento imediato
+                        </label>
+                    </div>
+                    <div class="text-muted" style="font-size:.82rem; margin-left:2.2rem">
+                        Fecha as inscrições imediatamente, mesmo que a data limite ainda não tenha sido atingida.
+                    </div>
+                </div>
+            </div>
+
+            {{-- Submissões --}}
             <div class="col-lg-6">
                 @php
                     $prazoAtual = $configs['submissao_prazo'] ?? null;
                     $prazoValor = $prazoAtual?->valor ?? \App\Models\Submissao::PRAZO_PADRAO;
                     $prazoCarbon = \Carbon\Carbon::parse($prazoValor)->endOfDay();
-                    $aberta = now()->lte($prazoCarbon);
+                    $submissaoAberta = now()->lte($prazoCarbon);
                 @endphp
                 <div class="panel">
                     <h4 class="branding-title">
@@ -90,7 +151,7 @@
                            class="form-control" />
 
                     <div class="mt-2 small">
-                        @if ($aberta)
+                        @if ($submissaoAberta)
                             <span class="badge bg-success"><i class="bi bi-check-circle"></i> Aberto</span>
                             <span class="text-muted">
                                 · termina em

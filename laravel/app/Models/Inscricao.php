@@ -28,6 +28,7 @@ class Inscricao extends Model
         'referencia_pagamento',
         'validacao_pagamento',
         'comprovativo_path',
+        'cracha_path',
         'estado',
         'observacoes',
     ];
@@ -69,7 +70,7 @@ class Inscricao extends Model
         'estudante' => ['participacao' => 2000,  'mini_curso' => 3000],
         'publico'   => ['participacao' => 10000, 'mini_curso' => 5000],
         'pta'   => ['participacao' => 10000, 'mini_curso' => 5000],
-        'mco'   => ['participacao' => 10000, 'mini_curso' => 5000],
+        'mco'   => ['participacao' => 0,     'mini_curso' => 0],
     ];
 
     public const MINI_CURSOS = [

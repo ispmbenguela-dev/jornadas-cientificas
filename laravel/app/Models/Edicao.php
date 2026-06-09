@@ -68,6 +68,8 @@ class Edicao extends Model
         'docente'   => ['participacao' => 10000, 'mini_curso' => 5000],
         'estudante' => ['participacao' => 2000,  'mini_curso' => 3000],
         'publico'   => ['participacao' => 10000, 'mini_curso' => 5000],
+        'pta'       => ['participacao' => 10000, 'mini_curso' => 5000],
+        'mco'       => ['participacao' => 0,     'mini_curso' => 0],
     ];
 
     protected static function booted(): void

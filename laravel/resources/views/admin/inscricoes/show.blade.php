@@ -5,6 +5,7 @@
 
 @section('topbar_actions')
     <a href="{{ route('admin.inscricoes.index') }}" class="btn btn-sm btn-outline-secondary"><i class="bi bi-arrow-left"></i> Voltar</a>
+    <a href="{{ route('admin.inscricoes.edit', $inscricao) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-pencil"></i> Editar</a>
 @endsection
 
 @section('content')
@@ -59,13 +60,23 @@
                     <dt>Criada</dt><dd>{{ $inscricao->created_at->format('d/m/Y H:i') }}</dd>
                 </dl>
 
-                @if ($inscricao->comprovativo_path)
-                    <a href="{{ asset('storage/' . $inscricao->comprovativo_path) }}" target="_blank" class="btn btn-outline-primary">
-                        <i class="bi bi-paperclip"></i> Abrir comprovativo
-                    </a>
-                @else
-                    <span class="badge bg-warning"><i class="bi bi-exclamation-circle"></i> Sem comprovativo enviado</span>
-                @endif
+                <div class="d-flex flex-wrap gap-2 mt-2">
+                    @if ($inscricao->comprovativo_path)
+                        <a href="{{ asset('storage/' . $inscricao->comprovativo_path) }}" target="_blank" class="btn btn-outline-primary">
+                            <i class="bi bi-paperclip"></i> Abrir comprovativo
+                        </a>
+                    @else
+                        <span class="badge bg-warning"><i class="bi bi-exclamation-circle"></i> Sem comprovativo enviado</span>
+                    @endif
+
+                    @if ($inscricao->cracha_path)
+                        <a href="{{ asset('storage/' . $inscricao->cracha_path) }}" target="_blank" class="btn btn-outline-secondary">
+                            <i class="bi bi-person-badge"></i> Abrir crachá
+                        </a>
+                    @elseif ($inscricao->categoria === 'pta')
+                        <span class="badge bg-danger"><i class="bi bi-exclamation-circle"></i> Crachá em falta</span>
+                    @endif
+                </div>
             </div>
         </div>
 

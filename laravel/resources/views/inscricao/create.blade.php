@@ -68,6 +68,22 @@
                             </select>
                         </div>
 
+                        {{-- Nota de validação para membros da Comissão Organizadora --}}
+                        <div class="col-12 d-none" id="inscMcoWrapper">
+                            <div class="sigam-card">
+                                <div class="sigam-head">
+                                    <i class="bi bi-people-fill"></i>
+                                    <div>
+                                        <strong>Comissão Organizadora — participação gratuita</strong>
+                                        <small class="d-block text-muted">
+                                            A participação dos membros da Comissão Organizadora é gratuita e não requer comprovativo de pagamento.
+                                            O seu <strong>nome</strong> e <strong>e-mail</strong> serão validados contra a lista registada pela organização.
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         {{-- Verificação docente ISPM via SIGAM --}}
                         <div class="col-12 d-none" id="inscSigamWrapper">
                             <div class="sigam-card">
@@ -160,6 +176,22 @@
                                 <i class="bi bi-cash-coin"></i>
                                 <span id="inscPriceLabel">Selecione categoria e modalidade para ver o valor.</span>
                                 <strong id="inscPriceValue">—</strong>
+                            </div>
+                        </div>
+
+                        {{-- Crachá: obrigatório para Pessoal Técnico Administrativo --}}
+                        <div class="col-12 d-none" id="inscCrachaWrapper">
+                            <div class="pay-card">
+                                <div class="pay-head">
+                                    <i class="bi bi-person-badge"></i>
+                                    <strong>Crachá de funcionário</strong>
+                                </div>
+                                <p class="text-muted small mb-2">
+                                    Para a categoria <strong>Pessoal Técnico Administrativo</strong> é obrigatório apresentar o crachá de identificação de funcionário do ISPM.
+                                </p>
+                                <label class="form-label">Crachá (PDF/JPG/PNG · até 5 MB) *</label>
+                                <input type="file" name="cracha" id="inscCracha"
+                                       class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
                             </div>
                         </div>
 
@@ -256,6 +288,9 @@
     const refPagEl        = document.getElementById('inscRefPag');
     const comprovativoEl  = document.getElementById('inscComprovativo');
     const payCheck        = document.getElementById('payCheck');
+    const crachaWrap      = document.getElementById('inscCrachaWrapper');
+    const crachaEl        = document.getElementById('inscCracha');
+    const mcoWrap         = document.getElementById('inscMcoWrapper');
 
     let isDocenteIspm = false; // só fica true após verificação SIGAM positiva
     let lastTotal = 0;
@@ -362,6 +397,16 @@
         }
         togglePayWrapper();
         runPayCheck();
+    }
+
+    function toggleCrachaWrapper() {
+        const show = cat.value === 'pta';
+        crachaWrap.classList.toggle('d-none', !show);
+        crachaEl.required = show;
+    }
+
+    function toggleMcoWrapper() {
+        mcoWrap.classList.toggle('d-none', cat.value !== 'mco');
     }
 
     function togglePayWrapper() {
@@ -479,7 +524,7 @@
         sigamResult.innerHTML = `<i class="bi bi-${icon}"></i> <span>${html}</span>`;
     }
 
-    cat.addEventListener('change', () => { refreshSigamWrapper(); toggleMiniCurso(); refreshPrice(); });
+    cat.addEventListener('change', () => { refreshSigamWrapper(); toggleMiniCurso(); refreshPrice(); toggleCrachaWrapper(); toggleMcoWrapper(); });
     mod.addEventListener('change', () => { toggleMiniCurso(); refreshPrice(); });
     inst.addEventListener('input', () => { refreshSigamWrapper(); toggleMiniCurso(); refreshPrice(); });
     btnVerify.addEventListener('click', verifySigam);
@@ -503,6 +548,8 @@
     refreshSigamWrapper();
     toggleMiniCurso();
     refreshPrice();
+    toggleCrachaWrapper();
+    toggleMcoWrapper();
 </script>
 @endpush
 @endsection

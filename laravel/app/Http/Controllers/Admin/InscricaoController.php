@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\InscricaoEstadoAlterado;
+use App\Models\Edicao;
 use App\Models\Inscricao;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Database\Eloquent\Builder;
@@ -30,8 +31,47 @@ class InscricaoController extends Controller
         return view('admin.inscricoes.show', compact('inscricao'));
     }
 
+    public function edit(Inscricao $inscricao): View
+    {
+        $edicao = $inscricao->edicao ?? Edicao::query()->where('status', 'actual')->first();
+        return view('admin.inscricoes.edit', [
+            'inscricao'  => $inscricao,
+            'categorias' => Inscricao::CATEGORIAS,
+            'modalidades'=> Inscricao::MODALIDADES,
+            'miniCursos' => Inscricao::miniCursosDisponiveis($edicao),
+            'validacoes' => Inscricao::VALIDACAO_LABELS,
+        ]);
+    }
+
     public function update(Request $request, Inscricao $inscricao): RedirectResponse
     {
+        if ($request->boolean('_full_edit')) {
+            $miniCursoKeys = array_keys(Inscricao::miniCursosDisponiveis());
+            $data = $request->validate([
+                'nome'                 => ['required', 'string', 'max:160'],
+                'email'                => ['required', 'email', 'max:160'],
+                'telefone'             => ['required', 'string', 'max:40'],
+                'instituicao'          => ['nullable', 'string', 'max:160'],
+                'categoria'            => ['required', 'in:' . implode(',', array_keys(Inscricao::CATEGORIAS))],
+                'modalidade'           => ['required', 'in:participacao,mini_curso'],
+                'mini_cursos'          => ['nullable', 'array'],
+                'mini_cursos.*'        => ['string', 'in:' . implode(',', $miniCursoKeys)],
+                'valor_kz'             => ['nullable', 'integer', 'min:0'],
+                'valor_pago_informado' => ['nullable', 'numeric', 'min:0'],
+                'referencia_pagamento' => ['nullable', 'string', 'max:100'],
+                'validacao_pagamento'  => ['nullable', 'in:' . implode(',', array_keys(Inscricao::VALIDACAO_LABELS))],
+                'is_docente_ispm'      => ['nullable', 'boolean'],
+                'email_institucional'  => ['nullable', 'email', 'max:160'],
+                'estado'               => ['required', 'in:pendente,confirmada,rejeitada'],
+                'observacoes'          => ['nullable', 'string', 'max:1000'],
+            ]);
+            $data['is_docente_ispm'] = $request->boolean('is_docente_ispm');
+            $data['mini_cursos']     = $data['mini_cursos'] ?? [];
+            $inscricao->update($data);
+            return redirect()->route('admin.inscricoes.show', $inscricao)
+                ->with('success', 'Inscrição actualizada.');
+        }
+
         $data = $request->validate([
             'estado'      => ['required', 'in:pendente,confirmada,rejeitada'],
             'observacoes' => ['nullable', 'string', 'max:1000'],
@@ -40,8 +80,6 @@ class InscricaoController extends Controller
         $estadoAnterior = $inscricao->estado;
         $inscricao->update($data);
 
-        // Envia sempre a notificação do estado actual ao guardar — mesmo que o
-        // estado não tenha mudado (ex.: inscrição que nasce 'pendente').
         $msg = 'Inscrição actualizada.';
         try {
             Mail::to($inscricao->email)

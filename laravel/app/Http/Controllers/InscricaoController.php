@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\InscricaoConfirmada;
+use App\Models\Configuracao;
 use App\Models\Edicao;
 use App\Models\Inscricao;
 use Illuminate\Http\JsonResponse;
@@ -21,6 +22,11 @@ class InscricaoController extends Controller
     public function create(): View
     {
         $edicao = Edicao::query()->where('status', 'actual')->first();
+
+        if (!$this->inscricoesAbertas($edicao)) {
+            return view('inscricao.fechada', compact('edicao'));
+        }
+
         $taxas = $edicao?->taxas ?? Inscricao::TABELA_PRECOS;
 
         return view('inscricao.create', [
@@ -84,6 +90,12 @@ class InscricaoController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $edicao = Edicao::query()->where('status', 'actual')->first();
+
+        if (!$this->inscricoesAbertas($edicao)) {
+            return redirect()->route('inscricao.create')
+                ->with('error', 'As inscrições estão encerradas.');
+        }
+
         $miniCursosCatalogo = Inscricao::miniCursosDisponiveis($edicao);
 
         $instituicaoIspm = Inscricao::isInstituicaoIspm($request->input('instituicao'));
@@ -105,6 +117,39 @@ class InscricaoController extends Controller
             'mini_cursos.required_if'         => 'Seleccione pelo menos um mini-curso.',
             'email_institucional.required'    => 'Informe o e-mail institucional para verificação no sistema.',
         ]);
+
+        // MCO: gratuito, mas deve estar pré-registado pelo admin (nome + e-mail)
+        if ($data['categoria'] === 'mco') {
+            $membro = Inscricao::where('categoria', 'mco')
+                ->whereRaw('LOWER(email) = LOWER(?)', [$data['email']])
+                ->whereRaw('LOWER(nome) = LOWER(?)', [trim($data['nome'])])
+                ->first();
+
+            if (!$membro) {
+                throw \Illuminate\Validation\ValidationException::withMessages([
+                    'email' => ['O nome e e-mail introduzidos não constam da lista da Comissão Organizadora. Contacte a organização.'],
+                ]);
+            }
+
+            // Actualiza o registo existente com os dados que o utilizador forneceu
+            $membro->update([
+                'telefone'    => $data['telefone'],
+                'instituicao' => $data['instituicao'] ?? $membro->instituicao,
+                'edicao_id'   => $edicao?->id ?? $membro->edicao_id,
+                'estado'      => $membro->estado === 'pendente' ? 'confirmada' : $membro->estado,
+            ]);
+
+            try {
+                Mail::to($membro->email)->send(new InscricaoConfirmada($membro));
+            } catch (\Throwable $e) {
+                Log::warning('Falha ao enviar e-mail de confirmação MCO', [
+                    'inscricao_id' => $membro->id,
+                    'error'        => $e->getMessage(),
+                ]);
+            }
+
+            return redirect()->route('inscricao.sucesso', $membro);
+        }
 
         $isDocenteIspm = false;
         $verificacaoPayload = null;
@@ -173,6 +218,17 @@ class InscricaoController extends Controller
             $data['comprovativo_path'] = $request->file('comprovativo')->store('comprovativos', 'public');
         }
 
+        if ($data['categoria'] === 'pta') {
+            $request->validate([
+                'cracha' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
+            ], [
+                'cracha.required' => 'O crachá de funcionário é obrigatório para Pessoal Técnico Administrativo.',
+                'cracha.mimes'    => 'O crachá deve ser um ficheiro PDF, JPG ou PNG.',
+                'cracha.max'      => 'O crachá não pode exceder 5 MB.',
+            ]);
+            $data['cracha_path'] = $request->file('cracha')->store('crachas', 'public');
+        }
+
         $inscricao = Inscricao::create($data);
 
         try {
@@ -204,6 +260,22 @@ class InscricaoController extends Controller
     public function sucesso(Inscricao $inscricao): View
     {
         return view('inscricao.sucesso', compact('inscricao'));
+    }
+
+    private function inscricoesAbertas(?Edicao $edicao): bool
+    {
+        if (Configuracao::get('inscricao_forcar_fechado') === '1') {
+            return false;
+        }
+        // Usa as datas da edição se existirem, senão cai na data global de configuração
+        if ($edicao && ($edicao->inscricao_fim || $edicao->inscricao_inicio)) {
+            return $edicao->inscricaoAberta();
+        }
+        $prazo = Configuracao::get('inscricao_prazo');
+        if (!$prazo) {
+            return false;
+        }
+        return now()->lte(\Carbon\Carbon::parse($prazo)->endOfDay());
     }
 
     private function consultarSigam(string $email): array

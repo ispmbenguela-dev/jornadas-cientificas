@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\ConfiguracaoController as AdminConfiguracaoContro
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EdicaoController as AdminEdicaoController;
 use App\Http\Controllers\Admin\InscricaoController as AdminInscricaoController;
+use App\Http\Controllers\Admin\McoController as AdminMcoController;
 use App\Http\Controllers\Admin\SubmissaoController as AdminSubmissaoController;
 use App\Http\Controllers\CertificadoController;
 use App\Http\Controllers\HomeController;
@@ -63,8 +64,16 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('inscricoes/export', [AdminInscricaoController::class, 'export'])->name('inscricoes.export');
         Route::get('inscricoes/export-pdf', [AdminInscricaoController::class, 'exportPdf'])->name('inscricoes.export_pdf');
         Route::get('inscricoes/{inscricao}', [AdminInscricaoController::class, 'show'])->name('inscricoes.show');
+        Route::get('inscricoes/{inscricao}/edit', [AdminInscricaoController::class, 'edit'])->name('inscricoes.edit');
         Route::put('inscricoes/{inscricao}', [AdminInscricaoController::class, 'update'])->name('inscricoes.update');
         Route::delete('inscricoes/{inscricao}', [AdminInscricaoController::class, 'destroy'])->name('inscricoes.destroy');
+
+        Route::get('mco', [AdminMcoController::class, 'index'])->name('mco.index');
+        Route::get('mco/create', [AdminMcoController::class, 'create'])->name('mco.create');
+        Route::post('mco', [AdminMcoController::class, 'store'])->name('mco.store');
+        Route::get('mco/{mco}/edit', [AdminMcoController::class, 'edit'])->name('mco.edit');
+        Route::put('mco/{mco}', [AdminMcoController::class, 'update'])->name('mco.update');
+        Route::delete('mco/{mco}', [AdminMcoController::class, 'destroy'])->name('mco.destroy');
 
         Route::get('configuracoes', [AdminConfiguracaoController::class, 'index'])->name('configuracoes.index');
         Route::post('configuracoes', [AdminConfiguracaoController::class, 'update'])->name('configuracoes.update');
@@ -85,6 +94,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('submissoes/export', [AdminSubmissaoController::class, 'export'])->name('submissoes.export');
         Route::get('submissoes/export-pdf', [AdminSubmissaoController::class, 'exportPdf'])->name('submissoes.export_pdf');
         Route::get('submissoes/{submissao}', [AdminSubmissaoController::class, 'show'])->name('submissoes.show');
+        Route::get('submissoes/{submissao}/edit', [AdminSubmissaoController::class, 'edit'])->name('submissoes.edit');
         Route::put('submissoes/{submissao}', [AdminSubmissaoController::class, 'update'])->name('submissoes.update');
         Route::delete('submissoes/{submissao}', [AdminSubmissaoController::class, 'destroy'])->name('submissoes.destroy');
     });

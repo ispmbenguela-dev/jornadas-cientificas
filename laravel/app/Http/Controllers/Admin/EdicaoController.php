@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Edicao;
+use App\Models\Inscricao;
 use App\Models\MiniCurso;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -32,8 +33,9 @@ class EdicaoController extends Controller
                 'presidente_nome'  => 'JOSÉ JANUÁRIO, PhD.',
                 'presidente_titulo'=> 'O PRESIDENTE',
             ]),
-            'tipos'  => Edicao::TIPOS,
-            'status' => Edicao::STATUS,
+            'tipos'      => Edicao::TIPOS,
+            'status'     => Edicao::STATUS,
+            'categorias' => Inscricao::CATEGORIAS,
         ]);
     }
 
@@ -64,9 +66,10 @@ class EdicaoController extends Controller
     public function edit(Edicao $edicao): View
     {
         return view('admin.edicoes.form', [
-            'edicao' => $edicao,
-            'tipos'  => Edicao::TIPOS,
-            'status' => Edicao::STATUS,
+            'edicao'     => $edicao,
+            'tipos'      => Edicao::TIPOS,
+            'status'     => Edicao::STATUS,
+            'categorias' => Inscricao::CATEGORIAS,
         ]);
     }
 
@@ -198,13 +201,10 @@ class EdicaoController extends Controller
             'cor_secundaria'             => ['nullable', 'string', 'max:9'],
             'banner'                     => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
             'mostrar_no_arquivo'         => ['nullable', 'boolean'],
-            'taxa_docente_part'          => ['nullable', 'integer', 'min:0'],
-            'taxa_docente_mini'          => ['nullable', 'integer', 'min:0'],
-            'taxa_estudante_part'        => ['nullable', 'integer', 'min:0'],
-            'taxa_estudante_mini'        => ['nullable', 'integer', 'min:0'],
-            'taxa_publico_part'          => ['nullable', 'integer', 'min:0'],
-            'taxa_publico_mini'          => ['nullable', 'integer', 'min:0'],
-        ];
+        foreach (array_keys(Inscricao::CATEGORIAS) as $cat) {
+            $rules["taxa_{$cat}_part"] = ['nullable', 'integer', 'min:0'];
+            $rules["taxa_{$cat}_mini"] = ['nullable', 'integer', 'min:0'];
+        }
 
         $data = $request->validate($rules);
 
@@ -212,27 +212,18 @@ class EdicaoController extends Controller
         $data['nome_curto']         = $data['nome_curto'] ?? $data['nome'];
         $data['mostrar_no_arquivo'] = (bool) ($request->input('mostrar_no_arquivo') ?? true);
 
-        $data['taxas'] = [
-            'docente'   => [
-                'participacao' => (int) ($data['taxa_docente_part']   ?? 10000),
-                'mini_curso'   => (int) ($data['taxa_docente_mini']   ?? 5000),
-            ],
-            'estudante' => [
-                'participacao' => (int) ($data['taxa_estudante_part'] ?? 2000),
-                'mini_curso'   => (int) ($data['taxa_estudante_mini'] ?? 3000),
-            ],
-            'publico'   => [
-                'participacao' => (int) ($data['taxa_publico_part']   ?? 10000),
-                'mini_curso'   => (int) ($data['taxa_publico_mini']   ?? 5000),
-            ],
-        ];
+        $defaults = Edicao::TAXAS_DEFAULT;
+        $taxas = [];
+        foreach (array_keys(Inscricao::CATEGORIAS) as $cat) {
+            $taxas[$cat] = [
+                'participacao' => (int) ($data["taxa_{$cat}_part"] ?? $defaults[$cat]['participacao'] ?? 0),
+                'mini_curso'   => (int) ($data["taxa_{$cat}_mini"] ?? $defaults[$cat]['mini_curso']   ?? 0),
+            ];
+            unset($data["taxa_{$cat}_part"], $data["taxa_{$cat}_mini"]);
+        }
+        $data['taxas'] = $taxas;
 
-        unset(
-            $data['taxa_docente_part'], $data['taxa_docente_mini'],
-            $data['taxa_estudante_part'], $data['taxa_estudante_mini'],
-            $data['taxa_publico_part'], $data['taxa_publico_mini'],
-            $data['banner']
-        );
+        unset($data['banner']);
 
         return $data;
     }

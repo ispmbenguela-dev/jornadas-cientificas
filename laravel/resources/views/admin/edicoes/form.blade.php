@@ -109,8 +109,8 @@
                         $taxas = old('taxa_docente_part') !== null ? null : ($edicao->taxas ?? \App\Models\Edicao::TAXAS_DEFAULT);
                     @endphp
                     <div class="row g-2">
-                        @foreach (['docente', 'estudante', 'publico'] as $cat)
-                            <div class="col-12"><strong class="text-uppercase small">{{ ucfirst($cat) }}</strong></div>
+                        @foreach ($categorias as $cat => $label)
+                            <div class="col-12"><strong class="text-uppercase small">{{ $label }}</strong></div>
                             <div class="col-md-4 col-6">
                                 <label class="form-label small">Participação</label>
                                 <input type="number" name="taxa_{{ $cat }}_part"

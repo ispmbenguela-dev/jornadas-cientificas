@@ -30,14 +30,16 @@ class ConfiguracaoController extends Controller
     public function update(Request $request): RedirectResponse
     {
         $request->validate([
-            'logo'             => ['nullable', 'image', 'mimes:png,jpg,jpeg,svg,webp', 'max:2048'],
-            'simbolo'          => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:1024'],
-            'banner'           => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
-            'submissao_prazo'  => ['nullable', 'date'],
+            'logo'                     => ['nullable', 'image', 'mimes:png,jpg,jpeg,svg,webp', 'max:2048'],
+            'simbolo'                  => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:1024'],
+            'banner'                   => ['nullable', 'image', 'mimes:png,jpg,jpeg,webp', 'max:5120'],
+            'submissao_prazo'          => ['nullable', 'date'],
+            'inscricao_prazo'          => ['nullable', 'date'],
+            'inscricao_forcar_fechado' => ['nullable', 'boolean'],
         ], [
-            'image'           => 'O ficheiro deve ser uma imagem válida.',
-            'max'             => 'A imagem excede o tamanho máximo permitido.',
-            'date'            => 'A data não é válida.',
+            'image' => 'O ficheiro deve ser uma imagem válida.',
+            'max'   => 'A imagem excede o tamanho máximo permitido.',
+            'date'  => 'A data não é válida.',
         ]);
 
         foreach (self::CAMPOS as $field => $key) {
@@ -57,6 +59,16 @@ class ConfiguracaoController extends Controller
         if ($request->filled('submissao_prazo')) {
             Configuracao::set('submissao_prazo', $request->input('submissao_prazo'), 'date');
         }
+
+        if ($request->filled('inscricao_prazo')) {
+            Configuracao::set('inscricao_prazo', $request->input('inscricao_prazo'), 'date');
+        }
+
+        Configuracao::set(
+            'inscricao_forcar_fechado',
+            $request->boolean('inscricao_forcar_fechado') ? '1' : '0',
+            'boolean'
+        );
 
         return back()->with('success', 'Configurações actualizadas.');
     }
