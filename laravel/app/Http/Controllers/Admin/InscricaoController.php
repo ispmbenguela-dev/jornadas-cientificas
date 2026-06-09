@@ -26,6 +26,82 @@ class InscricaoController extends Controller
         ]);
     }
 
+    public function create(): View
+    {
+        $edicao = Edicao::query()->where('status', 'actual')->first();
+        return view('admin.inscricoes.create', [
+            'edicao'     => $edicao,
+            'categorias' => Inscricao::CATEGORIAS,
+            'modalidades'=> Inscricao::MODALIDADES,
+            'miniCursos' => Inscricao::miniCursosDisponiveis($edicao),
+            'validacoes' => Inscricao::VALIDACAO_LABELS,
+            'precos'     => $edicao?->taxas ?? Inscricao::TABELA_PRECOS,
+        ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $edicao = Edicao::query()->where('status', 'actual')->first();
+        $miniCursosCatalogo = Inscricao::miniCursosDisponiveis($edicao);
+
+        $data = $request->validate([
+            'nome'                 => ['required', 'string', 'max:160'],
+            'email'                => ['required', 'email', 'max:160'],
+            'telefone'             => ['required', 'string', 'max:40'],
+            'instituicao'          => ['nullable', 'string', 'max:160'],
+            'categoria'            => ['required', 'in:' . implode(',', array_keys(Inscricao::CATEGORIAS))],
+            'modalidade'           => ['required', 'in:participacao,mini_curso'],
+            'mini_cursos'          => ['nullable', 'array'],
+            'mini_cursos.*'        => ['string', 'in:' . implode(',', array_keys($miniCursosCatalogo))],
+            'is_docente_ispm'      => ['nullable', 'boolean'],
+            'email_institucional'  => ['nullable', 'email', 'max:160'],
+            'valor_kz'             => ['nullable', 'integer', 'min:0'],
+            'valor_pago_informado' => ['nullable', 'integer', 'min:0'],
+            'referencia_pagamento' => ['nullable', 'string', 'max:100'],
+            'validacao_pagamento'  => ['nullable', 'in:' . implode(',', array_keys(Inscricao::VALIDACAO_LABELS))],
+            'comprovativo'         => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
+            'cracha'               => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
+            'estado'               => ['required', 'in:pendente,confirmada,rejeitada'],
+            'observacoes'          => ['nullable', 'string', 'max:1000'],
+        ]);
+
+        $data['is_docente_ispm'] = $request->boolean('is_docente_ispm');
+        $data['mini_cursos']     = array_values(array_unique($data['mini_cursos'] ?? []));
+        $data['edicao_id']       = $edicao?->id;
+
+        // Calcula valor se não foi preenchido manualmente
+        if (($data['valor_kz'] ?? null) === null) {
+            $qtd = $data['modalidade'] === 'mini_curso' ? count($data['mini_cursos']) : 0;
+            $data['valor_kz'] = Inscricao::calcularValor(
+                $data['categoria'], $data['modalidade'], $qtd, $data['is_docente_ispm'], $edicao
+            );
+        }
+
+        // Valida pagamento automaticamente ao comparar valores
+        if (!($data['valor_kz'] ?? 0)) {
+            $data['validacao_pagamento'] = 'nao_aplicavel';
+        } elseif (isset($data['valor_pago_informado']) && $data['valor_pago_informado'] !== null) {
+            $data['validacao_pagamento'] = ((int) $data['valor_pago_informado'] === (int) $data['valor_kz'])
+                ? 'ok' : 'divergente';
+        } else {
+            $data['validacao_pagamento'] = $data['validacao_pagamento'] ?? 'pendente';
+        }
+
+        if ($request->hasFile('comprovativo')) {
+            $data['comprovativo_path'] = $request->file('comprovativo')->store('comprovativos', 'public');
+        }
+        if ($request->hasFile('cracha')) {
+            $data['cracha_path'] = $request->file('cracha')->store('crachas', 'public');
+        }
+
+        unset($data['comprovativo'], $data['cracha']);
+
+        $inscricao = Inscricao::create($data);
+
+        return redirect()->route('admin.inscricoes.show', $inscricao)
+            ->with('success', 'Inscrição criada com sucesso.');
+    }
+
     public function show(Inscricao $inscricao): View
     {
         return view('admin.inscricoes.show', compact('inscricao'));

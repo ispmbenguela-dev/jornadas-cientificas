@@ -63,6 +63,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::get('inscricoes', [AdminInscricaoController::class, 'index'])->name('inscricoes.index');
         Route::get('inscricoes/export', [AdminInscricaoController::class, 'export'])->name('inscricoes.export');
         Route::get('inscricoes/export-pdf', [AdminInscricaoController::class, 'exportPdf'])->name('inscricoes.export_pdf');
+        Route::get('inscricoes/create', [AdminInscricaoController::class, 'create'])->name('inscricoes.create');
+        Route::post('inscricoes', [AdminInscricaoController::class, 'store'])->name('inscricoes.store');
         Route::get('inscricoes/{inscricao}', [AdminInscricaoController::class, 'show'])->name('inscricoes.show');
         Route::get('inscricoes/{inscricao}/edit', [AdminInscricaoController::class, 'edit'])->name('inscricoes.edit');
         Route::put('inscricoes/{inscricao}', [AdminInscricaoController::class, 'update'])->name('inscricoes.update');
