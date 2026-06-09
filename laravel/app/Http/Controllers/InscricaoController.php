@@ -222,9 +222,9 @@ class InscricaoController extends Controller
             $request->validate([
                 'cracha' => ['required', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:5120'],
             ], [
-                'cracha.required' => 'O crachá de funcionário é obrigatório para Pessoal Técnico Administrativo.',
-                'cracha.mimes'    => 'O crachá deve ser um ficheiro PDF, JPG ou PNG.',
-                'cracha.max'      => 'O crachá não pode exceder 5 MB.',
+                'cracha.required' => 'O passe de funcionário é obrigatório para Pessoal Técnico Administrativo.',
+                'cracha.mimes'    => 'O passe de funcionário deve ser um ficheiro PDF, JPG ou PNG.',
+                'cracha.max'      => 'O passe de funcionário não pode exceder 5 MB.',
             ]);
             $data['cracha_path'] = $request->file('cracha')->store('crachas', 'public');
         }

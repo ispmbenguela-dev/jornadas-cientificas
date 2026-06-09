@@ -184,12 +184,12 @@
                             <div class="pay-card">
                                 <div class="pay-head">
                                     <i class="bi bi-person-badge"></i>
-                                    <strong>Crachá de funcionário</strong>
+                                    <strong>Passe de funcionário</strong>
                                 </div>
                                 <p class="text-muted small mb-2">
-                                    Para a categoria <strong>Pessoal Técnico Administrativo</strong> é obrigatório apresentar o crachá de identificação de funcionário do ISPM.
+                                    Para a categoria <strong>Pessoal Técnico Administrativo</strong> é obrigatório carregar o passe de funcionário do ISPM.
                                 </p>
-                                <label class="form-label">Crachá (PDF/JPG/PNG · até 5 MB) *</label>
+                                <label class="form-label">Passe de funcionário (PDF/JPG/PNG · até 5 MB) *</label>
                                 <input type="file" name="cracha" id="inscCracha"
                                        class="form-control" accept=".pdf,.jpg,.jpeg,.png" />
                             </div>
