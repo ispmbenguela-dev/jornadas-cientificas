@@ -54,6 +54,9 @@
             <a href="{{ route('admin.avaliacoes.index') }}" class="{{ request()->routeIs('admin.avaliacoes.*') ? 'active' : '' }}">
                 <i class="bi bi-star-half"></i> Avaliações
             </a>
+            <a href="{{ route('admin.programa.index') }}" class="{{ request()->routeIs('admin.programa.*') ? 'active' : '' }}">
+                <i class="bi bi-calendar2-week"></i> Agenda
+            </a>
             <a href="{{ route('admin.configuracoes.index') }}" class="{{ request()->routeIs('admin.configuracoes.*') ? 'active' : '' }}">
                 <i class="bi bi-sliders"></i> Configurações
             </a>

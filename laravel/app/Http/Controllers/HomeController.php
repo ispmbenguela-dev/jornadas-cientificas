@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Edicao;
 use App\Models\Submissao;
-use Illuminate\Http\Response;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -24,13 +23,14 @@ class HomeController extends Controller
         ]);
     }
 
-    public function programa(): Response
+    public function programa(): View
     {
-        $path = public_path('programa.html');
-        $html = file_get_contents($path);
-        $html = str_replace('href="index.html"', 'href="' . route('home') . '"', $html);
+        $edicao = Edicao::query()->where('status', 'actual')->first();
+        $miniCursos = $edicao
+            ? $edicao->miniCursos()->where('activo', true)->orderBy('ordem')->get()->groupBy('dia_label')
+            : collect();
 
-        return response($html, 200, ['Content-Type' => 'text/html; charset=utf-8']);
+        return view('programa', compact('edicao', 'miniCursos'));
     }
 
     public function edicoes(): View
