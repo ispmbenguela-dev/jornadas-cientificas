@@ -36,8 +36,58 @@
                 <i class="bi bi-file-earmark-pdf"></i> Exportar PDF
             </button>
         </form>
+        
+        </br>
 
-        <div class="table-responsive mt-3">
+        {{-- Totais do filtro actual --}}
+        @if ($inscricoes->total() > 0)
+        <div class="row g-2 mb-3">
+            <div class="col-6 col-md-3">
+                <div class="d-flex align-items-center gap-2 p-3 rounded-3 h-100"
+                     style="background:#f0f4ff;border-left:4px solid #0f4c81">
+                    <i class="bi bi-people fs-4 text-primary opacity-75"></i>
+                    <div>
+                        <div class="fw-bold fs-5 lh-1">{{ $inscricoes->total() }}</div>
+                        <small class="text-muted">Inscrições</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="d-flex align-items-center gap-2 p-3 rounded-3 h-100"
+                     style="background:#f0faf4;border-left:4px solid #198754">
+                    <i class="bi bi-cash-coin fs-4 text-success opacity-75"></i>
+                    <div>
+                        <div class="fw-bold fs-5 lh-1 text-success">{{ number_format($totalConfirmado, 0, ',', '.') }} Kz</div>
+                        <small class="text-muted">Receita confirmada</small>
+                    </div>
+                </div>
+            </div>
+            @if ($totalValor !== $totalConfirmado)
+            <div class="col-6 col-md-3">
+                <div class="d-flex align-items-center gap-2 p-3 rounded-3 h-100"
+                     style="background:#fff8f0;border-left:4px solid #fd7e14">
+                    <i class="bi bi-hourglass-split fs-4 text-warning opacity-75"></i>
+                    <div>
+                        <div class="fw-bold fs-5 lh-1" style="color:#fd7e14">{{ number_format($totalValor - $totalConfirmado, 0, ',', '.') }} Kz</div>
+                        <small class="text-muted">Pendente / outros</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="d-flex align-items-center gap-2 p-3 rounded-3 h-100"
+                     style="background:#f8f9fa;border-left:4px solid #adb5bd">
+                    <i class="bi bi-calculator fs-4 text-secondary opacity-75"></i>
+                    <div>
+                        <div class="fw-bold fs-5 lh-1 text-secondary">{{ number_format($totalValor, 0, ',', '.') }} Kz</div>
+                        <small class="text-muted">Total geral</small>
+                    </div>
+                </div>
+            </div>
+            @endif
+        </div>
+        @endif
+
+        <div class="table-responsive">
             <table class="table align-middle">
                 <thead>
                     <tr>

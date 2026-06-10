@@ -37,12 +37,13 @@ class DashboardController extends Controller
         ];
 
         return view('admin.dashboard', [
-            'stats'             => $stats,
-            'ultimasInscricoes' => (clone $inscricoesQ)->latest()->limit(5)->get(),
-            'ultimasSubmissoes' => (clone $submissoesQ)->latest()->limit(5)->get(),
-            'edicaoActual'      => $edicaoActual,
-            'edicaoFiltro'      => $edicao,
-            'edicoes'           => Edicao::orderByDesc('data_inicio')->get(),
+            'stats'                  => $stats,
+            'ultimasInscricoes'      => (clone $inscricoesQ)->latest()->limit(5)->get(),
+            'ultimasSubmissoes'      => (clone $submissoesQ)->latest()->limit(5)->get(),
+            'inscricoesConfirmadas'  => (clone $inscricoesQ)->where('estado', 'confirmada')->latest()->get(),
+            'edicaoActual'           => $edicaoActual,
+            'edicaoFiltro'           => $edicao,
+            'edicoes'                => Edicao::orderByDesc('data_inicio')->get(),
         ]);
     }
 }

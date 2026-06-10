@@ -50,18 +50,20 @@
             </div>
         </div>
         <div class="col-sm-6 col-xl-3">
-            <div class="kpi-card kpi-accent">
-                <div class="kpi-icon"><i class="bi bi-cash-coin"></i></div>
-                <div>
-                    <span>Receita confirmada</span>
-                    <strong>{{ number_format($stats['receita_kz'], 0, ',', '.') }} Kz</strong>
-                    @if ($stats['receita_pendente_kz'] > 0)
-                        <small class="d-block text-muted">
-                            + {{ number_format($stats['receita_pendente_kz'], 0, ',', '.') }} Kz pendente
-                        </small>
-                    @endif
+            <a href="{{ route('admin.inscricoes.index', ['estado' => 'confirmada']) }}" class="text-decoration-none">
+                <div class="kpi-card kpi-accent">
+                    <div class="kpi-icon"><i class="bi bi-cash-coin"></i></div>
+                    <div>
+                        <span>Receita confirmada</span>
+                        <strong>{{ number_format($stats['receita_kz'], 0, ',', '.') }} Kz</strong>
+                        @if ($stats['receita_pendente_kz'] > 0)
+                            <small class="d-block text-muted">
+                                + {{ number_format($stats['receita_pendente_kz'], 0, ',', '.') }} Kz pendente
+                            </small>
+                        @endif
+                    </div>
                 </div>
-            </div>
+            </a>
         </div>
 
         <div class="col-sm-6 col-xl-4">
@@ -90,6 +92,54 @@
                     <strong>{{ $stats['submissoes_admitidas'] }}</strong>
                 </div>
             </div>
+        </div>
+    </div>
+
+    {{-- Receita confirmada --}}
+    <div class="panel mb-3">
+        <header class="panel-head">
+            <h3><i class="bi bi-cash-coin text-success"></i> Receita confirmada</h3>
+            <a href="{{ route('admin.inscricoes.index', ['estado' => 'confirmada']) }}" class="small">Ver em lista completa →</a>
+        </header>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Modalidade</th>
+                        <th class="text-end">Valor</th>
+                        <th>Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @forelse ($inscricoesConfirmadas as $i)
+                    <tr>
+                        <td><small class="text-muted">#{{ str_pad($i->id, 4, '0', STR_PAD_LEFT) }}</small></td>
+                        <td>
+                            <a href="{{ route('admin.inscricoes.show', $i) }}">{{ $i->nome }}</a>
+                            <small class="d-block text-muted">{{ $i->email }}</small>
+                        </td>
+                        <td><small>{{ $i->categoria_label }}</small></td>
+                        <td><small>{{ $i->modalidade_label }}</small></td>
+                        <td class="text-end fw-semibold">{{ number_format($i->valor_kz, 0, ',', '.') }} Kz</td>
+                        <td><small class="text-muted">{{ $i->created_at->format('d/m/Y') }}</small></td>
+                    </tr>
+                @empty
+                    <tr><td colspan="6" class="text-muted text-center py-3">Nenhuma inscrição confirmada ainda.</td></tr>
+                @endforelse
+                </tbody>
+                @if ($inscricoesConfirmadas->isNotEmpty())
+                <tfoot>
+                    <tr class="table-success">
+                        <td colspan="4" class="fw-bold text-end">Total confirmado</td>
+                        <td class="text-end fw-bold fs-6">{{ number_format($stats['receita_kz'], 0, ',', '.') }} Kz</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+                @endif
+            </table>
         </div>
     </div>
 

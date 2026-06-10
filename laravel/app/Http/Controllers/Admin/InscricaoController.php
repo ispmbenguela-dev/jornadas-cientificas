@@ -20,9 +20,15 @@ class InscricaoController extends Controller
 {
     public function index(Request $request): View
     {
+        $query = $this->filtered($request);
+        $totalValor = (clone $query)->sum('valor_kz');
+        $totalConfirmado = (clone $query)->where('estado', 'confirmada')->sum('valor_kz');
+
         return view('admin.inscricoes.index', [
-            'inscricoes' => $this->filtered($request)->paginate(20)->withQueryString(),
-            'categorias' => Inscricao::CATEGORIAS,
+            'inscricoes'       => $query->paginate(20)->withQueryString(),
+            'categorias'       => Inscricao::CATEGORIAS,
+            'totalValor'       => (int) $totalValor,
+            'totalConfirmado'  => (int) $totalConfirmado,
         ]);
     }
 
