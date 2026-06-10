@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Avaliacao;
 use App\Models\Edicao;
-use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\QrCode;
 use Endroid\QrCode\Writer\PngWriter;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -55,14 +55,15 @@ class AvaliacaoController extends Controller
     {
         $url = route('avaliacao.create');
 
-        $result = Builder::create()
-            ->writer(new PngWriter())
-            ->data($url)
-            ->encoding(new Encoding('UTF-8'))
-            ->errorCorrectionLevel(ErrorCorrectionLevel::High)
-            ->size(400)
-            ->margin(20)
-            ->build();
+        $qr = new QrCode(
+            data: $url,
+            encoding: new Encoding('UTF-8'),
+            errorCorrectionLevel: ErrorCorrectionLevel::High,
+            size: 400,
+            margin: 20,
+        );
+
+        $result = (new PngWriter())->write($qr);
 
         return response($result->getString(), 200)
             ->header('Content-Type', $result->getMimeType());

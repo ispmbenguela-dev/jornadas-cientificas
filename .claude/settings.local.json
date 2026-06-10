@@ -28,7 +28,10 @@
       "Bash(ls node_modules/playwright)",
       "Bash(npm install *)",
       "Bash(sed -i \"s/password', 'password'/password', 'admin123'/\" /tmp/pw-check/admin_screens.js)",
-      "Bash(node /tmp/pw-check/admin_screens.js)"
+      "Bash(node /tmp/pw-check/admin_screens.js)",
+      "Bash(php -r ' *)",
+      "Bash(composer show *)",
+      "Bash(php -l app/Http/Controllers/Admin/AvaliacaoController.php)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Fábio Kapa\\Desktop\\..DEV\\ISPM\\jornada-cientifica"
