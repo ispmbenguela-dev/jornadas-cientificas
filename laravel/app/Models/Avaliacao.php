@@ -49,7 +49,7 @@ class Avaliacao extends Model
             'titulo'   => 'Organização do Evento',
             'icone'    => 'bi-clipboard-check',
             'perguntas' => [
-                'q1' => 'Estou satisfeito com a organização geral das jornadas científicas.',
+                'q1' => 'satisfação relacinada a organização geral das jornadas científicas.',
                 'q2' => 'As informações sobre o evento foram divulgadas de forma clara e atempada.',
                 'q3' => 'O processo de inscrição foi simples e eficiente.',
                 'q4' => 'O cumprimento dos horários foi satisfatório.',

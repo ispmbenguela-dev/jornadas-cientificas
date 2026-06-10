@@ -18,7 +18,17 @@
       "Bash(php -l app/Http/Controllers/SubmissaoController.php)",
       "Bash(mkdir -p \"c:\\\\Users\\\\FSL\\\\Desktop\\\\DEV ISPM\\\\jornadas-cientificas\\\\laravel\\\\resources\\\\views\\\\avaliacao\")",
       "Bash(mkdir -p \"c:\\\\Users\\\\FSL\\\\Desktop\\\\DEV ISPM\\\\jornadas-cientificas\\\\laravel\\\\resources\\\\views\\\\admin\\\\avaliacoes\")",
-      "Bash(php -r \"echo filesize\\('storage/logs/laravel.log'\\);\")"
+      "Bash(php -r \"echo filesize\\('storage/logs/laravel.log'\\);\")",
+      "Skill(run)",
+      "Skill(run:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:8000/)",
+      "Bash(python3 -c \"import playwright\")",
+      "Bash(npx playwright *)",
+      "Bash(npm list *)",
+      "Bash(ls node_modules/playwright)",
+      "Bash(npm install *)",
+      "Bash(sed -i \"s/password', 'password'/password', 'admin123'/\" /tmp/pw-check/admin_screens.js)",
+      "Bash(node /tmp/pw-check/admin_screens.js)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Fábio Kapa\\Desktop\\..DEV\\ISPM\\jornada-cientifica"

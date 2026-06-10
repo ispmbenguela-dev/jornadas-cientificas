@@ -42,6 +42,9 @@
             <a href="{{ route('admin.inscricoes.index') }}" class="{{ request()->routeIs('admin.inscricoes.*') ? 'active' : '' }}">
                 <i class="bi bi-people"></i> Inscrições
             </a>
+            <a href="{{ route('admin.verificacao.index') }}" class="{{ request()->routeIs('admin.verificacao.*') ? 'active' : '' }}">
+                <i class="bi bi-person-check"></i> Verificação
+            </a>
             <a href="{{ route('admin.submissoes.index') }}" class="{{ request()->routeIs('admin.submissoes.*') ? 'active' : '' }}">
                 <i class="bi bi-journal-text"></i> Submissões
             </a>
@@ -80,11 +83,18 @@
         </form>
     </aside>
 
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
     <main class="admin-main">
         <header class="admin-topbar">
-            <h1 class="admin-page-title">@yield('page_title', 'Dashboard')</h1>
+            <div class="d-flex align-items-center gap-3">
+                <button class="sidebar-toggle" id="sidebarToggle" aria-label="Menu">
+                    <i class="bi bi-list"></i>
+                </button>
+                <h1 class="admin-page-title mb-0">@yield('page_title', 'Dashboard')</h1>
+            </div>
             @hasSection('topbar_actions')
-                <div class="admin-topbar-actions">@yield('topbar_actions')</div>
+                <div class="admin-topbar-actions ms-auto">@yield('topbar_actions')</div>
             @endif
         </header>
 
@@ -105,5 +115,25 @@
     </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    (function () {
+        const sidebar  = document.querySelector('.admin-sidebar');
+        const overlay  = document.getElementById('sidebarOverlay');
+        const toggle   = document.getElementById('sidebarToggle');
+        if (!sidebar || !toggle) return;
+
+        function open()  { sidebar.classList.add('open');  overlay.classList.add('show');  document.body.style.overflow = 'hidden'; }
+        function close() { sidebar.classList.remove('open'); overlay.classList.remove('show'); document.body.style.overflow = ''; }
+
+        toggle.addEventListener('click', () => sidebar.classList.contains('open') ? close() : open());
+        overlay.addEventListener('click', close);
+
+        // Fecha ao navegar (link clicado na sidebar)
+        sidebar.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+            if (window.innerWidth < 992) close();
+        }));
+    })();
+    </script>
+    @stack('scripts')
 </body>
 </html>

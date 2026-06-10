@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AuthController as AdminAuthController;
 use App\Http\Controllers\Admin\AvaliacaoController as AdminAvaliacaoController;
 use App\Http\Controllers\Admin\ProgramaController as AdminProgramaController;
+use App\Http\Controllers\Admin\VerificacaoController as AdminVerificacaoController;
 use App\Http\Controllers\Admin\CertificadoController as AdminCertificadoController;
 use App\Http\Controllers\Admin\ConfiguracaoController as AdminConfiguracaoController;
 use App\Http\Controllers\Admin\DashboardController;
@@ -100,6 +101,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::delete('certificados/{certificado}', [AdminCertificadoController::class, 'destroy'])->name('certificados.destroy');
 
         Route::get('programa', [AdminProgramaController::class, 'index'])->name('programa.index');
+        Route::get('verificacao', [AdminVerificacaoController::class, 'index'])->name('verificacao.index');
 
         Route::get('avaliacoes', [AdminAvaliacaoController::class, 'index'])->name('avaliacoes.index');
         Route::get('avaliacoes/qrcode', [AdminAvaliacaoController::class, 'qrcodePage'])->name('avaliacoes.qrcode');

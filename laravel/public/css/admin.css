@@ -546,12 +546,60 @@
   color: var(--ink-2);
 }
 
-/* Responsive admin */
+/* ---- Responsive admin ---- */
+
+/* Overlay escuro quando sidebar aberta no mobile */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 1039;
+}
+.sidebar-overlay.show { display: block; }
+
+/* Botão hamburger — só aparece em mobile */
+.sidebar-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: var(--ink);
+  font-size: 1.5rem;
+  padding: 0;
+  line-height: 1;
+  cursor: pointer;
+}
+
 @media (max-width: 991px) {
+  .sidebar-toggle { display: flex; align-items: center; }
+
   .admin-sidebar {
-    position: static;
-    width: 100%;
-    flex-direction: column;
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 270px;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+    z-index: 1040;
+    /* mantém o estilo vertical já definido */
   }
-  .admin-main { margin-left: 0; padding: 20px; }
+  .admin-sidebar.open { transform: translateX(0); }
+
+  .admin-main {
+    margin-left: 0;
+    padding: 16px;
+  }
+
+  .admin-topbar { margin-bottom: 16px; }
+  .admin-page-title { font-size: 1.15rem; }
+
+  /* KPI cards em 2 colunas no mobile */
+  .kpi-card { padding: 14px; gap: 10px; }
+  .kpi-card strong { font-size: 1.4rem; }
+  .kpi-icon { width: 36px; height: 36px; font-size: 1rem; }
+
+  /* Tabelas — reduzir padding */
+  .table > :not(caption) > * > * { padding: .45rem .5rem; font-size: .82rem; }
+
+  /* Panel padding reduzido */
+  .panel { padding: 14px; }
 }

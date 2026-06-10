@@ -462,15 +462,15 @@
                 <div class="tab-pane fade" id="dia2" role="tabpanel">
 
                     <h3 class="prog-block-title">
-                        <i class="bi bi-easel2-fill"></i> Mini-Curso de Abertura
-                        <small>09h00 · Sala de Conferência</small>
+                        <i class="bi bi-easel2-fill"></i> Mini-Cursos
+                        <small>08h30 – 11h30</small>
                     </h3>
 
                     <div class="row g-4 mb-5">
-                        <div class="col-lg-8 mx-auto">
+                        <div class="col-lg-6">
                             <article class="talk-card">
                                 <header>
-                                    <span class="hbui-badge hbui-badge-default">09h00</span>
+                                    <span class="hbui-badge hbui-badge-default">08h30 – 10h00</span>
                                     <span class="hbui-badge hbui-badge-room">Sala de Conferência</span>
                                     <span class="hbui-badge hbui-badge-outline-soft">Educação Inclusiva</span>
                                 </header>
@@ -479,7 +479,23 @@
                                 </h4>
                                 <ul class="talk-meta">
                                     <li><i class="bi bi-mic-fill"></i> <strong>Prelectora:</strong> Ruth Mariani Braz · Prof. associada, Univ. Fluminense (Brasil)</li>
-                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> José Filipe, MSc.</li>
+                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Iracelma Simão Neto Afonso, MSc.</li>
+                                </ul>
+                            </article>
+                        </div>
+                        <div class="col-lg-6">
+                            <article class="talk-card">
+                                <header>
+                                    <span class="hbui-badge hbui-badge-default">10h00 – 11h30</span>
+                                    <span class="hbui-badge hbui-badge-room">Sala 33</span>
+                                    <span class="hbui-badge hbui-badge-outline-soft">Gestão da Qualidade</span>
+                                </header>
+                                <h4 class="talk-title">
+                                    A Avaliação Institucional: Desafios para a Melhoria da Qualidade do Desempenho do Instituto Superior Politécnico Maravilha
+                                </h4>
+                                <ul class="talk-meta">
+                                    <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Justo Che Soler, PhD.</li>
+                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Ernesto Kambuangue, Lic.</li>
                                 </ul>
                             </article>
                         </div>
