@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Configuracao;
 use App\Models\Inscricao;
 use Carbon\Carbon;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
@@ -20,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Carbon::setLocale('pt');
+        Paginator::useBootstrapFive();
         View::share('branding', $this->loadBranding());
 
         // O parâmetro {mco} nas rotas resolve para o modelo Inscricao

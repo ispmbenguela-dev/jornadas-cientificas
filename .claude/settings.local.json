@@ -31,7 +31,8 @@
       "Bash(node /tmp/pw-check/admin_screens.js)",
       "Bash(php -r ' *)",
       "Bash(composer show *)",
-      "Bash(php -l app/Http/Controllers/Admin/AvaliacaoController.php)"
+      "Bash(php -l app/Http/Controllers/Admin/AvaliacaoController.php)",
+      "Bash(git status *)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Fábio Kapa\\Desktop\\..DEV\\ISPM\\jornada-cientifica"
