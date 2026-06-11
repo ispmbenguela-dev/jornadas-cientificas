@@ -421,23 +421,6 @@
                             <article class="talk-card">
                                 <header>
                                     <span class="hbui-badge hbui-badge-default">15h30</span>
-                                    <span class="hbui-badge hbui-badge-room">Sala 32</span>
-                                    <span class="hbui-badge hbui-badge-outline-soft">IA · Negócios</span>
-                                </header>
-                                <h4 class="talk-title">
-                                    Inteligência artificial degenerativa: transformando o trabalho, a educação e os negócios
-                                </h4>
-                                <ul class="talk-meta">
-                                    <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Yuniel Pena Gonzalez, MSc.</li>
-                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> José Filipe, MSc.</li>
-                                </ul>
-                            </article>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <article class="talk-card">
-                                <header>
-                                    <span class="hbui-badge hbui-badge-default">15h30</span>
                                     <span class="hbui-badge hbui-badge-room">Sala de Conferência</span>
                                     <span class="hbui-badge hbui-badge-outline-soft">Investigação</span>
                                 </header>

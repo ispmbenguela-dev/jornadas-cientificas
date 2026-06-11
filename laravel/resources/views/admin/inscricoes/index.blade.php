@@ -28,6 +28,14 @@
                     <option value="{{ $k }}" @selected(request('categoria') === $k)>{{ $l }}</option>
                 @endforeach
             </select>
+            <select name="mini_curso" class="form-select">
+                <option value="">Todos os mini-cursos</option>
+                @foreach ($miniCursos as $chave => $mc)
+                    <option value="{{ $chave }}" @selected(request('mini_curso') === $chave)>
+                        {{ $mc['hora'] }} · {{ $mc['local'] }} — {{ Str::limit($mc['titulo'], 55) }}
+                    </option>
+                @endforeach
+            </select>
             <button class="btn btn-cta btn-sm"><i class="bi bi-funnel"></i> Filtrar</button>
             <button type="submit" formaction="{{ route('admin.inscricoes.export') }}" class="btn btn-outline-success btn-sm">
                 <i class="bi bi-file-earmark-spreadsheet"></i> Exportar CSV

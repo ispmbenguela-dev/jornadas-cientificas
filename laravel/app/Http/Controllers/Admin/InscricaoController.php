@@ -27,6 +27,7 @@ class InscricaoController extends Controller
         return view('admin.inscricoes.index', [
             'inscricoes'       => $query->paginate(20)->withQueryString(),
             'categorias'       => Inscricao::CATEGORIAS,
+            'miniCursos'       => Inscricao::miniCursosDisponiveis(),
             'totalValor'       => (int) $totalValor,
             'totalConfirmado'  => (int) $totalConfirmado,
         ]);
@@ -245,9 +246,10 @@ class InscricaoController extends Controller
         $inscricoes = $this->filtered($request)->get();
 
         $filtros = [
-            'estado'    => $request->string('estado')->toString() ?: null,
-            'categoria' => $request->string('categoria')->toString() ?: null,
-            'q'         => $request->string('q')->toString() ?: null,
+            'estado'     => $request->string('estado')->toString() ?: null,
+            'categoria'  => $request->string('categoria')->toString() ?: null,
+            'mini_curso' => $request->string('mini_curso')->toString() ?: null,
+            'q'          => $request->string('q')->toString() ?: null,
         ];
 
         $pdf = Pdf::loadView('admin.inscricoes.export-pdf', [
@@ -269,6 +271,9 @@ class InscricaoController extends Controller
         }
         if ($request->filled('categoria')) {
             $query->where('categoria', $request->string('categoria'));
+        }
+        if ($request->filled('mini_curso')) {
+            $query->whereJsonContains('mini_cursos', $request->string('mini_curso')->toString());
         }
         if ($request->filled('q')) {
             $q = $request->string('q');

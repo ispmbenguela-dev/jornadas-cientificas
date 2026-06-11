@@ -112,15 +112,6 @@ class Inscricao extends Model
             'prelector'  => 'Gaudêncio Félix, MSc.',
             'moderador'  => 'Eunice Pedro, Lic.',
         ],
-        'dia1_15h_ia_negocios' => [
-            'dia'        => '1.º Dia · 11 Jun',
-            'hora'       => '15h30',
-            'local'      => 'Sala 32',
-            'tema'       => 'IA · Negócios',
-            'titulo'     => 'Inteligência artificial degenerativa: transformando o trabalho, a educação e os negócios',
-            'prelector'  => 'Yuniel Pena Gonzalez, MSc.',
-            'moderador'  => 'José Filipe, MSc.',
-        ],
         'dia1_15h_projectos' => [
             'dia'        => '1.º Dia · 11 Jun',
             'hora'       => '15h30',
