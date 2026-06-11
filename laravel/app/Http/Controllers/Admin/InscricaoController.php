@@ -262,7 +262,7 @@ class InscricaoController extends Controller
 
     private function filtered(Request $request): Builder
     {
-        $query = Inscricao::query()->latest();
+        $query = Inscricao::query()->orderBy('nome');
 
         if ($request->filled('estado')) {
             $query->where('estado', $request->string('estado'));
