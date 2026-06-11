@@ -31,11 +31,13 @@ class Inscricao extends Model
         'cracha_path',
         'estado',
         'observacoes',
+        'checked_in_at',
     ];
 
     protected $casts = [
         'mini_cursos'       => 'array',
         'verificacao_sigam' => 'array',
+        'checked_in_at'     => 'datetime',
         'is_docente_ispm'   => 'boolean',
     ];
 

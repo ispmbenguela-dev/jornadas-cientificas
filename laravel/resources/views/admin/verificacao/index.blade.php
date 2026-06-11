@@ -93,6 +93,10 @@
         background: #fee2e2; border: 2px solid #dc3545;
         border-radius: 1rem; padding: 1.5rem 1.25rem; text-align: center;
     }
+    .verif-card-checkedin {
+        border-color: #198754 !important;
+        box-shadow: 0 0 0 3px rgba(25,135,84,.15) !important;
+    }
 </style>
 @endpush
 
@@ -155,7 +159,7 @@
         $miniCursos = is_array($i->mini_cursos) ? $i->mini_cursos : [];
     @endphp
 
-    <div class="verif-card">
+    <div class="verif-card {{ $i->checked_in_at ? 'verif-card-checkedin' : '' }}">
         {{-- Cabeçalho com nome e estado --}}
         <div class="verif-card-header {{ $i->estado }}">
             <span class="verif-estado-icon">{{ $estadoIcon }}</span>
@@ -230,7 +234,45 @@
                     </span>
                 </div>
                 @endif
+
+                {{-- Check-in --}}
+                <div class="verif-row" style="border-top:2px solid #e9ecef; margin-top:.5rem; padding-top:.6rem">
+                    <span class="verif-row-key">
+                        <i class="bi bi-door-open"></i> Entrada
+                    </span>
+                    <span class="verif-row-val">
+                        @if ($i->checked_in_at)
+                            <span class="text-success fw-bold small">
+                                <i class="bi bi-check-circle-fill"></i>
+                                {{ $i->checked_in_at->format('H:i') }}
+                            </span>
+                        @else
+                            <span class="text-muted small">Não registada</span>
+                        @endif
+                    </span>
+                </div>
             </div>
+
+            {{-- Botão check-in --}}
+            <form method="POST"
+                  action="{{ route('admin.verificacao.checkin', [$i, 'q' => $q]) }}"
+                  class="mt-3">
+                @csrf
+                @if ($i->checked_in_at)
+                    <button type="submit"
+                            class="btn w-100 btn-outline-secondary"
+                            style="font-size:1rem; height:3rem; border-radius:.75rem">
+                        <i class="bi bi-arrow-counterclockwise"></i> Anular entrada
+                    </button>
+                @else
+                    <button type="submit"
+                            class="btn w-100"
+                            style="font-size:1.1rem; font-weight:700; height:3.2rem; border-radius:.75rem;
+                                   background:#198754; color:#fff; border:none">
+                        <i class="bi bi-door-open-fill"></i> Marcar entrada
+                    </button>
+                @endif
+            </form>
 
         </div>
     </div>

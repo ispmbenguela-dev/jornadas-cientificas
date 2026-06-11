@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Inscricao;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -26,5 +27,15 @@ class VerificacaoController extends Controller
         }
 
         return view('admin.verificacao.index', compact('resultados', 'q'));
+    }
+
+    public function checkin(Inscricao $inscricao, Request $request): RedirectResponse
+    {
+        $inscricao->checked_in_at = $inscricao->checked_in_at ? null : now();
+        $inscricao->save();
+
+        $q = $request->query('q', '');
+        return redirect()->route('admin.verificacao.index', ['q' => $q])
+            ->with('checkin_id', $inscricao->id);
     }
 }

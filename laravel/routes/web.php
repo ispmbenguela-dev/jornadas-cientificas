@@ -102,6 +102,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         Route::get('programa', [AdminProgramaController::class, 'index'])->name('programa.index');
         Route::get('verificacao', [AdminVerificacaoController::class, 'index'])->name('verificacao.index');
+        Route::post('verificacao/{inscricao}/checkin', [AdminVerificacaoController::class, 'checkin'])->name('verificacao.checkin');
 
         Route::get('avaliacoes', [AdminAvaliacaoController::class, 'index'])->name('avaliacoes.index');
         Route::get('avaliacoes/qrcode', [AdminAvaliacaoController::class, 'qrcodePage'])->name('avaliacoes.qrcode');
