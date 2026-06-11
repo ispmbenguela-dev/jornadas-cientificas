@@ -337,15 +337,15 @@
                     </div>
 
                     <h3 class="prog-block-title">
-                        <i class="bi bi-easel2-fill"></i> Mini-Cursos · Manhã
-                        <small>a partir das 11h00</small>
+                        <i class="bi bi-easel2-fill"></i> Mini-Cursos · 1.º Bloco
+                        <small>13h30 – 15h00</small>
                     </h3>
 
                     <div class="row g-4 mb-5">
                         <div class="col-lg-6">
                             <article class="talk-card">
                                 <header>
-                                    <span class="hbui-badge hbui-badge-default">11h00</span>
+                                    <span class="hbui-badge hbui-badge-default">13h30</span>
                                     <span class="hbui-badge hbui-badge-room">Sala de Conferência</span>
                                     <span class="hbui-badge hbui-badge-outline-soft">IA · Educação</span>
                                 </header>
@@ -354,7 +354,7 @@
                                 </h4>
                                 <ul class="talk-meta">
                                     <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Sérgio Cespo Coelho da Silva Pinto · Prof. associado, Univ. Fluminense (Brasil)</li>
-                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> José Filipe, MSc.</li>
+                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Kelson Chavonga, MSc.</li>
                                 </ul>
                             </article>
                         </div>
@@ -362,7 +362,7 @@
                         <div class="col-lg-6">
                             <article class="talk-card">
                                 <header>
-                                    <span class="hbui-badge hbui-badge-default">11h00</span>
+                                    <span class="hbui-badge hbui-badge-default">13h30</span>
                                     <span class="hbui-badge hbui-badge-room">Sala 33</span>
                                     <span class="hbui-badge hbui-badge-outline-soft">Saúde & Higiene</span>
                                 </header>
@@ -371,22 +371,22 @@
                                 </h4>
                                 <ul class="talk-meta">
                                     <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> José Mulangue, PhD</li>
-                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Luis Gomes, Lic.</li>
+                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Luís Gomes, Lic.</li>
                                 </ul>
                             </article>
                         </div>
                     </div>
 
                     <h3 class="prog-block-title">
-                        <i class="bi bi-easel2-fill"></i> Mini-Cursos · Tarde
-                        <small>14h00 e 15h30</small>
+                        <i class="bi bi-easel2-fill"></i> Mini-Cursos · 2.º Bloco
+                        <small>15h00 – 16h30</small>
                     </h3>
 
                     <div class="row g-4 mb-4">
                         <div class="col-lg-6">
                             <article class="talk-card">
                                 <header>
-                                    <span class="hbui-badge hbui-badge-default">14h00</span>
+                                    <span class="hbui-badge hbui-badge-default">15h00</span>
                                     <span class="hbui-badge hbui-badge-room">Sala de Conferência</span>
                                     <span class="hbui-badge hbui-badge-outline-soft">IA Generativa</span>
                                 </header>
@@ -395,7 +395,7 @@
                                 </h4>
                                 <ul class="talk-meta">
                                     <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Ilma Rodrigues de Souza Fausto · Prof. associada, Univ. Fluminense (Brasil)</li>
-                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> José Filipe, MSc.</li>
+                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Domingos Barbante, MSc.</li>
                                 </ul>
                             </article>
                         </div>
@@ -403,7 +403,7 @@
                         <div class="col-lg-6">
                             <article class="talk-card">
                                 <header>
-                                    <span class="hbui-badge hbui-badge-default">14h00</span>
+                                    <span class="hbui-badge hbui-badge-default">15h00</span>
                                     <span class="hbui-badge hbui-badge-room">Sala 32</span>
                                     <span class="hbui-badge hbui-badge-outline-soft">Capital Humano</span>
                                 </header>
@@ -416,11 +416,18 @@
                                 </ul>
                             </article>
                         </div>
+                    </div>
 
-                        <div class="col-lg-6">
+                    <h3 class="prog-block-title">
+                        <i class="bi bi-easel2-fill"></i> Mini-Curso · 3.º Bloco
+                        <small>16h00 – 18h00</small>
+                    </h3>
+
+                    <div class="row g-4 mb-4">
+                        <div class="col-lg-8 mx-auto">
                             <article class="talk-card">
                                 <header>
-                                    <span class="hbui-badge hbui-badge-default">15h30</span>
+                                    <span class="hbui-badge hbui-badge-default">16h00</span>
                                     <span class="hbui-badge hbui-badge-room">Sala de Conferência</span>
                                     <span class="hbui-badge hbui-badge-outline-soft">Investigação</span>
                                 </header>
@@ -429,7 +436,7 @@
                                 </h4>
                                 <ul class="talk-meta">
                                     <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Arnaldo Faustino, PhD</li>
-                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> José Filipe, MSc.</li>
+                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Kelson Chavonga, MSc.</li>
                                 </ul>
                             </article>
                         </div>
@@ -437,7 +444,7 @@
 
                     <div class="prog-closing">
                         <i class="bi bi-flag-fill"></i>
-                        <span><strong>17h00</strong> · Encerramento do 1.º dia</span>
+                        <span><strong>18h00</strong> · Encerramento do 1.º dia</span>
                     </div>
                 </div>
 

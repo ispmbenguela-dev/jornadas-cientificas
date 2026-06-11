@@ -33,7 +33,9 @@
       "Bash(composer show *)",
       "Bash(php -l app/Http/Controllers/Admin/AvaliacaoController.php)",
       "Bash(git status *)",
-      "Bash(php -r \"echo 'syntax ok';\")"
+      "Bash(php -r \"echo 'syntax ok';\")",
+      "Bash(git -C \"c:\\\\Users\\\\FSL\\\\Desktop\\\\DEV ISPM\\\\jornadas-cientificas\" diff --stat HEAD laravel/resources/views/home.blade.php)",
+      "Bash(git -C \"c:\\\\Users\\\\FSL\\\\Desktop\\\\DEV ISPM\\\\jornadas-cientificas\" checkout HEAD -- laravel/resources/views/home.blade.php)"
     ],
     "additionalDirectories": [
       "c:\\Users\\Fábio Kapa\\Desktop\\..DEV\\ISPM\\jornada-cientifica"
