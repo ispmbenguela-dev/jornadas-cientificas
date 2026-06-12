@@ -452,7 +452,7 @@
                 <div class="tab-pane fade" id="dia2" role="tabpanel">
 
                     <h3 class="prog-block-title">
-                        <i class="bi bi-easel2-fill"></i> Mini-Cursos
+                        <i class="bi bi-easel2-fill"></i> Mini-Cursos de Abertura
                         <small>08h30 – 11h30</small>
                     </h3>
 
@@ -460,7 +460,7 @@
                         <div class="col-lg-6">
                             <article class="talk-card">
                                 <header>
-                                    <span class="hbui-badge hbui-badge-default">08h30 – 10h00</span>
+                                    <span class="hbui-badge hbui-badge-default">08h30</span>
                                     <span class="hbui-badge hbui-badge-room">Sala de Conferência</span>
                                     <span class="hbui-badge hbui-badge-outline-soft">Educação Inclusiva</span>
                                 </header>
@@ -469,22 +469,22 @@
                                 </h4>
                                 <ul class="talk-meta">
                                     <li><i class="bi bi-mic-fill"></i> <strong>Prelectora:</strong> Ruth Mariani Braz · Prof. associada, Univ. Fluminense (Brasil)</li>
-                                    <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Iracelma Simão Neto Afonso, MSc.</li>
+                                    <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Iracelma Simão Neto Afonso, MSc.</li>
                                 </ul>
                             </article>
                         </div>
                         <div class="col-lg-6">
                             <article class="talk-card">
                                 <header>
-                                    <span class="hbui-badge hbui-badge-default">10h00 – 11h30</span>
+                                    <span class="hbui-badge hbui-badge-default">10h00</span>
                                     <span class="hbui-badge hbui-badge-room">Sala 33</span>
-                                    <span class="hbui-badge hbui-badge-outline-soft">Gestão da Qualidade</span>
+                                    <span class="hbui-badge hbui-badge-outline-soft">Avaliação Institucional</span>
                                 </header>
                                 <h4 class="talk-title">
                                     A Avaliação Institucional: Desafios para a Melhoria da Qualidade do Desempenho do Instituto Superior Politécnico Maravilha
                                 </h4>
                                 <ul class="talk-meta">
-                                    <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Justo Che Soler, PhD.</li>
+                                    <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Justo Che Soler, PhD</li>
                                     <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Ernesto Kambuangue, Lic.</li>
                                 </ul>
                             </article>
@@ -494,7 +494,7 @@
                     <div class="text-center mb-4">
                         <span class="section-eyebrow">Comunicações Livres</span>
                         <h3 class="prog-section-title">
-                            Três painéis temáticos em <span class="text-accent">paralelo</span>
+                            Quatro salas em <span class="text-accent">paralelo</span>
                         </h3>
                     </div>
 
@@ -512,7 +512,23 @@
                             <div class="col-md-6 col-xl-4">
                                 <article class="talk-card">
                                     <header>
-                                        <span class="hbui-badge hbui-badge-default">11h00</span>
+                                        <span class="hbui-badge hbui-badge-default">12h00</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Turismo & Segurança</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        As percepções sobre segurança e impacto no desenvolvimento do turismo em Angola: visão, análise de percepção e proposta de mitigação
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> José Januário, PhD</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Vlade Marcial Tchiponda, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">12h20</span>
                                         <span class="hbui-badge hbui-badge-outline-soft">Segurança Informática</span>
                                     </header>
                                     <h4 class="talk-title">
@@ -520,7 +536,7 @@
                                     </h4>
                                     <ul class="talk-meta">
                                         <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Jeremias Kabaco, Lic.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Milton Sessa, Lic.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Vlade Marcial Tchiponda, MSc.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -528,7 +544,7 @@
                             <div class="col-md-6 col-xl-4">
                                 <article class="talk-card">
                                     <header>
-                                        <span class="hbui-badge hbui-badge-default">11h20</span>
+                                        <span class="hbui-badge hbui-badge-default">12h40</span>
                                         <span class="hbui-badge hbui-badge-outline-soft">Cultura Organizacional</span>
                                     </header>
                                     <h4 class="talk-title">
@@ -536,7 +552,7 @@
                                     </h4>
                                     <ul class="talk-meta">
                                         <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Agnaldo Gaspar, MSc.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Teresa Bamo, Lic.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Vlade Marcial Tchiponda, MSc.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -544,7 +560,7 @@
                             <div class="col-md-6 col-xl-4">
                                 <article class="talk-card">
                                     <header>
-                                        <span class="hbui-badge hbui-badge-default">11h40</span>
+                                        <span class="hbui-badge hbui-badge-default">13h00</span>
                                         <span class="hbui-badge hbui-badge-outline-soft">Propriedade Intelectual</span>
                                     </header>
                                     <h4 class="talk-title">
@@ -552,7 +568,55 @@
                                     </h4>
                                     <ul class="talk-meta">
                                         <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Dilson Cupenala, Lic.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Miracelma Barroso, Lic.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Vlade Marcial Tchiponda, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h20</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Agro-Indústria</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Estudo para implementação com foco em confinamento bovino na Província de Benguela
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Gamaliel Domingos, Estudante</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Vlade Marcial Tchiponda, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h40</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Empreendedorismo</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        O empreendedorismo universitário como alternativa para o desenvolvimento económico do Município de Menongue, Província do Cubango — proposta a partir do ISPPM
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelectores:</strong> Inovel Martines Varela, MSc. · Yensy Lazara Rodríguez Gonález, MSc. · Santa Caridad González Corrales, PhD</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Vlade Marcial Tchiponda, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">14h00</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Comunicação Corporativa</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        O papel da comunicação corporativa no fortalecimento da imagem empresarial: estudo interactivo com os colaboradores da empresa Tombosy Lda
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelectora:</strong> Laurinda Chilombo Franco, Estudante</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Vlade Marcial Tchiponda, MSc.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -573,54 +637,6 @@
                             <div class="col-md-6 col-xl-4">
                                 <article class="talk-card">
                                     <header>
-                                        <span class="hbui-badge hbui-badge-default">11h00</span>
-                                        <span class="hbui-badge hbui-badge-outline-soft">Agro-Indústria</span>
-                                    </header>
-                                    <h4 class="talk-title">
-                                        Frigorífico Agro-J, Lda: estudo para implementação com foco em confinamento bovino na Província de Benguela
-                                    </h4>
-                                    <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Gamaliel Domingos · Estudante</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Clemente Luzolo, MSc.</li>
-                                    </ul>
-                                </article>
-                            </div>
-
-                            <div class="col-md-6 col-xl-4">
-                                <article class="talk-card">
-                                    <header>
-                                        <span class="hbui-badge hbui-badge-default">11h20</span>
-                                        <span class="hbui-badge hbui-badge-outline-soft">TIC & IA</span>
-                                    </header>
-                                    <h4 class="talk-title">
-                                        Uso das TIC e IA nas organizações — o caso do software Primavera
-                                    </h4>
-                                    <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Nsimba Nsinge, Lic.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Eunice Pedro, Lic.</li>
-                                    </ul>
-                                </article>
-                            </div>
-
-                            <div class="col-md-6 col-xl-4">
-                                <article class="talk-card">
-                                    <header>
-                                        <span class="hbui-badge hbui-badge-default">11h40</span>
-                                        <span class="hbui-badge hbui-badge-outline-soft">Fintech</span>
-                                    </header>
-                                    <h4 class="talk-title">
-                                        Digitalização dos sistemas de pagamento no Ensino Superior em Angola — abordagem baseada na plataforma INTELIZE
-                                    </h4>
-                                    <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Eduardo Cavungo, Lic.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Desidério Sessa, Lic.</li>
-                                    </ul>
-                                </article>
-                            </div>
-
-                            <div class="col-md-6 col-xl-4">
-                                <article class="talk-card">
-                                    <header>
                                         <span class="hbui-badge hbui-badge-default">12h00</span>
                                         <span class="hbui-badge hbui-badge-outline-soft">Automação</span>
                                     </header>
@@ -628,8 +644,88 @@
                                         Automação dos interruptores do Instituto Superior Politécnico Maravilha — Benguela
                                     </h4>
                                     <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Paulo Ricardo, Lic.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Honório Kuriaquita, MSc.</li>
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Kizuva Tomas Garcia, Lic.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Miguel dos Santos, Lic.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">12h20</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">TIC & IA</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Uso das TIC e IA nas organizações — o caso do software Primavera
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Nsimba Nsinge, Lic.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Miguel dos Santos, Lic.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">12h40</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Gestão de Riscos</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Utilização das TIC na gestão integral dos riscos de desastres
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Nilson Wahuluka · Palaça Cesar, MSc.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Miguel dos Santos, Lic.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h00</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Transportes & Segurança</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Desenvolvimento de uma plataforma de monitorização de segurança no transporte interprovincial de passageiros em Angola
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Nelson Augusto Japão, Estudante</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Miguel dos Santos, Lic.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h20</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Telecomunicações</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        O uso da tecnologia Power Line Communication (PLC) para transmissão de dados
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> José Honório Alberto Curiaquita, MSc.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Miguel dos Santos, Lic.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h40</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">IA · Investigação</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Uso da inteligência artificial no processo de investigação científica em estudantes do Curso de Comunicação Social do ISPPM
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelectores:</strong> Yensy Lazara Rodríguez Gonález, MSc. · Inovel Martines Varela, MSc. · Santa Caridad González Corrales, PhD</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Miguel dos Santos, Lic.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -638,30 +734,14 @@
                                 <article class="talk-card">
                                     <header>
                                         <span class="hbui-badge hbui-badge-default">14h00</span>
-                                        <span class="hbui-badge hbui-badge-outline-soft">Aplicação Web</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Acessibilidade Digital</span>
                                     </header>
                                     <h4 class="talk-title">
-                                        Aplicação web para avaliação de desempenho e qualidade docente no Instituto Superior Politécnico Maravilha
+                                        VOVA: desenvolvimento de uma plataforma web progressiva de acessibilidade para a comunidade surda em Angola
                                     </h4>
                                     <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Kisuva Garcia, Lic.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Santos Viana, Lic.</li>
-                                    </ul>
-                                </article>
-                            </div>
-
-                            <div class="col-md-6 col-xl-4">
-                                <article class="talk-card">
-                                    <header>
-                                        <span class="hbui-badge hbui-badge-default">14h20</span>
-                                        <span class="hbui-badge hbui-badge-outline-soft">IA · RH</span>
-                                    </header>
-                                    <h4 class="talk-title">
-                                        A inteligência artificial no processo de recrutamento e selecção de pessoas
-                                    </h4>
-                                    <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Cairo Isaac · Estudante</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Bregel Sachilunga, Lic.</li>
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> David Conga Matombe, MSc.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Miguel dos Santos, Lic.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -682,31 +762,15 @@
                             <div class="col-md-6 col-xl-4">
                                 <article class="talk-card">
                                     <header>
-                                        <span class="hbui-badge hbui-badge-default">11h00</span>
-                                        <span class="hbui-badge hbui-badge-outline-soft">Gestão Pública</span>
-                                    </header>
-                                    <h4 class="talk-title">
-                                        Modelos de gestão de pessoas por competências no sector público e implicações na valorização do capital humano — Direcção Municipal da Educação de Benguela (2022/2023)
-                                    </h4>
-                                    <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> João Ivo Martins, MSc.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valasco, Lic.</li>
-                                    </ul>
-                                </article>
-                            </div>
-
-                            <div class="col-md-6 col-xl-4">
-                                <article class="talk-card">
-                                    <header>
-                                        <span class="hbui-badge hbui-badge-default">11h20</span>
+                                        <span class="hbui-badge hbui-badge-default">12h00</span>
                                         <span class="hbui-badge hbui-badge-outline-soft">Governação</span>
                                     </header>
                                     <h4 class="talk-title">
-                                        Governação e desenvolvimento do capital humano em Angola: desafios e perspectivas contemporâneas
+                                        Governação e desenvolvimento do capital humano em Angola: desafios e perspectivas contemporâneas nos domínios da educação, ciência, tecnologia, saúde e bem-estar social
                                     </h4>
                                     <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Kelsom Chivonga</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valasco, Lic.</li>
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Kelson Chavonga, MSc.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Orlando Alberto, MSc.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -714,7 +778,23 @@
                             <div class="col-md-6 col-xl-4">
                                 <article class="talk-card">
                                     <header>
-                                        <span class="hbui-badge hbui-badge-default">11h40</span>
+                                        <span class="hbui-badge hbui-badge-default">12h20</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">História Local</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        O tratamento didáctico da história local de Benguela em vinculação com a história de Angola na formação profissional pedagógica: metodologia para a sua implementação
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Victor Saculanda, PhD</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Orlando Alberto, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">12h40</span>
                                         <span class="hbui-badge hbui-badge-outline-soft">Fisioterapia</span>
                                     </header>
                                     <h4 class="talk-title">
@@ -722,7 +802,7 @@
                                     </h4>
                                     <ul class="talk-meta">
                                         <li><i class="bi bi-mic-fill"></i> <strong>Prelectores:</strong> Victor Nungulu Pedro, Lic. · Joaquim Júnior, Lic. · Solva Haiquela, Lic.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valasco, Lic.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Orlando Alberto, MSc.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -730,15 +810,47 @@
                             <div class="col-md-6 col-xl-4">
                                 <article class="talk-card">
                                     <header>
-                                        <span class="hbui-badge hbui-badge-default">12h00</span>
-                                        <span class="hbui-badge hbui-badge-outline-soft">Escrita Académica</span>
+                                        <span class="hbui-badge hbui-badge-default">13h00</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Metodologia</span>
                                     </header>
                                     <h4 class="talk-title">
-                                        Escrita académica como instrumento de produção e valorização do conhecimento
+                                        A interdisciplinaridade como experiência metodológica na aprendizagem das habilidades motoras básicas — Ginástica Básica
                                     </h4>
                                     <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Adelino Tchendohamba Tchimbingo</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valasco, Lic.</li>
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelectora:</strong> Maireylis Rabelo Valdivia, PhD</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Orlando Alberto, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h20</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Ética Académica</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Fraude académica e suas implicações na vida prática e profissional dos estudantes
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Lázaro Nganda Sapalo, Estudante</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Orlando Alberto, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h40</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Desempenho Docente</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Avaliação do impacto do processo de superação no desempenho dos Professores do Instituto Superior Politécnico Maravilha
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Domingos Caginga Quinzeca, PhD</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Orlando Alberto, MSc.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -747,38 +859,35 @@
                                 <article class="talk-card">
                                     <header>
                                         <span class="hbui-badge hbui-badge-default">14h00</span>
-                                        <span class="hbui-badge hbui-badge-outline-soft">Metodologia</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">História & Integração</span>
                                     </header>
                                     <h4 class="talk-title">
-                                        A interdisciplinaridade como experiência metodológica na aprendizagem das habilidades motoras básicas — Ginástica Básica
+                                        O ensino da história como fundamento da integração africana: desafios para a construção de uma unidade continental no século XXI
                                     </h4>
                                     <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelectora:</strong> Maireylis Rabelo Valdivia, PhD</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valasco, Lic.</li>
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelectora:</strong> Solange Judite Gomes Amado Jorge</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderador:</strong> Orlando Alberto, MSc.</li>
                                     </ul>
                                 </article>
                             </div>
+                        </div>
+                    </div>
 
-                            <div class="col-md-6 col-xl-4">
-                                <article class="talk-card">
-                                    <header>
-                                        <span class="hbui-badge hbui-badge-default">14h20</span>
-                                        <span class="hbui-badge hbui-badge-outline-soft">Ambiente</span>
-                                    </header>
-                                    <h4 class="talk-title">
-                                        Análise da qualidade da água distribuída pela Empresa Pública de Água e Saneamento de Benguela
-                                    </h4>
-                                    <ul class="talk-meta">
-                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelectora:</strong> Iracelma Simão, MSc.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valasco, Lic.</li>
-                                    </ul>
-                                </article>
+                    {{-- PAINEL IV --}}
+                    <div class="battery-block">
+                        <div class="battery-head">
+                            <div>
+                                <span class="hbui-badge hbui-badge-default">Painel IV</span>
+                                <h3 class="battery-title">Educação, Saúde e Desenvolvimento Social</h3>
                             </div>
+                            <span class="battery-count">Sala 34</span>
+                        </div>
 
+                        <div class="row g-4">
                             <div class="col-md-6 col-xl-4">
                                 <article class="talk-card">
                                     <header>
-                                        <span class="hbui-badge hbui-badge-default">14h40</span>
+                                        <span class="hbui-badge hbui-badge-default">12h00</span>
                                         <span class="hbui-badge hbui-badge-outline-soft">Desporto</span>
                                     </header>
                                     <h4 class="talk-title">
@@ -786,7 +895,103 @@
                                     </h4>
                                     <ul class="talk-meta">
                                         <li><i class="bi bi-mic-fill"></i> <strong>Prelectores:</strong> Lorena Riveri Jimenes, MSc. · Rafael Torres Velazquez, MSc.</li>
-                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valasco, Lic.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valaço, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">12h20</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Escrita Académica</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Escrita académica como instrumento de produção e valorização do conhecimento
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Adelino Tchendohamba Tchimbingo, MSc.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valaço, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">12h40</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Inclusão & Equidade</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Desafios da inclusão e equidade no ensino superior angolano: estudo interactivo com os estudantes do 2.º ano na especialidade de Biologia — ISPM Benguela
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Manuel Kandingolo Samuti, Estudante</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valaço, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h00</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Recursos Didácticos</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        Influência dos recursos didácticos visuais na motivação para o estudo de histologia — Instituto Técnico Privado de Saúde Bueia e Filhos, Benguela
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Eduardo André Hólwa, Estudante</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valaço, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h20</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Psicopedagogia</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        A constatação de histórias e o uso da inteligência artificial como estratégias psicopedagógicas no apoio emocional de crianças e adolescentes sinistrados das enchentes do rio Cavaco em Benguela
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelector:</strong> Luciano Kambili Sacutala, Lic.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valaço, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">13h40</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">História & Sociedade</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        As comemorações do 4 de Fevereiro e a trajectória da estrutura económica e social angolana: abordagem sociológica e transdisciplinar no processo de emancipação e desenvolvimento nacional
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelectores:</strong> José Pedro da Cruz, PhD · José Muenho, PhD</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valaço, MSc.</li>
+                                    </ul>
+                                </article>
+                            </div>
+
+                            <div class="col-md-6 col-xl-4">
+                                <article class="talk-card">
+                                    <header>
+                                        <span class="hbui-badge hbui-badge-default">14h00</span>
+                                        <span class="hbui-badge hbui-badge-outline-soft">Ambiente</span>
+                                    </header>
+                                    <h4 class="talk-title">
+                                        A análise da qualidade da água distribuída pela Empresa Pública da Água e Saneamento de Benguela
+                                    </h4>
+                                    <ul class="talk-meta">
+                                        <li><i class="bi bi-mic-fill"></i> <strong>Prelectora:</strong> Iracelma Simão, MSc.</li>
+                                        <li><i class="bi bi-person-fill"></i> <strong>Moderadora:</strong> Brigite Valaço, MSc.</li>
                                     </ul>
                                 </article>
                             </div>
@@ -794,32 +999,17 @@
                     </div>
 
                     <h3 class="prog-block-title">
-                        <i class="bi bi-flag-fill"></i> Encerramento da Jornada
-                        <small>Sala de Conferência</small>
+                        <i class="bi bi-flag-fill"></i> Sessão de Encerramento
+                        <small>15h00 · Sala de Conferência</small>
                     </h3>
 
                     <div class="timeline">
-                        <div class="timeline-item">
-                            <div class="timeline-time">16h00</div>
-                            <div class="timeline-card">
-                                <span class="hbui-badge hbui-badge-secondary">Discurso</span>
-                                <h4>Discurso de encerramento da Jornada</h4>
-                            </div>
-                        </div>
-
-                        <div class="timeline-item">
-                            <div class="timeline-time">—</div>
-                            <div class="timeline-card">
-                                <span class="hbui-badge hbui-badge-warning">Cultural</span>
-                                <h4>Momento cultural e entrega de certificados aos participantes</h4>
-                            </div>
-                        </div>
-
                         <div class="timeline-item highlight">
-                            <div class="timeline-time">17h30</div>
+                            <div class="timeline-time">15h00</div>
                             <div class="timeline-card">
-                                <span class="hbui-badge hbui-badge-destructive">Final</span>
-                                <h4>Encerramento da actividade</h4>
+                                <span class="hbui-badge hbui-badge-secondary">Encerramento</span>
+                                <h4>Sessão de encerramento da XI Jornada</h4>
+                                <p><i class="bi bi-award"></i> Momento cultural · Discurso de encerramento · Entrega de certificados de participação</p>
                             </div>
                         </div>
                     </div>
