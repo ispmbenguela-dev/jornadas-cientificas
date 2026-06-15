@@ -28,7 +28,10 @@ class AvaliacaoController extends Controller
         }
         $qs = [];
         for ($i = 1; $i <= 20; $i++) {
-            $qs["q{$i}"] = ['required', 'integer', 'min:1', 'max:5'];
+            $key = "q{$i}";
+            $qs[$key] = in_array($key, Avaliacao::SIM_NAO_QUESTIONS)
+                ? ['required', 'integer', 'min:1', 'max:2']
+                : ['required', 'integer', 'min:1', 'max:5'];
         }
 
         $data = $request->validate(array_merge([

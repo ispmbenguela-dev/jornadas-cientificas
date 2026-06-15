@@ -89,11 +89,34 @@
                         </div>
 
                         @foreach ($secao['perguntas'] as $qKey => $pergunta)
-                        @php $qNum++ @endphp
+                        @php
+                            $qNum++;
+                            $isSinNao = in_array($qKey, \App\Models\Avaliacao::SIM_NAO_QUESTIONS);
+                        @endphp
                         <div class="col-12">
                             <p class="mb-2 fw-medium">
                                 <span class="badge bg-secondary me-2">{{ $qNum }}</span>{{ $pergunta }}
+                                @if ($isSinNao)
+                                    <span class="badge bg-light text-secondary border ms-1" style="font-size:.7rem">Sim / Não</span>
+                                @endif
                             </p>
+                            @if ($isSinNao)
+                            <div class="d-flex flex-wrap gap-2">
+                                @foreach (\App\Models\Avaliacao::SIM_NAO as $val => $label)
+                                <div class="form-check form-check-inline avl-option avl-option-sn-{{ $val }}"
+                                     title="{{ $label }}">
+                                    <input type="radio" name="{{ $qKey }}" value="{{ $val }}"
+                                           id="{{ $qKey }}_{{ $val }}"
+                                           class="form-check-input avl-radio"
+                                           @checked(old($qKey) == $val) required>
+                                    <label class="form-check-label avl-label" for="{{ $qKey }}_{{ $val }}">
+                                        <span class="avl-num">{{ $val == 2 ? '✓' : '✗' }}</span>
+                                        <small class="avl-text d-none d-md-block">{{ $label }}</small>
+                                    </label>
+                                </div>
+                                @endforeach
+                            </div>
+                            @else
                             <div class="d-flex flex-wrap gap-2">
                                 @foreach ($likert as $val => $label)
                                 <div class="form-check form-check-inline avl-option"
@@ -109,6 +132,7 @@
                                 </div>
                                 @endforeach
                             </div>
+                            @endif
                         </div>
                         @endforeach
                         @endforeach
@@ -267,5 +291,7 @@
     .avl-missing { background: #fff5f5; border-radius: .5rem; padding: .5rem .75rem; outline: 2px solid #dc3545; }
     .avl-missing .badge { background: #6c757d !important; }
     .avl-missing > p { color: #dc3545 !important; }
+    .avl-option-sn-1 .form-check-input:checked + .avl-label { border-color:#dc3545; background:#dc3545; color:#fff; }
+    .avl-option-sn-2 .form-check-input:checked + .avl-label { border-color:#198754; background:#198754; color:#fff; }
 </style>
 @endpush

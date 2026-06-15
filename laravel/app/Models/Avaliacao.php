@@ -44,12 +44,16 @@ class Avaliacao extends Model
         5 => 'Muito Satisfeito',
     ];
 
+    public const SIM_NAO = [1 => 'Não', 2 => 'Sim'];
+
+    public const SIM_NAO_QUESTIONS = ['q17', 'q18'];
+
     public const SECOES = [
         'organizacao' => [
             'titulo'   => 'Organização do Evento',
             'icone'    => 'bi-clipboard-check',
             'perguntas' => [
-                'q1' => 'satisfação relacinada a organização geral das jornadas científicas.',
+                'q1' => 'A organização geral das jornadas científicas foi satisfatória.',
                 'q2' => 'As informações sobre o evento foram divulgadas de forma clara e atempada.',
                 'q3' => 'O processo de inscrição foi simples e eficiente.',
                 'q4' => 'O cumprimento dos horários foi satisfatório.',
