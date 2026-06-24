@@ -14,6 +14,7 @@ class Inscricao extends Model
     protected $fillable = [
         'edicao_id',
         'nome',
+        'sexo',
         'email',
         'email_institucional',
         'is_docente_ispm',
@@ -66,6 +67,16 @@ class Inscricao extends Model
         'participacao' => 'Participação',
         'mini_curso'   => 'Mini-Curso',
     ];
+
+    public const SEXOS = [
+        'masculino' => 'Masculino',
+        'feminino'  => 'Feminino',
+    ];
+
+    public function getSexoLabelAttribute(): string
+    {
+        return self::SEXOS[$this->sexo] ?? 'Não informado';
+    }
 
     public const TABELA_PRECOS = [
         'docente'   => ['participacao' => 10000, 'mini_curso' => 5000],
@@ -159,6 +170,24 @@ class Inscricao extends Model
             return self::MINI_CURSOS;
         }
         $rows = $edicao->miniCursos()->where('activo', true)->get();
+        if ($rows->isEmpty()) {
+            return self::MINI_CURSOS;
+        }
+        $out = [];
+        foreach ($rows as $r) {
+            $out[$r->chave] = $r->toCardArray();
+        }
+        return $out;
+    }
+
+    /**
+     * Lista de mini-cursos para os filtros do admin: todos os activos da BD
+     * (independente da edição 'actual'), com fallback para a constante.
+     * Garante que mini-cursos com inscrições aparecem sempre no filtro.
+     */
+    public static function miniCursosParaFiltro(): array
+    {
+        $rows = MiniCurso::where('activo', true)->orderBy('ordem')->get();
         if ($rows->isEmpty()) {
             return self::MINI_CURSOS;
         }

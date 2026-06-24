@@ -26,9 +26,18 @@
                 <div class="panel">
                     <h4 class="mb-3"><i class="bi bi-person"></i> Dados pessoais</h4>
                     <div class="row g-3">
-                        <div class="col-md-12">
+                        <div class="col-md-8">
                             <label class="form-label">Nome *</label>
                             <input type="text" name="nome" value="{{ old('nome', $inscricao->nome) }}" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Sexo</label>
+                            <select name="sexo" class="form-select">
+                                <option value="">Não informado</option>
+                                @foreach (\App\Models\Inscricao::SEXOS as $k => $l)
+                                    <option value="{{ $k }}" @selected(old('sexo', $inscricao->sexo) === $k)>{{ $l }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">E-mail *</label>

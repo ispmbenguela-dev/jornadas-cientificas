@@ -33,12 +33,13 @@
     <h1>Inscrições — XI Jornada Científico-Metodológica ISPM</h1>
     <div class="meta">Gerado em {{ now()->format('d/m/Y H:i') }} · {{ $inscricoes->count() }} registo(s)</div>
 
-    @if ($filtros['estado'] || $filtros['categoria'] || $filtros['q'])
+    @if ($filtros['estado'] || $filtros['categoria'] || ($filtros['modalidade'] ?? null) || $filtros['q'])
         <div class="filters">
             <strong>Filtros aplicados:</strong>
-            @if ($filtros['estado'])    Estado = <em>{{ ucfirst($filtros['estado']) }}</em> · @endif
-            @if ($filtros['categoria']) Categoria = <em>{{ $categorias[$filtros['categoria']] ?? $filtros['categoria'] }}</em> · @endif
-            @if ($filtros['q'])         Pesquisa = <em>"{{ $filtros['q'] }}"</em> @endif
+            @if ($filtros['estado'])     Estado = <em>{{ ucfirst($filtros['estado']) }}</em> · @endif
+            @if ($filtros['categoria'])  Categoria = <em>{{ $categorias[$filtros['categoria']] ?? $filtros['categoria'] }}</em> · @endif
+            @if ($filtros['modalidade'] ?? null) Modalidade = <em>{{ ($modalidades ?? [])[$filtros['modalidade']] ?? $filtros['modalidade'] }}</em> · @endif
+            @if ($filtros['q'])          Pesquisa = <em>"{{ $filtros['q'] }}"</em> @endif
         </div>
     @endif
 

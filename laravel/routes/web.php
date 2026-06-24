@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\CertificadoController as AdminCertificadoControll
 use App\Http\Controllers\Admin\ConfiguracaoController as AdminConfiguracaoController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\EdicaoController as AdminEdicaoController;
+use App\Http\Controllers\Admin\EstatisticaController as AdminEstatisticaController;
 use App\Http\Controllers\Admin\InscricaoController as AdminInscricaoController;
 use App\Http\Controllers\Admin\McoController as AdminMcoController;
 use App\Http\Controllers\Admin\SubmissaoController as AdminSubmissaoController;
@@ -55,6 +56,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('logout', [AdminAuthController::class, 'logout'])->name('logout');
 
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+
+        Route::get('estatisticas', [AdminEstatisticaController::class, 'index'])->name('estatisticas.index');
 
         Route::get('edicoes', [AdminEdicaoController::class, 'index'])->name('edicoes.index');
         Route::get('edicoes/create', [AdminEdicaoController::class, 'create'])->name('edicoes.create');

@@ -27,7 +27,8 @@ class InscricaoController extends Controller
         return view('admin.inscricoes.index', [
             'inscricoes'       => $query->paginate(20)->withQueryString(),
             'categorias'       => Inscricao::CATEGORIAS,
-            'miniCursos'       => Inscricao::miniCursosDisponiveis(),
+            'modalidades'      => Inscricao::MODALIDADES,
+            'miniCursos'       => Inscricao::miniCursosParaFiltro(),
             'totalValor'       => (int) $totalValor,
             'totalConfirmado'  => (int) $totalConfirmado,
         ]);
@@ -53,6 +54,7 @@ class InscricaoController extends Controller
 
         $data = $request->validate([
             'nome'                 => ['required', 'string', 'max:160'],
+            'sexo'                 => ['nullable', 'in:' . implode(',', array_keys(Inscricao::SEXOS))],
             'email'                => ['required', 'email', 'max:160'],
             'telefone'             => ['required', 'string', 'max:40'],
             'instituicao'          => ['nullable', 'string', 'max:160'],
@@ -132,6 +134,7 @@ class InscricaoController extends Controller
             $miniCursoKeys = array_keys(Inscricao::miniCursosDisponiveis());
             $data = $request->validate([
                 'nome'                 => ['required', 'string', 'max:160'],
+                'sexo'                 => ['nullable', 'in:' . implode(',', array_keys(Inscricao::SEXOS))],
                 'email'                => ['required', 'email', 'max:160'],
                 'telefone'             => ['required', 'string', 'max:40'],
                 'instituicao'          => ['nullable', 'string', 'max:160'],
@@ -248,6 +251,7 @@ class InscricaoController extends Controller
         $filtros = [
             'estado'     => $request->string('estado')->toString() ?: null,
             'categoria'  => $request->string('categoria')->toString() ?: null,
+            'modalidade' => $request->string('modalidade')->toString() ?: null,
             'mini_curso' => $request->string('mini_curso')->toString() ?: null,
             'q'          => $request->string('q')->toString() ?: null,
         ];
@@ -256,6 +260,7 @@ class InscricaoController extends Controller
             'inscricoes'  => $inscricoes,
             'filtros'     => $filtros,
             'categorias'  => Inscricao::CATEGORIAS,
+            'modalidades' => Inscricao::MODALIDADES,
             'totalValor'  => $inscricoes->where('estado', 'confirmada')->sum('valor_kz'),
         ])->setPaper('a4', 'landscape');
 
@@ -271,6 +276,9 @@ class InscricaoController extends Controller
         }
         if ($request->filled('categoria')) {
             $query->where('categoria', $request->string('categoria'));
+        }
+        if ($request->filled('modalidade')) {
+            $query->where('modalidade', $request->string('modalidade'));
         }
         if ($request->filled('mini_curso')) {
             $query->whereJsonContains('mini_cursos', $request->string('mini_curso')->toString());

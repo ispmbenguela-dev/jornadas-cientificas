@@ -116,36 +116,46 @@ class Certificado extends Model
         }
     }
 
-    /**
-     * Constrói o texto do corpo do certificado consoante o tipo.
-     */
     public function getCorpoTextoAttribute(): string
     {
         $edicao = $this->edicao ?? Edicao::query()->where('status', 'actual')->first();
         $evento = $edicao?->nome ?? 'XI Jornada Científico-Metodológica Geral';
         $instituicao = 'Instituto Superior Politécnico Maravilha';
-        $datas = $edicao ? $edicao->data_extenso : 'nos dias 11 e 12 de Junho de 2026';
+        $datas = 'nos dias ' . ($edicao ? $edicao->data_extenso : '11 e 12 de Junho de 2026');
         $lema = $edicao?->lema ?? 'O Ensino Superior e os desafios do Desenvolvimento Económico e Social de Angola';
 
         return match ($this->tipo) {
-            'prelector_mini_curso' => 'participou no mini-curso como prelector, com o tema: "'
+            'prelector_mini_curso' => 'Participou no mini-curso como prelector, com o tema: "'
                 . ($this->tema ?: '—') . '", na '
                 . $evento . ', promovida pelo ' . $instituicao
                 . ', ' . $datas . ', com o Lema: "' . $lema . '".',
+
             'prelector_comunicacao' => 'ministrou com êxito, a comunicação livre, com o tema: "'
                 . ($this->tema ?: '—') . '", na '
-                . $evento . ' promovida pelo ' . $instituicao
+                . $evento . ', promovida pelo ' . $instituicao
                 . ', ' . $datas . ', com o Lema: "' . $lema . '".',
-            'moderador' => 'desempenhou a função de moderador'
-                . ($this->tema ? ' do painel "' . $this->tema . '"' : '')
-                . ', na ' . $evento . ' promovida pelo ' . $instituicao
-                . ', ' . $datas . '.',
-            'organizador' => 'integrou a comissão organizadora'
-                . ($this->papel_extra ? ' como ' . $this->papel_extra : '')
-                . ' da ' . $evento . ' promovida pelo ' . $instituicao
-                . ', ' . $datas . '.',
-            default => 'participou na ' . $evento . ', promovida pelo '
-                . $instituicao . ', ' . $datas . ', com o Lema: "' . $lema . '".',
+
+            'moderador' => $this->mini_curso_key
+                ? 'Participou no mini-curso como moderador'
+                  . ($this->tema ? ', com o tema: "' . $this->tema . '"' : '')
+                  . ', na ' . $evento . ', promovida pelo ' . $instituicao
+                  . ', ' . $datas . ', com o Lema: "' . $lema . '".'
+                : 'desempenhou a função de moderador'
+                  . ($this->tema ? ' do painel "' . $this->tema . '"' : '')
+                  . ', na ' . $evento . ', promovida pelo ' . $instituicao
+                  . ', ' . $datas . ', com o Lema: "' . $lema . '".',
+
+            'organizador' => 'participou da Comissão Organizadora'
+                . ($this->papel_extra ? ', como ' . $this->papel_extra . ',' : '')
+                . ' da ' . $evento . ', promovida pelo ' . $instituicao
+                . ', ' . $datas . ', com o Lema: "' . $lema . '".',
+
+            default => $this->tema
+                ? 'participou no mini-curso, com o tema: "' . $this->tema . '", na '
+                  . $evento . ', promovida pelo ' . $instituicao
+                  . ', ' . $datas . ', com o Lema: "' . $lema . '".'
+                : 'participou na ' . $evento . ', promovida pelo '
+                  . $instituicao . ', ' . $datas . ', com o Lema: "' . $lema . '".',
         };
     }
 }

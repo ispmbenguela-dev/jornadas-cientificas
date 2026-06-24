@@ -36,6 +36,9 @@
             <a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                 <i class="bi bi-speedometer2"></i> Dashboard
             </a>
+            <a href="{{ route('admin.estatisticas.index') }}" class="{{ request()->routeIs('admin.estatisticas.*') ? 'active' : '' }}">
+                <i class="bi bi-bar-chart-line"></i> Estatística
+            </a>
             <a href="{{ route('admin.edicoes.index') }}" class="{{ request()->routeIs('admin.edicoes.*') ? 'active' : '' }}">
                 <i class="bi bi-calendar-event"></i> Edições
             </a>

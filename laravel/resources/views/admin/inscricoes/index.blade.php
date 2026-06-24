@@ -28,6 +28,12 @@
                     <option value="{{ $k }}" @selected(request('categoria') === $k)>{{ $l }}</option>
                 @endforeach
             </select>
+            <select name="modalidade" class="form-select">
+                <option value="">Todas as modalidades</option>
+                @foreach ($modalidades as $k => $l)
+                    <option value="{{ $k }}" @selected(request('modalidade') === $k)>{{ $l }}</option>
+                @endforeach
+            </select>
             <select name="mini_curso" class="form-select">
                 <option value="">Todos os mini-cursos</option>
                 @foreach ($miniCursos as $chave => $mc)
