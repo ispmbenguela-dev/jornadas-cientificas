@@ -49,6 +49,24 @@
                 </div>
             </div>
         </div>
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 rounded-3 h-100" style="background:#e8f4fd;border-left:4px solid #0d6efd">
+                <i class="bi bi-gender-male fs-2 opacity-75" style="color:#0d6efd"></i>
+                <div>
+                    <div class="fw-bold fs-3 lh-1" style="color:#0d6efd">{{ $fmt($masculino) }}</div>
+                    <small class="text-muted">Masculino (confirmados)</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-lg-3">
+            <div class="d-flex align-items-center gap-3 p-3 rounded-3 h-100" style="background:#fde8f4;border-left:4px solid #d63384">
+                <i class="bi bi-gender-female fs-2 opacity-75" style="color:#d63384"></i>
+                <div>
+                    <div class="fw-bold fs-3 lh-1" style="color:#d63384">{{ $fmt($feminino) }}</div>
+                    <small class="text-muted">Feminino (confirmados)</small>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="row g-3">

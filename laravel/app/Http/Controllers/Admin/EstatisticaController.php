@@ -23,6 +23,10 @@ class EstatisticaController extends Controller
         $receitaConfirmada = (int) (clone $base)->where('estado', 'confirmada')->sum('valor_kz');
         $receitaTotal      = (int) (clone $base)->sum('valor_kz');
 
+        // Por sexo (confirmadas)
+        $masculino = (clone $base)->where('estado', 'confirmada')->where('sexo', 'masculino')->count();
+        $feminino  = (clone $base)->where('estado', 'confirmada')->where('sexo', 'feminino')->count();
+
         // Por sexo (null = não informado)
         $porSexo = $this->contarPorChave(
             (clone $base)->selectRaw('sexo, COUNT(*) c')->groupBy('sexo')->pluck('c', 'sexo')->all(),
@@ -87,6 +91,7 @@ class EstatisticaController extends Controller
         return view('admin.estatisticas.index', compact(
             'total', 'confirmadas', 'presentes', 'docentesIspm',
             'receitaConfirmada', 'receitaTotal',
+            'masculino', 'feminino',
             'porSexo', 'porCategoria', 'porModalidade', 'porEstado',
             'porMiniCurso', 'topInstituicoes', 'submissoes'
         ));

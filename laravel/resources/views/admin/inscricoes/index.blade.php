@@ -4,9 +4,9 @@
 @section('page_title', 'Inscrições')
 
 @section('topbar_actions')
-    <a href="{{ route('admin.inscricoes.create') }}" class="btn btn-sm btn-cta">
-        <i class="bi bi-person-plus"></i> Nova inscrição
-    </a>
+        <a href="{{ route('admin.inscricoes.create') }}" class="btn btn-sm btn-cta">
+            <i class="bi bi-person-plus"></i> Nova inscrição
+        </a>
 @endsection
 
 @section('content')
