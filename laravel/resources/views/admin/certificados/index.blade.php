@@ -117,6 +117,73 @@
         </form>
     </div>
 
+    <div class="panel mb-3">
+        <h4 class="mb-2"><i class="bi bi-person-check"></i> Enviar por inscrito</h4>
+        <p class="small text-muted mb-3">
+            Pesquise inscrições confirmadas, seleccione uma ou mais e envie o certificado de participante.
+            Se ainda não existir certificado para o inscrito, será gerado automaticamente.
+        </p>
+
+        <div class="row g-2 mb-3">
+            <div class="col-md-7">
+                <div class="search-wrap">
+                    <i class="bi bi-search"></i>
+                    <input type="text" id="inscrito-search" class="form-control"
+                           placeholder="Nome ou e-mail do inscrito (mín. 2 caracteres)…">
+                </div>
+            </div>
+            <div class="col-md-3">
+                <input type="date" id="inscrito-data-evento" value="2026-06-12" class="form-control" title="Data do evento (para gerar cert. se não existir)">
+            </div>
+            <div class="col-md-2 d-flex align-items-center">
+                <span class="text-muted small" id="inscrito-loading" style="display:none!important">
+                    <i class="bi bi-hourglass-split"></i> A pesquisar…
+                </span>
+            </div>
+        </div>
+
+        <div id="inscrito-results" class="mb-3">
+            <p class="text-muted small mb-0">Escreva no campo acima para pesquisar inscritos.</p>
+        </div>
+
+        <form id="form-enviar-inscritos" method="POST" action="{{ route('admin.certificados.enviar_inscritos') }}"
+              enctype="multipart/form-data">
+            @csrf
+            <input type="hidden" name="data_evento" id="hidden-data-evento" value="2026-06-12">
+            <div id="inscrito-ids-container"></div>
+
+            <div class="mb-3">
+                <label class="form-label fw-semibold">
+                    <i class="bi bi-file-earmark-arrow-up"></i> Carregar certificado (PDF)
+                    <span class="text-muted fw-normal">— opcional</span>
+                </label>
+                <input type="file" name="certificado_pdf" id="certificado_pdf"
+                       accept="application/pdf,.pdf" class="form-control">
+                <div class="form-text" id="pdf-upload-hint">
+                    Se carregar um ficheiro, será usado como certificado para todos os inscritos seleccionados.
+                    Sem ficheiro, o certificado é gerado automaticamente.
+                </div>
+                <div id="pdf-upload-preview" class="mt-2" style="display:none">
+                    <span class="badge bg-primary"><i class="bi bi-file-earmark-pdf"></i> <span id="pdf-filename"></span></span>
+                    <button type="button" id="btn-clear-pdf" class="btn btn-sm btn-link text-danger p-0 ms-1">remover</button>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                <button type="submit" id="btn-enviar-inscritos" class="btn btn-cta" disabled>
+                    <i class="bi bi-send"></i> Enviar seleccionados
+                    (<span id="count-selected">0</span>)
+                </button>
+                <button type="button" id="btn-select-all" class="btn btn-sm btn-outline-secondary" style="display:none">
+                    Seleccionar todos
+                </button>
+                <button type="button" id="btn-clear-sel" class="btn btn-sm btn-outline-secondary" style="display:none">
+                    Limpar selecção
+                </button>
+            </div>
+        </form>
+    </div>
+
     <div class="panel">
         <form method="GET" class="filter-row">
             <div class="search-wrap">
@@ -200,3 +267,156 @@
         {{ $certificados->links() }}
     </div>
 @endsection
+
+@push('scripts')
+<script>
+(function () {
+    const searchInput   = document.getElementById('inscrito-search');
+    const resultsDiv    = document.getElementById('inscrito-results');
+    const idsContainer  = document.getElementById('inscrito-ids-container');
+    const countSpan     = document.getElementById('count-selected');
+    const btnEnviar     = document.getElementById('btn-enviar-inscritos');
+    const btnSelectAll  = document.getElementById('btn-select-all');
+    const btnClearSel   = document.getElementById('btn-clear-sel');
+    const dataInput     = document.getElementById('inscrito-data-evento');
+    const hiddenData    = document.getElementById('hidden-data-evento');
+    const buscarUrl     = '{{ route('admin.certificados.buscar_inscritos') }}';
+
+    dataInput.addEventListener('change', () => { hiddenData.value = dataInput.value; });
+
+    let debounce;
+    searchInput.addEventListener('input', () => {
+        clearTimeout(debounce);
+        debounce = setTimeout(search, 350);
+    });
+
+    function search() {
+        const q = searchInput.value.trim();
+        if (q.length < 2) {
+            resultsDiv.innerHTML = '<p class="text-muted small mb-0">Escreva pelo menos 2 caracteres para pesquisar.</p>';
+            btnSelectAll.style.display = 'none';
+            btnClearSel.style.display  = 'none';
+            return;
+        }
+
+        resultsDiv.innerHTML = '<p class="text-muted small mb-0"><i class="bi bi-hourglass-split"></i> A pesquisar…</p>';
+
+        fetch(buscarUrl + '?q=' + encodeURIComponent(q), {
+            headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+        })
+        .then(r => r.json())
+        .then(renderResults)
+        .catch(() => {
+            resultsDiv.innerHTML = '<p class="text-danger small mb-0">Erro ao pesquisar. Tente novamente.</p>';
+        });
+    }
+
+    function renderResults(inscritos) {
+        if (!inscritos.length) {
+            resultsDiv.innerHTML = '<p class="text-muted small mb-0">Nenhum inscrito confirmado encontrado.</p>';
+            btnSelectAll.style.display = 'none';
+            btnClearSel.style.display  = 'none';
+            updateSelection();
+            return;
+        }
+
+        const badgeMap = {
+            'enviado':      '<span class="badge bg-success"><i class="bi bi-send-check"></i> Enviado</span>',
+            'descarregado': '<span class="badge bg-info"><i class="bi bi-download"></i> Descarregado</span>',
+            'emitido':      '<span class="badge bg-warning text-dark"><i class="bi bi-clock"></i> Emitido</span>',
+        };
+
+        let html = '<div class="list-group list-group-flush border rounded" style="max-height:320px;overflow-y:auto">';
+        inscritos.forEach(i => {
+            const certBadge = i.tem_cert
+                ? (badgeMap[i.cert_estado] ?? '<span class="badge bg-secondary">Emitido</span>')
+                : '<span class="badge bg-secondary"><i class="bi bi-file-earmark-plus"></i> Será gerado</span>';
+
+            html += `
+            <label class="list-group-item list-group-item-action d-flex align-items-center gap-2 py-2" style="cursor:pointer">
+                <input type="checkbox" class="inscrito-cb form-check-input flex-shrink-0" value="${i.id}">
+                <div class="flex-grow-1 overflow-hidden">
+                    <strong class="d-block text-truncate">${escHtml(i.nome)}</strong>
+                    <small class="text-muted">${escHtml(i.email)}</small>
+                </div>
+                <div class="flex-shrink-0">${certBadge}</div>
+            </label>`;
+        });
+        html += '</div>';
+        resultsDiv.innerHTML = html;
+
+        document.querySelectorAll('.inscrito-cb').forEach(cb => {
+            cb.addEventListener('change', updateSelection);
+        });
+
+        btnSelectAll.style.display = '';
+        btnClearSel.style.display  = '';
+        updateSelection();
+    }
+
+    function updateSelection() {
+        const allCbs    = document.querySelectorAll('.inscrito-cb');
+        const checked   = document.querySelectorAll('.inscrito-cb:checked');
+        countSpan.textContent = checked.length;
+        btnEnviar.disabled    = checked.length === 0;
+
+        idsContainer.innerHTML = '';
+        checked.forEach(cb => {
+            const inp = document.createElement('input');
+            inp.type  = 'hidden';
+            inp.name  = 'inscricao_ids[]';
+            inp.value = cb.value;
+            idsContainer.appendChild(inp);
+        });
+    }
+
+    btnSelectAll.addEventListener('click', () => {
+        document.querySelectorAll('.inscrito-cb').forEach(cb => { cb.checked = true; });
+        updateSelection();
+    });
+
+    btnClearSel.addEventListener('click', () => {
+        document.querySelectorAll('.inscrito-cb').forEach(cb => { cb.checked = false; });
+        updateSelection();
+    });
+
+    // --- Upload PDF preview ---
+    const pdfInput   = document.getElementById('certificado_pdf');
+    const pdfPreview = document.getElementById('pdf-upload-preview');
+    const pdfNameEl  = document.getElementById('pdf-filename');
+    const btnClearPdf = document.getElementById('btn-clear-pdf');
+
+    pdfInput.addEventListener('change', () => {
+        if (pdfInput.files.length) {
+            pdfNameEl.textContent = pdfInput.files[0].name;
+            pdfPreview.style.display = '';
+        } else {
+            pdfPreview.style.display = 'none';
+        }
+    });
+
+    btnClearPdf.addEventListener('click', () => {
+        pdfInput.value = '';
+        pdfPreview.style.display = 'none';
+    });
+
+    // --- Form submit confirmation ---
+    document.getElementById('form-enviar-inscritos').addEventListener('submit', function (e) {
+        const count   = document.querySelectorAll('.inscrito-cb:checked').length;
+        const temPdf  = pdfInput.files.length > 0;
+        const pdfNote = temPdf ? `\nFicheiro: ${pdfInput.files[0].name}` : '\n(certificado gerado automaticamente)';
+        if (!confirm(`Enviar certificados para ${count} inscrito(s)?${pdfNote}`)) {
+            e.preventDefault();
+        }
+    });
+
+    function escHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;');
+    }
+})();
+</script>
+@endpush

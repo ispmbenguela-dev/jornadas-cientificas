@@ -8,6 +8,7 @@ use App\Models\Certificado;
 use App\Models\Inscricao;
 use App\Models\Submissao;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -177,6 +178,102 @@ class CertificadoController extends Controller
         $msg = "{$enviados} certificado(s) enviado(s).";
         if ($semEmail > 0) $msg .= " {$semEmail} sem e-mail.";
         if ($falhas > 0)   $msg .= " {$falhas} falha(s) — ver log.";
+
+        return redirect()->route('admin.certificados.index')->with('success', $msg);
+    }
+
+    public function buscarInscritos(Request $request): JsonResponse
+    {
+        $q = $request->string('q')->toString();
+
+        $query = Inscricao::where('estado', 'confirmada')
+            ->whereNotNull('email')
+            ->with('certificadoParticipante');
+
+        if (mb_strlen($q) >= 2) {
+            $query->where(function ($qb) use ($q) {
+                $qb->where('nome', 'like', "%{$q}%")
+                   ->orWhere('email', 'like', "%{$q}%");
+            });
+        }
+
+        $inscritos = $query->orderBy('nome')->limit(30)->get();
+
+        return response()->json($inscritos->map(fn(Inscricao $i) => [
+            'id'          => $i->id,
+            'nome'        => $i->nome,
+            'email'       => $i->email,
+            'tem_cert'    => $i->certificadoParticipante !== null,
+            'cert_estado' => $i->certificadoParticipante?->estado,
+        ]));
+    }
+
+    public function enviarInscritos(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'inscricao_ids'   => ['required', 'array', 'min:1'],
+            'inscricao_ids.*' => ['integer', 'exists:inscricoes,id'],
+            'data_evento'     => ['required', 'date'],
+            'certificado_pdf' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
+        ]);
+
+        $uploadedContent = $request->hasFile('certificado_pdf')
+            ? file_get_contents($request->file('certificado_pdf')->getRealPath())
+            : null;
+
+        $enviados  = 0;
+        $gerados   = 0;
+        $carregados = 0;
+        $falhas    = 0;
+        $semEmail  = 0;
+
+        foreach ($request->input('inscricao_ids') as $id) {
+            $inscricao = Inscricao::with('certificadoParticipante')->find($id);
+
+            if (!$inscricao?->email) {
+                $semEmail++;
+                continue;
+            }
+
+            $cert = $inscricao->certificadoParticipante;
+
+            if (!$cert) {
+                $cert = Certificado::create([
+                    'tipo'         => 'participante',
+                    'inscricao_id' => $inscricao->id,
+                    'nome'         => $inscricao->nome,
+                    'data_evento'  => $request->date('data_evento'),
+                ]);
+                $gerados++;
+            }
+
+            if ($uploadedContent !== null) {
+                $filename = 'certificados/' . $cert->codigo . '.pdf';
+                Storage::disk('public')->put($filename, $uploadedContent);
+                $cert->update(['pdf_path' => $filename]);
+                $carregados++;
+            }
+
+            try {
+                $path = $this->garantirPdf($cert);
+                Mail::to($inscricao->email)->send(new CertificadoEmitido($cert, Storage::disk('public')->path($path)));
+                $cert->update(['estado' => 'enviado', 'enviado_em' => now()]);
+                $enviados++;
+            } catch (\Throwable $e) {
+                $falhas++;
+                Log::warning('Falha no envio de certificado por inscrito', [
+                    'inscricao_id'   => $id,
+                    'certificado_id' => $cert->id,
+                    'error'          => $e->getMessage(),
+                ]);
+            }
+        }
+
+        $msg = "{$enviados} certificado(s) enviado(s) por e-mail.";
+        if ($carregados > 0) $msg .= " PDF carregado aplicado a {$carregados}.";
+        if ($gerados > 0)    $msg .= " {$gerados} gerado(s) automaticamente.";
+        if ($semEmail > 0)   $msg .= " {$semEmail} sem e-mail associado.";
+        if ($falhas > 0)     $msg .= " {$falhas} falha(s) — ver log.";
 
         return redirect()->route('admin.certificados.index')->with('success', $msg);
     }

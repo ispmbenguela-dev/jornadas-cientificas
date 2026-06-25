@@ -97,6 +97,8 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::post('certificados/gerar-lote', [AdminCertificadoController::class, 'gerarLote'])->name('certificados.gerar_lote');
         Route::post('certificados/gerar-prelectores', [AdminCertificadoController::class, 'gerarPrelectores'])->name('certificados.gerar_prelectores');
         Route::post('certificados/enviar-todos', [AdminCertificadoController::class, 'enviarTodos'])->name('certificados.enviar_todos');
+        Route::get('certificados/inscritos/buscar', [AdminCertificadoController::class, 'buscarInscritos'])->name('certificados.buscar_inscritos');
+        Route::post('certificados/inscritos/enviar', [AdminCertificadoController::class, 'enviarInscritos'])->name('certificados.enviar_inscritos');
         Route::get('certificados/{certificado}', [AdminCertificadoController::class, 'show'])->name('certificados.show');
         Route::get('certificados/{certificado}/preview', [AdminCertificadoController::class, 'preview'])->name('certificados.preview');
         Route::get('certificados/{certificado}/download', [AdminCertificadoController::class, 'download'])->name('certificados.download');
