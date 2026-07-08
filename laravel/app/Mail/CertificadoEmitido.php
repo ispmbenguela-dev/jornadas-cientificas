@@ -15,7 +15,7 @@ class CertificadoEmitido extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function __construct(public Certificado $certificado, public string $pdfPath)
+    public function __construct(public Certificado $certificado, public string $certificatePath)
     {
     }
 
@@ -42,9 +42,21 @@ class CertificadoEmitido extends Mailable
     public function attachments(): array
     {
         return [
-            Attachment::fromPath($this->pdfPath)
-                ->as('certificado-' . $this->certificado->codigo . '.pdf')
-                ->withMime('application/pdf'),
+            Attachment::fromPath($this->certificatePath)
+                ->as($this->attachmentName())
+                ->withMime($this->attachmentMimeType()),
         ];
+    }
+
+    private function attachmentName(): string
+    {
+        $extension = pathinfo($this->certificatePath, PATHINFO_EXTENSION) ?: 'pdf';
+
+        return 'certificado-' . $this->certificado->codigo . '.' . $extension;
+    }
+
+    private function attachmentMimeType(): string
+    {
+        return mime_content_type($this->certificatePath) ?: 'application/octet-stream';
     }
 }

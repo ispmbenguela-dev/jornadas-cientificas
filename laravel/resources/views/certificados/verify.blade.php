@@ -53,7 +53,7 @@
 
                         @if ($certificado->pdf_path)
                             <a href="{{ route('certificado.download', $certificado->codigo) }}" class="btn btn-cta">
-                                <i class="bi bi-download"></i> Descarregar PDF
+                                <i class="bi bi-download"></i> Descarregar certificado
                             </a>
                         @endif
                     </div>

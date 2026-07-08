@@ -31,10 +31,12 @@ class CertificadoController extends Controller
             $certificado->update(['estado' => 'descarregado']);
         }
 
-        return response()->download(
-            Storage::disk('public')->path($certificado->pdf_path),
-            'certificado-' . $certificado->codigo . '.pdf',
-            ['Content-Type' => 'application/pdf']
-        );
+        $absolutePath = Storage::disk('public')->path($certificado->pdf_path);
+        $extension = pathinfo($certificado->pdf_path, PATHINFO_EXTENSION) ?: 'pdf';
+        $mimeType = mime_content_type($absolutePath) ?: 'application/octet-stream';
+
+        return response()->download($absolutePath, 'certificado-' . $certificado->codigo . '.' . $extension, [
+            'Content-Type' => $mimeType,
+        ]);
     }
 }

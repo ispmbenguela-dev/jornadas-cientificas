@@ -214,11 +214,15 @@ class CertificadoController extends Controller
             'inscricao_ids'   => ['required', 'array', 'min:1'],
             'inscricao_ids.*' => ['integer', 'exists:inscricoes,id'],
             'data_evento'     => ['required', 'date'],
-            'certificado_pdf' => ['nullable', 'file', 'mimes:pdf', 'max:10240'],
+            'certificado_pdf' => ['nullable', 'file', 'mimes:pdf,png,jpg,jpeg,webp,gif,bmp', 'max:10240'],
         ]);
 
-        $uploadedContent = $request->hasFile('certificado_pdf')
-            ? file_get_contents($request->file('certificado_pdf')->getRealPath())
+        $uploadedFile = $request->file('certificado_pdf');
+        $uploadedContent = $uploadedFile
+            ? file_get_contents($uploadedFile->getRealPath())
+            : null;
+        $uploadedExtension = $uploadedFile
+            ? strtolower($uploadedFile->extension() ?: $uploadedFile->getClientOriginalExtension() ?: 'pdf')
             : null;
 
         $enviados  = 0;
@@ -248,7 +252,10 @@ class CertificadoController extends Controller
             }
 
             if ($uploadedContent !== null) {
-                $filename = 'certificados/' . $cert->codigo . '.pdf';
+                $filename = 'certificados/' . $cert->codigo . '.' . $uploadedExtension;
+                if ($cert->pdf_path && $cert->pdf_path !== $filename && Storage::disk('public')->exists($cert->pdf_path)) {
+                    Storage::disk('public')->delete($cert->pdf_path);
+                }
                 Storage::disk('public')->put($filename, $uploadedContent);
                 $cert->update(['pdf_path' => $filename]);
                 $carregados++;
@@ -287,8 +294,12 @@ class CertificadoController extends Controller
     {
         $path = $this->garantirPdf($certificado);
 
-        return response()->download(Storage::disk('public')->path($path), 'certificado-' . $certificado->codigo . '.pdf', [
-            'Content-Type' => 'application/pdf',
+        $absolutePath = Storage::disk('public')->path($path);
+        $extension = pathinfo($path, PATHINFO_EXTENSION) ?: 'pdf';
+        $mimeType = mime_content_type($absolutePath) ?: 'application/octet-stream';
+
+        return response()->download($absolutePath, 'certificado-' . $certificado->codigo . '.' . $extension, [
+            'Content-Type' => $mimeType,
         ]);
     }
 

@@ -154,17 +154,17 @@
 
             <div class="mb-3">
                 <label class="form-label fw-semibold">
-                    <i class="bi bi-file-earmark-arrow-up"></i> Carregar certificado (PDF)
+                    <i class="bi bi-file-earmark-arrow-up"></i> Carregar certificado (PDF ou imagem)
                     <span class="text-muted fw-normal">— opcional</span>
                 </label>
                 <input type="file" name="certificado_pdf" id="certificado_pdf"
-                       accept="application/pdf,.pdf" class="form-control">
+                       accept="application/pdf,image/png,image/jpeg,image/webp,image/gif,image/bmp,.pdf,.png,.jpg,.jpeg,.webp,.gif,.bmp" class="form-control">
                 <div class="form-text" id="pdf-upload-hint">
-                    Se carregar um ficheiro, será usado como certificado para todos os inscritos seleccionados.
+                    Se carregar um ficheiro PDF ou imagem (PNG, JPG, JPEG, WEBP, GIF ou BMP), será usado como certificado para todos os inscritos seleccionados.
                     Sem ficheiro, o certificado é gerado automaticamente.
                 </div>
                 <div id="pdf-upload-preview" class="mt-2" style="display:none">
-                    <span class="badge bg-primary"><i class="bi bi-file-earmark-pdf"></i> <span id="pdf-filename"></span></span>
+                    <span class="badge bg-primary"><i class="bi bi-file-earmark-arrow-up"></i> <span id="pdf-filename"></span></span>
                     <button type="button" id="btn-clear-pdf" class="btn btn-sm btn-link text-danger p-0 ms-1">remover</button>
                 </div>
             </div>
@@ -244,7 +244,7 @@
                             <a href="{{ route('admin.certificados.show', $c) }}" class="btn btn-sm btn-outline-secondary" title="Ver">
                                 <i class="bi bi-eye"></i>
                             </a>
-                            <a href="{{ route('admin.certificados.download', $c) }}" class="btn btn-sm btn-outline-primary" title="PDF">
+                            <a href="{{ route('admin.certificados.download', $c) }}" class="btn btn-sm btn-outline-primary" title="Descarregar certificado">
                                 <i class="bi bi-file-earmark-pdf"></i>
                             </a>
                             @if ($c->email_destino)
@@ -380,7 +380,7 @@
         updateSelection();
     });
 
-    // --- Upload PDF preview ---
+    // --- Upload certificate preview ---
     const pdfInput   = document.getElementById('certificado_pdf');
     const pdfPreview = document.getElementById('pdf-upload-preview');
     const pdfNameEl  = document.getElementById('pdf-filename');
@@ -403,8 +403,8 @@
     // --- Form submit confirmation ---
     document.getElementById('form-enviar-inscritos').addEventListener('submit', function (e) {
         const count   = document.querySelectorAll('.inscrito-cb:checked').length;
-        const temPdf  = pdfInput.files.length > 0;
-        const pdfNote = temPdf ? `\nFicheiro: ${pdfInput.files[0].name}` : '\n(certificado gerado automaticamente)';
+        const temFicheiro  = pdfInput.files.length > 0;
+        const pdfNote = temFicheiro ? `\nFicheiro: ${pdfInput.files[0].name}` : '\n(certificado gerado automaticamente)';
         if (!confirm(`Enviar certificados para ${count} inscrito(s)?${pdfNote}`)) {
             e.preventDefault();
         }
